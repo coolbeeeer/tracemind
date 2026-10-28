@@ -1,4 +1,4 @@
-# TraceMind — Agent-Native Status (honest, Phases 1–2 Chunk 2)
+# TraceMind — Agent-Native Status (honest, Phases 1–3)
 
 ## What Agent-Native actually provides here
 
@@ -80,7 +80,29 @@ and no step in them is an investigation.
 | Automated fixes / deployment automation | Explicitly out of scope | Separate work, never in this hackathon entry without human approval |
 | Services, Incidents pages | Built in Phase 2 Chunk 1 (demo-backed) | — |
 | Investigation Workspace | Built in Phase 2 Chunk 2 (demo-backed) | — |
-| Integrations, Agent Activity, Settings pages | Not built as functional pages | Phase 3 |
+| Integrations, Agent Activity, Settings pages | Built in Phase 3 Chunk 3 (demo-backed / session-only) | — |
+
+## Phase 3 Chunk 3 (implemented, branch `feature/tracemind-frontend`)
+
+- Integrations at `/integrations`: connection summary (0 connected in
+  demo mode), per-provider cards with Disconnected / Unavailable states,
+  permission explanations, and a backend-gated Connect button that is
+  disabled with a stated reason. No OAuth flow is started, no credential
+  is stored, and no connection is claimed active without backend
+  confirmation. New action `list-integrations` (demo-backed);
+  `integrationSchema` added to schemas to mirror the existing model.
+- Agent Activity at `/agent-activity`: investigation runs and tool
+  executions derived from the existing demo investigations, with search
+  and status / tool / investigation filters, timestamps, durations
+  where recorded, and clear empty states (no activity, and no matches
+  with a working clear-filters action).
+- Settings at `/tracemind-settings`: monitoring configuration,
+  notification preferences, and investigation safety controls, all
+  session-only with a prominent banner saying so. This route is
+  deliberately distinct from the template-owned `/settings`, which is
+  untouched. No setting here is persisted or enforced by a backend yet;
+  the backend developer's persistence and enforcement endpoints remain
+  dependencies.
 | Framework `/settings` route | Owned by the template | TraceMind settings in Phase 3 must not overwrite it; use a distinct route or extend it deliberately |
 
 ## Demo-mode honesty rules (binding for every phase)
