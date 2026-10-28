@@ -205,6 +205,13 @@ export const demoInvestigations: Investigation[] = [
         confidence: 72,
         evidenceIds: ["log-1", "log-2"],
       },
+      {
+        id: "hyp-2",
+        investigationId: "inv-1042",
+        title: "Demo hypothesis: upstream gateway timeout, not token handling",
+        confidence: 31,
+        evidenceIds: [],
+      },
     ],
     fixes: [
       {
@@ -212,7 +219,8 @@ export const demoInvestigations: Investigation[] = [
         investigationId: "inv-1042",
         title: "Demo suggestion: guard the null token path in PaymentService.charge()",
         description:
-          "Demo suggestion only — not a verified fix. A real investigation must confirm the code path before this is applied.",
+          "Demo suggestion only — not a verified fix. A real investigation must confirm the code path before this is applied. The diff below is synthetic demo data, not a real code inspection.",
+        diff: "--- a/PaymentService.java\n+++ b/PaymentService.java\n@@ -42,7 +42,9 @@ public ChargeResult charge(PaymentMethod method) {\n-    String token = method.token();\n+    if (method == null || method.token() == null) {\n+      throw new IllegalArgumentException(\"Payment method token is required\");\n+    }\n+    String token = method.token();\n     return gateway.charge(token, amount);\n }",
         approved: false,
       },
     ],

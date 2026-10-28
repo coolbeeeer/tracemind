@@ -1,4 +1,4 @@
-# TraceMind — Agent-Native Status (honest, Phases 1–2 Chunk 1)
+# TraceMind — Agent-Native Status (honest, Phases 1–2 Chunk 2)
 
 ## What Agent-Native actually provides here
 
@@ -41,6 +41,33 @@ and no step in them is an investigation.
   with active states for nested detail routes. Overview recent incidents
   now link to their detail pages.
 
+## Phase 2 Chunk 2 (implemented, demo-backed, branch `feature/tracemind-frontend`)
+
+- Investigation Workspace at `/investigations/:investigationId`, with a
+  list at `/investigations`. Split-panel layout: left incident details /
+  affected service / error-rate chart / related errors / log timeline;
+  centre investigation progress / tool execution timeline / hypotheses /
+  evidence / suggested fixes with a diff viewer; right agent conversation /
+  follow-up requests / approval controls.
+- New actions: `get-investigation` (one demo investigation, null if
+  unknown) and `list-logs` (demo logs for one incident). `logEntrySchema`
+  was added to `shared/tracemind/schemas.ts` to mirror the existing
+  `LogEntry` model; no existing schema, model, or contract was changed.
+- Demo dataset additions, all labelled DEMO: a synthetic diff on the
+  existing demo fix, and a second demo hypothesis with no evidence, so
+  the workspace exercises both the evidence-linked and the
+  evidence-insufficient states.
+- Honesty rules in the workspace: tool steps show their actual action
+  names, statuses (pending / running / completed / failed), timestamps,
+  and recorded outputs; the conversation panel never claims an agent
+  answered — follow-ups are session-only and the system reply says so;
+  approvals are demo-only, not persisted, and apply no code change or
+  deployment. Real agent conversation, follow-up execution, and approvals
+  require the backend developer's investigation agent and approval
+  endpoint.
+- Incident detail and Overview investigation activity now link to the
+  workspace when a demo investigation exists for that incident.
+
 ## What is NOT implemented (and must not be faked)
 
 | Piece | Status | When |
@@ -52,7 +79,8 @@ and no step in them is an investigation.
 | OAuth for Google Cloud / GitHub | Not built, no fake flow | Backend developer, Phase 3 |
 | Automated fixes / deployment automation | Explicitly out of scope | Separate work, never in this hackathon entry without human approval |
 | Services, Incidents pages | Built in Phase 2 Chunk 1 (demo-backed) | — |
-| Investigation, Integrations, Agent Activity, Settings pages | Not built as functional pages | Phase 2 Chunk 2, Phase 3 |
+| Investigation Workspace | Built in Phase 2 Chunk 2 (demo-backed) | — |
+| Integrations, Agent Activity, Settings pages | Not built as functional pages | Phase 3 |
 | Framework `/settings` route | Owned by the template | TraceMind settings in Phase 3 must not overwrite it; use a distinct route or extend it deliberately |
 
 ## Demo-mode honesty rules (binding for every phase)

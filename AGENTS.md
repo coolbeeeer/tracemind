@@ -37,9 +37,11 @@ Before building common workspace or agent UI, read `agent-native-toolkit`; for s
 Purpose: incident detection/investigation dashboard. Overview at
 `/overview` (authenticated home); template home at `/home`, chat at
 `/chat`. Phase 2 Chunk 1 adds `/services` (+ `/:serviceId` detail) and
-`/incidents` (+ `/:incidentId` detail), all sidebar-linked. Future pages
-(investigation, integrations, activity, settings) are Chunk 2 / Phase 3,
-not nav links yet.
+`/incidents` (+ `/:incidentId` detail), all sidebar-linked. Chunk 2 adds
+`/investigations` (+ `/:investigationId` workspace, split-panel).
+Future pages (integrations, activity, settings) are Phase 3, not nav
+links yet. Workspace approvals and follow-ups are demo-only, never
+persisted or executed, and the conversation panel never fakes an agent.
 Invariants: demo rows are labelled DEMO and carry `demo: true`; never
 present demo data as live; never fake an investigation, OAuth flow, or
 credential storage; writes validate server-side. Time: ISO 8601 UTC in
@@ -50,6 +52,8 @@ Actions (all GET, demo-backed, outputSchema declared):
 | list-services | list demo services |
 | list-incidents | list demo incidents, severity/status/query filters |
 | get-incident | one demo incident by id, null if unknown (Phase 2) |
+| get-investigation | one demo investigation by id, null if unknown |
+| list-logs | demo logs for one incidentId |
 | get-service-health | health points for one serviceId |
 | list-investigations | demo investigations, not agent output |
 | list-deployments | demo deployments |

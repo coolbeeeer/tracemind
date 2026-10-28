@@ -15,6 +15,7 @@ import { openCommandMenu } from "@agent-native/toolkit/app/shared";
 import { AgentNativeIcon } from "@agent-native/toolkit/app/shared/AgentNativeIcon";
 import {
   IconAlertTriangle,
+  IconBrain,
   IconEdit,
   IconHome,
   IconLayoutDashboard,
@@ -179,6 +180,13 @@ function TraceMindNavLink({ collapsed }: { collapsed: boolean }) {
       tooltip: "TraceMind incidents",
       active: location.pathname.startsWith("/incidents"),
       Icon: IconAlertTriangle,
+    },
+    {
+      to: "/investigations",
+      label: "Investigations",
+      tooltip: "TraceMind investigations",
+      active: location.pathname.startsWith("/investigations"),
+      Icon: IconBrain,
     },
   ];
 
