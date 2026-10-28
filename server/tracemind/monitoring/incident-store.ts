@@ -15,6 +15,7 @@ export interface IncidentStore {
   listOpenRecords(serviceId: string): Promise<StoredIncident[]>;
   upsertRecords(records: readonly StoredIncident[]): Promise<void>;
   listLogs(incidentId: string): Promise<LogEntry[]>;
+  upsertLogs(logs: readonly LogEntry[]): Promise<void>;
   updateIncidentStatus(id: string, status: Incident['status']): Promise<Incident | null>;
 }
 
@@ -92,6 +93,22 @@ export function createIncidentStore(connectionString: string): IncidentStore & {
         message: row.message as string,
         ...(row.trace_id ? { traceId: row.trace_id as string } : {}),
       }));
+    },
+    async upsertLogs(logs) {
+      if (!logs.length) return;
+      await sql.begin(async tx => {
+        for (const log of logs) {
+          await tx`
+            insert into tracemind_logs
+              (id, incident_id, service_id, timestamp, level, message, trace_id)
+            values
+              (${log.id}, ${log.incidentId}, ${log.serviceId},
+               ${log.timestamp}, ${log.level}, ${log.message},
+               ${log.traceId ?? null})
+            on conflict (id) do nothing
+          `;
+        }
+      });
     },
     async updateIncidentStatus(id, status) {
       const rows = await sql`
