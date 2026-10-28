@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { demoIncidents } from "../shared/tracemind/demo-data.js";
 import { incidentSchema } from "../shared/tracemind/schemas.js";
+import { createIncidentStore } from "../server/tracemind/monitoring/incident-store.js";
 
 /**
  * Phase 1 demo read: returns the labelled demo incident list, optionally
@@ -10,7 +11,7 @@ import { incidentSchema } from "../shared/tracemind/schemas.js";
  */
 export default defineAction({
   description:
-    "List TraceMind incidents, optionally filtered by severity or status. Phase 1 returns labelled demo data only.",
+    "List TraceMind incidents, optionally filtered by severity or status. Uses PostgreSQL when configured; otherwise returns labelled demo data.",
   schema: z.object({
     severity: z
       .enum(["critical", "warning", "info"])
@@ -32,6 +33,20 @@ export default defineAction({
   http: { method: "GET" },
   run: async (args) => {
     const query = args.query?.trim().toLowerCase();
+    const databaseUrl = process.env.DATABASE_URL;
+    if (databaseUrl) {
+      const store = createIncidentStore(databaseUrl);
+      try {
+        const incidents = await store.listIncidents({
+          ...(args.severity ? { severity: args.severity } : {}),
+          ...(args.status ? { status: args.status } : {}),
+          ...(args.query ? { query: args.query } : {}),
+        });
+        return { incidents, demo: false };
+      } finally {
+        await store.close();
+      }
+    }
     const incidents = demoIncidents.filter((incident) => {
       if (args.severity && incident.severity !== args.severity) return false;
       if (args.status && incident.status !== args.status) return false;
