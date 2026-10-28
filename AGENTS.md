@@ -39,9 +39,10 @@ Purpose: incident detection/investigation dashboard. Overview at
 `/chat`. Phase 2 Chunk 1 adds `/services` (+ `/:serviceId` detail) and
 `/incidents` (+ `/:incidentId` detail), all sidebar-linked. Chunk 2 adds
 `/investigations` (+ `/:investigationId` workspace, split-panel).
-Future pages (integrations, activity, settings) are Phase 3, not nav
-links yet. Workspace approvals and follow-ups are demo-only, never
-persisted or executed, and the conversation panel never fakes an agent.
+Chunk 3 adds `/integrations`, `/agent-activity`, `/tracemind-settings`
+(not template `/settings`). Workspace approvals and follow-ups are
+demo-only, never persisted or executed, and the conversation panel
+never fakes an agent.
 Invariants: demo rows are labelled DEMO and carry `demo: true`; never
 present demo data as live; never fake an investigation, OAuth flow, or
 credential storage; writes validate server-side. Time: ISO 8601 UTC in
@@ -54,6 +55,7 @@ Actions (all GET, demo-backed, outputSchema declared):
 | get-incident | one demo incident by id, null if unknown (Phase 2) |
 | get-investigation | one demo investigation by id, null if unknown |
 | list-logs | demo logs for one incidentId |
+| list-integrations | demo integration states, never connects |
 | get-service-health | health points for one serviceId |
 | list-investigations | demo investigations, not agent output |
 | list-deployments | demo deployments |

@@ -14,6 +14,7 @@ import { OrgSwitcher } from "@agent-native/toolkit/app/org";
 import { openCommandMenu } from "@agent-native/toolkit/app/shared";
 import { AgentNativeIcon } from "@agent-native/toolkit/app/shared/AgentNativeIcon";
 import {
+  IconActivity,
   IconAlertTriangle,
   IconBrain,
   IconEdit,
@@ -22,8 +23,10 @@ import {
   IconLayoutSidebarLeftCollapse,
   IconLayoutSidebarLeftExpand,
   IconLoader2,
+  IconPlug,
   IconSearch,
   IconServer,
+  IconSettings,
 } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
@@ -187,6 +190,27 @@ function TraceMindNavLink({ collapsed }: { collapsed: boolean }) {
       tooltip: "TraceMind investigations",
       active: location.pathname.startsWith("/investigations"),
       Icon: IconBrain,
+    },
+    {
+      to: "/integrations",
+      label: "Integrations",
+      tooltip: "TraceMind integrations",
+      active: location.pathname.startsWith("/integrations"),
+      Icon: IconPlug,
+    },
+    {
+      to: "/agent-activity",
+      label: "Agent Activity",
+      tooltip: "TraceMind agent activity",
+      active: location.pathname.startsWith("/agent-activity"),
+      Icon: IconActivity,
+    },
+    {
+      to: "/tracemind-settings",
+      label: "Settings",
+      tooltip: "TraceMind settings",
+      active: location.pathname.startsWith("/tracemind-settings"),
+      Icon: IconSettings,
     },
   ];
 

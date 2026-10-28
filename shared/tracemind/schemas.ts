@@ -36,6 +36,15 @@ export const incidentSchema = z.object({
   demo: z.boolean().optional(),
 });
 
+export const integrationSchema = z.object({
+  id: z.string(),
+  provider: z.enum(["gcp-run", "github", "aws", "other"]),
+  label: z.string(),
+  status: z.enum(["connected", "not-connected", "coming-soon"]),
+  connectedAt: z.string().optional(),
+  note: z.string().optional(),
+});
+
 export const logEntrySchema = z.object({
   id: z.string(),
   incidentId: z.string(),
