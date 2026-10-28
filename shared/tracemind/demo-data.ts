@@ -1,5 +1,6 @@
 /**
- * TraceMind DEMO dataset — Phase 1 only.
+ * TraceMind DEMO dataset — synthetic rows used until the backend store
+ * is wired to the Agent-Native actions (see docs/integration-testing.md).
  *
  * Every row here is synthetic. Nothing in this file is a real service,
  * a real incident, or a real agent investigation. The UI must label
@@ -229,8 +230,8 @@ export const demoInvestigations: Investigation[] = [
 ];
 
 export const demoIntegrations: Integration[] = [
-  { id: "int-gcp", provider: "gcp-run", label: "Google Cloud Run", status: "not-connected", note: "Backend-gated in Phase 3. No OAuth flow is implemented in Phase 1." },
-  { id: "int-github", provider: "github", label: "GitHub", status: "not-connected", note: "Backend-gated in Phase 3. No OAuth flow is implemented in Phase 1." },
+  { id: "int-gcp", provider: "gcp-run", label: "Google Cloud Run", status: "not-connected", note: "Backend-gated. No OAuth flow is implemented yet." },
+  { id: "int-github", provider: "github", label: "GitHub", status: "not-connected", note: "Backend-gated. No OAuth flow is implemented yet." },
   { id: "int-aws", provider: "aws", label: "AWS", status: "coming-soon", note: "Coming soon, per the brief." },
   { id: "int-other", provider: "other", label: "Other providers", status: "coming-soon", note: "Coming soon, per the brief." },
 ];
