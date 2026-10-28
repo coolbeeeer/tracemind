@@ -1,0 +1,172 @@
+import {
+  actionErrorMessage,
+  useActionQuery,
+} from "@agent-native/core/client/hooks";
+import { Link, useParams } from "react-router";
+
+import { DemoBadge, SeverityBadge } from "@/components/tracemind/badges";
+import { DemoBanner } from "@/components/tracemind/dashboard-bits";
+import { formatDateTime } from "@/lib/tracemind/format";
+
+export function meta() {
+  return [{ title: "Incident detail — TraceMind" }];
+}
+
+export default function IncidentDetailRoute() {
+  const { incidentId } = useParams();
+  const incidentQuery = useActionQuery("get-incident", {
+    id: incidentId ?? "",
+  });
+  const servicesQuery = useActionQuery("list-services", {});
+  const investigationsQuery = useActionQuery("list-investigations", {});
+
+  const incident = incidentQuery.data?.incident ?? null;
+  const services = servicesQuery.data?.services ?? [];
+  const investigations = investigationsQuery.data?.investigations ?? [];
+  const investigation = investigations.find(
+    (inv) => inv.incidentId === incidentId,
+  );
+  const service = services.find((s) => s.id === incident?.serviceId);
+
+  const loading =
+    incidentQuery.isPending ||
+    servicesQuery.isPending ||
+    investigationsQuery.isPending;
+  const error =
+    incidentQuery.error ?? servicesQuery.error ?? investigationsQuery.error;
+
+  return (
+    <main className="min-h-full bg-[#0A0C10] text-[#E6EAF2]">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <Link to="/incidents" className="text-sm text-[#10B981] hover:underline">
+          ← Back to incidents
+        </Link>
+
+        <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#10B981]">
+              Incident detail
+            </p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
+              {loading ? "Loading…" : (incident?.title ?? "Incident not found")}
+            </h1>
+            {incident ? (
+              <p className="mt-1 font-mono text-xs text-[#8B94A7]">
+                {incident.id}
+              </p>
+            ) : null}
+          </div>
+          <DemoBadge />
+        </div>
+
+        <div className="mt-5">
+          <DemoBanner />
+        </div>
+
+        {error ? (
+          <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
+            {actionErrorMessage(error) ??
+              "Could not load this incident. Please try again."}
+          </div>
+        ) : null}
+
+        {!loading && !incident ? (
+          <div className="mt-5 rounded-xl border border-[#1E2430] bg-[#11141B] px-4 py-6">
+            <p className="text-sm">
+              No incident with id{" "}
+              <span className="font-mono">{incidentId}</span> exists in the
+              demo dataset.
+            </p>
+            <Link
+              to="/incidents"
+              className="mt-3 inline-block rounded-lg border border-[#10B981]/40 bg-[#10B981]/10 px-3 py-2 text-sm text-[#10B981]"
+            >
+              Back to incidents
+            </Link>
+          </div>
+        ) : null}
+
+        {incident ? (
+          <>
+            <section className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#8B94A7]">Severity</p>
+                <div className="mt-2">
+                  <SeverityBadge severity={incident.severity} />
+                </div>
+              </div>
+              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#8B94A7]">Status</p>
+                <p className="mt-2 text-lg font-semibold capitalize">{incident.status}</p>
+              </div>
+              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#8B94A7]">Investigation</p>
+                <p className="mt-2 text-lg font-semibold">{incident.investigationStatus}</p>
+              </div>
+              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#8B94A7]">Detected</p>
+                <p className="mt-2 text-lg font-semibold">{formatDateTime(incident.detectedAt)}</p>
+              </div>
+            </section>
+
+            <section className="mt-6 grid gap-4 lg:grid-cols-2">
+              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+                <h2 className="text-sm font-semibold">Description</h2>
+                <p className="mt-3 text-sm leading-relaxed text-[#E6EAF2]">
+                  {incident.description}
+                </p>
+                <h3 className="mt-5 text-sm font-semibold">Affected service</h3>
+                {service ? (
+                  <Link
+                    to={`/services/${service.id}`}
+                    className="mt-2 inline-block text-sm font-medium hover:text-[#10B981]"
+                  >
+                    {service.name} →
+                  </Link>
+                ) : (
+                  <p className="mt-2 font-mono text-sm text-[#8B94A7]">
+                    {incident.serviceId}
+                  </p>
+                )}
+              </div>
+
+              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+                <h2 className="text-sm font-semibold">
+                  Investigation summary <DemoBadge />
+                </h2>
+                {!investigation ? (
+                  <p className="mt-3 text-sm text-[#8B94A7]">
+                    No demo investigation record exists for this incident yet.
+                    The full Investigation Workspace lands in the next chunk;
+                    until then, nothing here claims an agent has run.
+                  </p>
+                ) : (
+                  <>
+                    <p className="mt-3 text-sm">
+                      Investigation <span className="font-mono">{investigation.id}</span> ·{" "}
+                      {investigation.status} · {investigation.steps.length} demo
+                      steps · started {formatDateTime(investigation.startedAt)}
+                    </p>
+                    <p className="mt-3 text-xs text-[#8B94A7]">
+                      This summary is synthetic demo data. The full
+                      Investigation Workspace, with logs, timeline, hypotheses,
+                      evidence, fixes, and agent conversation, lands in the
+                      next chunk.
+                    </p>
+                    <ul className="mt-4 space-y-2 text-sm">
+                      {investigation.hypotheses.map((hypothesis) => (
+                        <li key={hypothesis.id}>
+                          {hypothesis.title} ({hypothesis.confidence}%)
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
+            </section>
+          </>
+        ) : null}
+      </div>
+    </main>
+  );
+}

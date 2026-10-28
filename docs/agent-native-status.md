@@ -1,4 +1,4 @@
-# TraceMind — Agent-Native Status (honest, Phase 1)
+# TraceMind — Agent-Native Status (honest, Phases 1–2 Chunk 1)
 
 ## What Agent-Native actually provides here
 
@@ -21,6 +21,26 @@
 from `shared/tracemind/demo-data.ts`. No LLM is called by any of them,
 and no step in them is an investigation.
 
+## Phase 2 Chunk 1 (implemented, demo-backed, branch `feature/tracemind-frontend`)
+
+- Services: `/services` list with name search and status / provider /
+  monitoring filters, plus `/services/:serviceId` detail with monitoring
+  history (error rate, requests, p95), deployments, and incidents for
+  that service. Filters on the list page are client-side over the
+  existing `list-services` data; the action contract is unchanged.
+- Incidents: `/incidents` searchable table with severity and status
+  filters passed to the existing `list-incidents` action, plus
+  `/incidents/:incidentId` detail via the new `get-incident` action.
+  Detail shows the incident, affected service, and a demo investigation
+  summary; it does not claim a workspace exists yet.
+- New action: `get-incident` (GET, demo-backed, returns
+  `{ incident: Incident | null, demo: true }`). `shared/tracemind/models.ts`
+  and `docs/backend-contracts.md` are untouched in this chunk, per the
+  collaboration rules.
+- Sidebar: TraceMind section now links Overview, Services, and Incidents,
+  with active states for nested detail routes. Overview recent incidents
+  now link to their detail pages.
+
 ## What is NOT implemented (and must not be faked)
 
 | Piece | Status | When |
@@ -31,7 +51,8 @@ and no step in them is an investigation.
 | GitHub repository analysis / code inspection | Not built | Backend developer, Phase 3+ |
 | OAuth for Google Cloud / GitHub | Not built, no fake flow | Backend developer, Phase 3 |
 | Automated fixes / deployment automation | Explicitly out of scope | Separate work, never in this hackathon entry without human approval |
-| Services, Incidents, Investigation, Integrations, Agent Activity, Settings pages | Not built as functional pages | Phases 2–3 |
+| Services, Incidents pages | Built in Phase 2 Chunk 1 (demo-backed) | — |
+| Investigation, Integrations, Agent Activity, Settings pages | Not built as functional pages | Phase 2 Chunk 2, Phase 3 |
 | Framework `/settings` route | Owned by the template | TraceMind settings in Phase 3 must not overwrite it; use a distinct route or extend it deliberately |
 
 ## Demo-mode honesty rules (binding for every phase)

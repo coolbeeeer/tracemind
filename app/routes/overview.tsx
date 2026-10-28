@@ -3,6 +3,7 @@ import {
   useActionQuery,
 } from "@agent-native/core/client/hooks";
 import { useMemo } from "react";
+import { Link } from "react-router";
 
 import { DemoBadge, SeverityBadge, StatusDot } from "@/components/tracemind/badges";
 import {
@@ -245,7 +246,12 @@ export default function OverviewRoute() {
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium">
                         <span className="font-mono text-xs text-[#8B94A7]">{incident.id}</span>{" "}
-                        {incident.title}
+                        <Link
+                          to={`/incidents/${incident.id}`}
+                          className="hover:text-[#10B981]"
+                        >
+                          {incident.title}
+                        </Link>
                       </p>
                       <p className="mt-0.5 text-xs text-[#8B94A7]">
                         {serviceName(incident.serviceId)} · {incident.status} · investigation{" "}
@@ -256,9 +262,8 @@ export default function OverviewRoute() {
                 ))}
               </ul>
               <p className="mt-4 text-xs text-[#8B94A7]">
-                Incident detail, search, and filters land in Phase 2. These
-                rows are not links yet, so nothing here pretends to open a
-                detail page that does not exist.
+                Select an incident for its detail view, or open the full
+                searchable list on the Incidents page.
               </p>
             </section>
           </>

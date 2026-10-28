@@ -14,6 +14,7 @@ import { OrgSwitcher } from "@agent-native/toolkit/app/org";
 import { openCommandMenu } from "@agent-native/toolkit/app/shared";
 import { AgentNativeIcon } from "@agent-native/toolkit/app/shared/AgentNativeIcon";
 import {
+  IconAlertTriangle,
   IconEdit,
   IconHome,
   IconLayoutDashboard,
@@ -21,6 +22,7 @@ import {
   IconLayoutSidebarLeftExpand,
   IconLoader2,
   IconSearch,
+  IconServer,
 } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
@@ -156,31 +158,59 @@ function HomeNavLink({ collapsed }: { collapsed: boolean }) {
 
 function TraceMindNavLink({ collapsed }: { collapsed: boolean }) {
   const location = useLocation();
-  const active = location.pathname === "/overview";
-  const link = (
+  const links = [
+    {
+      to: "/overview",
+      label: "Overview",
+      tooltip: "TraceMind overview",
+      active: location.pathname === "/overview",
+      Icon: IconLayoutDashboard,
+    },
+    {
+      to: "/services",
+      label: "Services",
+      tooltip: "TraceMind services",
+      active: location.pathname.startsWith("/services"),
+      Icon: IconServer,
+    },
+    {
+      to: "/incidents",
+      label: "Incidents",
+      tooltip: "TraceMind incidents",
+      active: location.pathname.startsWith("/incidents"),
+      Icon: IconAlertTriangle,
+    },
+  ];
+
+  const renderLink = (link: (typeof links)[number]) => (
     <Link
-      to="/overview"
-      aria-current={active ? "page" : undefined}
-      aria-label={collapsed ? "TraceMind overview" : undefined}
+      key={link.to}
+      to={link.to}
+      aria-current={link.active ? "page" : undefined}
+      aria-label={collapsed ? link.tooltip : undefined}
       className={cn(
         "flex items-center text-sidebar-accent-foreground transition-colors hover:bg-sidebar-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-        active && "bg-sidebar-accent",
+        link.active && "bg-sidebar-accent",
         collapsed
           ? "size-8 justify-center rounded-md"
           : "h-8 w-full gap-3 rounded-lg px-3 text-sm font-medium",
       )}
     >
-      <IconLayoutDashboard className="size-4 shrink-0" strokeWidth={1.8} />
-      <span className={collapsed ? "sr-only" : "truncate"}>Overview</span>
+      <link.Icon className="size-4 shrink-0" strokeWidth={1.8} />
+      <span className={collapsed ? "sr-only" : "truncate"}>{link.label}</span>
     </Link>
   );
 
   if (collapsed) {
     return (
-      <Tooltip>
-        <TooltipTrigger asChild>{link}</TooltipTrigger>
-        <TooltipContent side="right">TraceMind overview</TooltipContent>
-      </Tooltip>
+      <div className="flex flex-col items-center gap-1">
+        {links.map((link) => (
+          <Tooltip key={link.to}>
+            <TooltipTrigger asChild>{renderLink(link)}</TooltipTrigger>
+            <TooltipContent side="right">{link.tooltip}</TooltipContent>
+          </Tooltip>
+        ))}
+      </div>
     );
   }
 
@@ -189,7 +219,7 @@ function TraceMindNavLink({ collapsed }: { collapsed: boolean }) {
       <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wide text-sidebar-foreground">
         TraceMind
       </p>
-      {link}
+      {links.map(renderLink)}
     </div>
   );
 }
