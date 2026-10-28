@@ -148,11 +148,16 @@ export default function IncidentDetailRoute() {
                       steps · started {formatDateTime(investigation.startedAt)}
                     </p>
                     <p className="mt-3 text-xs text-[#8B94A7]">
-                      This summary is synthetic demo data. The full
-                      Investigation Workspace, with logs, timeline, hypotheses,
-                      evidence, fixes, and agent conversation, lands in the
-                      next chunk.
+                      This summary is synthetic demo data. Open the full
+                      workspace for logs, timeline, hypotheses, evidence,
+                      fixes, and agent conversation.
                     </p>
+                    <Link
+                      to={`/investigations/${investigation.id}`}
+                      className="mt-3 inline-block rounded-lg border border-[#10B981]/40 bg-[#10B981]/10 px-3 py-2 text-sm font-medium text-[#10B981]"
+                    >
+                      Open Investigation Workspace →
+                    </Link>
                     <ul className="mt-4 space-y-2 text-sm">
                       {investigation.hypotheses.map((hypothesis) => (
                         <li key={hypothesis.id}>

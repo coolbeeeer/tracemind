@@ -157,7 +157,10 @@ export default function OverviewRoute() {
                   {investigations.map((investigation) => (
                     <li key={investigation.id} className="text-sm">
                       <p className="font-medium">
-                        {investigation.incidentId} · {investigation.status}
+                        <Link to={`/investigations/${investigation.id}`} className="hover:text-[#10B981]">
+                          {investigation.incidentId}
+                        </Link>{" "}
+                        · {investigation.status}
                       </p>
                       <p className="text-xs text-[#8B94A7]">
                         {investigation.steps.length} demo steps · started{" "}

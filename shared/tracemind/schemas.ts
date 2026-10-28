@@ -36,6 +36,16 @@ export const incidentSchema = z.object({
   demo: z.boolean().optional(),
 });
 
+export const logEntrySchema = z.object({
+  id: z.string(),
+  incidentId: z.string(),
+  timestamp: z.string(),
+  level: z.enum(["error", "warn", "info"]),
+  message: z.string(),
+  traceId: z.string().optional(),
+  serviceId: z.string(),
+});
+
 export const agentActionSchema = z.object({
   id: z.string(),
   investigationId: z.string(),
