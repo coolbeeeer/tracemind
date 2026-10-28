@@ -6,8 +6,9 @@ export default defineAppConfig({
     name: "Tracemind",
     // The source template keeps a renamed app from inheriting first-party email branding.
     sourceTemplate: "chat",
-    // Keep the template's authenticated entry explicit after renaming the app.
-    homePath: "/home",
+    // TraceMind's authenticated entry is the Overview Dashboard (Phase 1).
+    // The template Get started page stays at /home, and chat stays at /chat.
+    homePath: "/overview",
     // Optional: use your own absolute HTTPS logo URL in transactional emails.
     // logoUrl: "https://example.com/logo.png",
   },

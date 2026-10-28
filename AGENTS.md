@@ -1,6 +1,6 @@
 # Chat — Agent Guide
 
-Chat is the minimal chat-first agent-native app. `/` redirects to shared sign-in, then `/home`, the editable Get started page. Chat lives at `/chat`; new chats start there. Actions carry capabilities; screens exist only for durable workflows.
+Chat is the minimal chat-first agent-native app. `/` redirects to shared sign-in, then the TraceMind Overview at `/overview` (see TraceMind section below); the template Get started page stays at `/home`. Chat lives at `/chat`; new chats start there. Actions carry capabilities; screens exist only for durable workflows.
 
 ## Skills
 
@@ -31,3 +31,22 @@ Use `adding-a-feature` for functional parity and `frontend-design` for a user-fa
 Before building common workspace or agent UI, read `agent-native-toolkit`; for supported customization, read `customizing-agent-native`.
 
 - Guarded verification: run `pnpm agent-native:doctor`; fix findings before done.
+
+## TraceMind (Phase 1)
+
+Purpose: incident detection/investigation dashboard. Overview at
+`/overview` (authenticated home); template home at `/home`, chat at
+`/chat`. Future pages (services, incidents, investigation, integrations,
+activity) are Phases 2-3, not Phase 1 nav links.
+Invariants: demo rows are labelled DEMO and carry `demo: true`; never
+present demo data as live; never fake an investigation, OAuth flow, or
+credential storage; writes validate server-side. Time: ISO 8601 UTC in
+data, viewer timezone only for display. Navigation: `navigation.view`
+is `overview` on the dashboard; selected service/incident ids go in
+`navigation` when detail pages land.
+Actions (all GET, demo-backed, outputSchema declared):
+| list-services | list demo services |
+| list-incidents | list demo incidents, severity/status/query filters |
+| get-service-health | health points for one serviceId |
+| list-investigations | demo investigations, not agent output |
+| list-deployments | demo deployments |
