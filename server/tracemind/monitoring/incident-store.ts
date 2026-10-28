@@ -3,12 +3,19 @@ import type { StoredIncident } from "./reconcile-incidents.js";
 import type { LogEntry } from "../../../shared/tracemind/models.js";
 import postgres from "postgres";
 
+export interface IncidentFilters {
+  severity?: Incident["severity"];
+  status?: Incident["status"];
+  query?: string;
+}
+
 export interface IncidentStore {
-  listIncidents(): Promise<Incident[]>;
+  listIncidents(filters?: IncidentFilters): Promise<Incident[]>;
   getIncident(id: string): Promise<Incident | null>;
   listOpenRecords(serviceId: string): Promise<StoredIncident[]>;
   upsertRecords(records: readonly StoredIncident[]): Promise<void>;
   listLogs(incidentId: string): Promise<LogEntry[]>;
+  updateIncidentStatus(id: string, status: Incident['status']): Promise<Incident | null>;
 }
 
 /** PostgreSQL-backed store. Supply DATABASE_URL via server-side secrets only. */
@@ -16,8 +23,21 @@ export function createIncidentStore(connectionString: string): IncidentStore & {
   if (!connectionString) throw new Error("DATABASE_URL is required");
   const sql = postgres(connectionString, { max: 5 });
   return {
-    async listIncidents() {
-      const rows = await sql`select incident from tracemind_incidents order by detected_at desc`;
+    async listIncidents(filters = {}) {
+      const query = filters.query?.trim().toLowerCase() ?? "";
+      const severity = filters.severity ?? null;
+      const status = filters.status ?? null;
+      const rows = await sql`
+        select incident from tracemind_incidents
+        where (${severity}::text is null or incident->>'severity' = ${severity})
+          and (${status}::text is null or status = ${status})
+          and (${query} = '' or lower(
+            coalesce(incident->>'id', '') || ' ' ||
+            coalesce(incident->>'title', '') || ' ' ||
+            coalesce(incident->>'description', '')
+          ) like ${'%' + query + '%'})
+        order by detected_at desc
+      `;
       return rows.map(row => row.incident as Incident);
     },
     async getIncident(id) {
@@ -72,6 +92,16 @@ export function createIncidentStore(connectionString: string): IncidentStore & {
         message: row.message as string,
         ...(row.trace_id ? { traceId: row.trace_id as string } : {}),
       }));
+    },
+    async updateIncidentStatus(id, status) {
+      const rows = await sql`
+        update tracemind_incidents
+        set status = ${status},
+            incident = jsonb_set(incident, '{status}', to_jsonb(${status}::text))
+        where id = ${id}
+        returning incident
+      `;
+      return rows.length ? rows[0].incident as Incident : null;
     },
     close: () => sql.end(),
   };
