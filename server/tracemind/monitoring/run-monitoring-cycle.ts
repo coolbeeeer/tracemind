@@ -44,8 +44,8 @@ export async function runMonitoringCycle(options: MonitoringRunOptions) {
     const incidentId = incidentByFingerprint.get(fingerprintError(event));
     if (!incidentId) continue;
     const message = event.message
-      .replace(/(authorization:\\s*bearer\\s+)[^\\s]+/gi, "$1[REDACTED]")
-      .replace(/(password|secret|api[_-]?key|token)\\s*[:=]\\s*[^\\s,;]+/gi, "$1=[REDACTED]")
+      .replace(/(authorization:\s*bearer\s+)[^\s]+/gi, "$1[REDACTED]")
+      .replace(/(password|secret|api[_-]?key|token)\s*[:=]\s*[^\s,;]+/gi, "$1=[REDACTED]")
       .slice(0, 2000);
     logs.push({
       id: `${options.query.projectId}:${options.query.serviceName}:${event.id}`,
