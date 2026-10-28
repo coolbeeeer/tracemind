@@ -112,7 +112,7 @@ export default function OverviewRoute() {
               aria-label="Service summary"
               className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-5"
             >
-              <StatCard label="Connected services" value={String(stats.total)} sub="Demo dataset, 6 services" />
+              <StatCard label="Connected services" value={String(stats.total)} sub={`Demo dataset, ${stats.total} services`} />
               <StatCard label="Healthy" value={String(stats.healthy)} accent="#10B981" />
               <StatCard label="Unhealthy" value={String(stats.unhealthy)} accent="#EF4444" sub="Degraded + down" />
               <StatCard label="Active incidents" value={String(stats.active)} accent="#F59E0B" />
@@ -151,7 +151,7 @@ export default function OverviewRoute() {
                 </h2>
                 <p className="mt-1 text-xs text-[#8B94A7]">
                   Synthetic activity only. No agent has investigated anything
-                  yet in Phase 1.
+                  yet in demo mode.
                 </p>
                 <ul className="mt-4 space-y-3">
                   {investigations.map((investigation) => (
