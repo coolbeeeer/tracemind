@@ -62,24 +62,33 @@ export function detectIncidents(
 
   const incidents: DetectedIncident[] = [];
   for (const [fingerprint, entries] of buckets) {
-    let start = 0;
-    for (let end = 0; end < entries.length; end++) {
-      while (entries[end].ms - entries[start].ms > windowMs) start++;
-      if (end - start + 1 < minOccurrences) continue;
-      const window = entries.slice(start, end + 1);
+    // Form non-overlapping bursts. A new burst begins when the time since
+    // the previous matching error exceeds the configured window.
+    let burstStart = 0;
+    const emit = (start: number, end: number) => {
+      const burst = entries.slice(start, end);
+      if (burst.length < minOccurrences) return;
+      // Avoid treating a long, low-frequency stream as a spike.
+      const firstThreshold = burst[minOccurrences - 1].ms - burst[0].ms;
+      if (firstThreshold > windowMs) return;
       incidents.push({
         fingerprint,
-        serviceId: entries[end].event.serviceId,
-        firstSeenAt: window[0].event.timestamp,
-        lastSeenAt: entries[end].event.timestamp,
-        occurrenceCount: window.length,
-        sampleEventIds: window.slice(0, 10).map(x => x.event.id),
-        summary: entries[end].event.message.slice(0, 300),
-        severity: window.some(x => (x.event.httpStatus ?? 0) >= 500) ? "critical" : "warning",
+        serviceId: burst[0].event.serviceId,
+        firstSeenAt: burst[0].event.timestamp,
+        lastSeenAt: burst[burst.length - 1].event.timestamp,
+        occurrenceCount: burst.length,
+        sampleEventIds: burst.slice(0, 10).map(x => x.event.id),
+        summary: burst[burst.length - 1].event.message.slice(0, 300),
+        severity: burst.some(x => (x.event.httpStatus ?? 0) >= 500) ? "critical" : "warning",
       });
-      // One incident per contiguous burst; avoid emitting overlapping windows.
-      start = end + 1;
+    };
+    for (let i = 1; i < entries.length; i++) {
+      if (entries[i].ms - entries[i - 1].ms > windowMs) {
+        emit(burstStart, i);
+        burstStart = i;
+      }
     }
+    emit(burstStart, entries.length);
   }
   return incidents.sort((a, b) => b.lastSeenAt.localeCompare(a.lastSeenAt));
 }
