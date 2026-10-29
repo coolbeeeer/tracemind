@@ -17,7 +17,7 @@ export function meta() {
 const statusStyles: Record<Integration["status"], string> = {
   connected: "bg-[#10B981]/15 text-[#34D399] border-[#10B981]/30",
   "not-connected": "bg-[#EF4444]/15 text-[#F87171] border-[#EF4444]/30",
-  "coming-soon": "bg-white/5 text-[#8B94A7] border-white/10",
+  "coming-soon": "bg-white/5 text-[#8B96B0] border-white/10",
 };
 
 const statusLabel: Record<Integration["status"], string> = {
@@ -73,17 +73,17 @@ export default function IntegrationsRoute() {
   ).length;
 
   return (
-    <main className="min-h-full bg-[#0A0C10] text-[#E6EAF2]">
+    <main className="min-h-full bg-[#070B16] text-[#E8EDF7]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#10B981]">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#60A5FA]">
               Integrations
             </p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
               Integrations
             </h1>
-            <p className="mt-1 text-sm text-[#8B94A7]">
+            <p className="mt-1 text-sm text-[#8B96B0]">
               Connection status for the providers TraceMind monitors. No
               connection is active in demo mode, and no OAuth flow is
               started from this page.
@@ -97,29 +97,29 @@ export default function IntegrationsRoute() {
         </div>
 
         {googleResult === "connected" ? (
-          <div className="mt-5 rounded-xl border border-[#10B981]/30 bg-[#10B981]/10 px-4 py-3 text-sm text-[#34D399]">
+          <div className="mt-5 rounded-2xl border border-[#10B981]/30 bg-[#10B981]/10 px-4 py-3 text-sm text-[#34D399]">
             Google Cloud connected. Log-read access was granted through Google sign-in.
           </div>
         ) : googleResult === "denied" ? (
-          <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
+          <div className="mt-5 rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
             Google Cloud connection was not granted. You can try connecting again.
           </div>
         ) : googleResult === "failed" ? (
-          <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
+          <div className="mt-5 rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
             Google Cloud connection could not be completed. Please try again.
           </div>
         ) : googleResult === "disconnected" ? (
-          <div className="mt-5 rounded-xl border border-[#1E2430] bg-white/5 px-4 py-3 text-sm text-[#8B94A7]">
+          <div className="mt-5 rounded-2xl border border-[#1E2A44] bg-white/5 px-4 py-3 text-sm text-[#8B96B0]">
             Google Cloud disconnected. Its stored tokens and connection record were removed.
           </div>
         ) : null}
 
         <section
           aria-label="Connect Google Cloud"
-          className="mt-6 rounded-xl border border-[#1E2430] bg-[#11141B] p-4"
+          className="mt-6 rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4"
         >
           <h2 className="text-sm font-semibold">Connect Google Cloud</h2>
-          <p className="mt-2 text-sm leading-relaxed text-[#8B94A7]">
+          <p className="mt-2 text-sm leading-relaxed text-[#8B96B0]">
             Sign in with Google and grant read-only access to Cloud
             Logging. TraceMind reads only logs you can already read;
             it does not deploy, modify, or delete anything, and it
@@ -129,7 +129,7 @@ export default function IntegrationsRoute() {
             type="button"
             disabled={connectMutation.isPending}
             onClick={() => connectMutation.mutate({})}
-            className="mt-4 rounded-lg border border-[#10B981]/40 bg-[#10B981]/10 px-3 py-2 text-sm text-[#10B981] hover:bg-[#10B981]/20 disabled:opacity-50"
+            className="mt-4 rounded-lg border border-[#3B82F6]/40 bg-[#3B82F6]/10 px-3 py-2 text-sm text-[#60A5FA] hover:bg-[#3B82F6]/20 disabled:opacity-50"
           >
             {connectMutation.isPending ? "Connecting…" : "Connect Google Cloud"}
           </button>
@@ -143,7 +143,7 @@ export default function IntegrationsRoute() {
             type="button"
             disabled={disconnectMutation.isPending}
             onClick={() => disconnectMutation.mutate({})}
-            className="mt-3 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-[#8B94A7] hover:bg-white/10 disabled:opacity-50"
+            className="mt-3 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-[#8B96B0] hover:bg-white/10 disabled:opacity-50"
           >
             {disconnectMutation.isPending ? "Disconnecting…" : "Disconnect Google Cloud"}
           </button>
@@ -157,7 +157,7 @@ export default function IntegrationsRoute() {
 
         <section
           aria-label="Set up Google Cloud"
-          className="mt-6 rounded-xl border border-[#1E2430] bg-[#11141B] p-4"
+          className="mt-6 rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4"
         >
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-sm font-semibold">Set up Google Cloud</h2>
@@ -165,7 +165,7 @@ export default function IntegrationsRoute() {
               Not connected
             </span>
           </div>
-          <p className="mt-2 text-sm leading-relaxed text-[#8B94A7]">
+          <p className="mt-2 text-sm leading-relaxed text-[#8B96B0]">
             This prepares an administrator-reviewed, keyless setup plan. It
             does not connect anything, grant permissions, start OAuth, or
             store any credential. Monitoring stays off until the backend
@@ -196,11 +196,11 @@ export default function IntegrationsRoute() {
               onChange={(event) => setProjectIdInput(event.target.value)}
               placeholder="e.g. elantra-gameolive"
               autoComplete="off"
-              className="rounded-lg border border-[#1E2430] bg-[#0A0C10] px-3 py-2 text-sm text-[#E6EAF2] outline-none focus:border-[#10B981]"
+              className="rounded-lg border border-[#1E2A44] bg-[#070B16] px-3 py-2 text-sm text-[#E8EDF7] outline-none focus:border-[#3B82F6]"
             />
             <button
               type="submit"
-              className="rounded-lg border border-[#10B981]/40 bg-[#10B981]/10 px-3 py-2 text-sm text-[#10B981] hover:bg-[#10B981]/20"
+              className="rounded-lg border border-[#3B82F6]/40 bg-[#3B82F6]/10 px-3 py-2 text-sm text-[#60A5FA] hover:bg-[#3B82F6]/20"
             >
               Prepare setup plan
             </button>
@@ -215,7 +215,7 @@ export default function IntegrationsRoute() {
             </p>
           ) : null}
           {gcpPlanQuery.isPending && submittedProjectId ? (
-            <p className="mt-3 text-sm text-[#8B94A7]">Preparing the setup plan…</p>
+            <p className="mt-3 text-sm text-[#8B96B0]">Preparing the setup plan…</p>
           ) : null}
           {gcpPlan ? (
             <div className="mt-4 space-y-4">
@@ -246,7 +246,7 @@ export default function IntegrationsRoute() {
                             setCopiedCommand(null);
                           }
                         }}
-                        className="shrink-0 rounded-lg border border-[#1E2430] px-2 py-1 text-xs text-[#E6EAF2] hover:border-[#10B981]/40"
+                        className="shrink-0 rounded-lg border border-[#1E2A44] px-2 py-1 text-xs text-[#E8EDF7] hover:border-[#3B82F6]/40"
                       >
                         {copiedCommand === index ? "Copied" : "Copy"}
                       </button>
@@ -256,13 +256,13 @@ export default function IntegrationsRoute() {
               </div>
               <div>
                 <h3 className="text-sm font-semibold">Next steps</h3>
-                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[#8B94A7]">
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[#8B96B0]">
                   {gcpPlan.nextSteps.map((step) => (
                     <li key={step}>{step}</li>
                   ))}
                 </ul>
               </div>
-              <p className="text-xs text-[#8B94A7]">
+              <p className="text-xs text-[#8B96B0]">
                 Status remains Not connected. Do not create or upload
                 service-account JSON keys. Only a successful backend
                 verification can switch this to Connected.
@@ -273,10 +273,10 @@ export default function IntegrationsRoute() {
 
         <section
           aria-label="Run as yourself, without project administration"
-          className="mt-6 rounded-xl border border-[#1E2430] bg-[#11141B] p-4"
+          className="mt-6 rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4"
         >
           <h2 className="text-sm font-semibold">No project administration? Run as yourself</h2>
-          <p className="mt-2 text-sm leading-relaxed text-[#8B94A7]">
+          <p className="mt-2 text-sm leading-relaxed text-[#8B96B0]">
             The setup plan above needs a project administrator, because
             granting a role at project level is an administrator-only
             operation. Most users do not have that access. For a demo
@@ -292,31 +292,31 @@ export default function IntegrationsRoute() {
         </section>
 
         {integrationsQuery.error ? (
-          <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
+          <div className="mt-5 rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
             {actionErrorMessage(integrationsQuery.error) ??
               "Could not load integrations. Please try again."}
           </div>
         ) : null}
 
         {integrationsQuery.isPending ? (
-          <div className="mt-5 animate-pulse rounded-xl bg-[#11141B] h-64" aria-label="Loading" />
+          <div className="mt-5 animate-pulse rounded-xl bg-[#0E1526] h-64" aria-label="Loading" />
         ) : (
           <>
             <section
               aria-label="Connection summary"
               className="mt-5 grid gap-4 sm:grid-cols-3"
             >
-              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-[#8B94A7]">Connected</p>
+              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#8B96B0]">Connected</p>
                 <p className="mt-2 text-3xl font-semibold">{connected}</p>
               </div>
-              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-[#8B94A7]">Disconnected</p>
+              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#8B96B0]">Disconnected</p>
                 <p className="mt-2 text-3xl font-semibold text-[#F87171]">{disconnected}</p>
               </div>
-              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-[#8B94A7]">Unavailable</p>
-                <p className="mt-2 text-3xl font-semibold text-[#8B94A7]">{unavailable}</p>
+              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#8B96B0]">Unavailable</p>
+                <p className="mt-2 text-3xl font-semibold text-[#8B96B0]">{unavailable}</p>
               </div>
             </section>
 
@@ -326,7 +326,7 @@ export default function IntegrationsRoute() {
                 return (
                   <div
                     key={integration.id}
-                    className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4"
+                    className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <h2 className="text-sm font-semibold">{integration.label}</h2>
@@ -337,11 +337,11 @@ export default function IntegrationsRoute() {
                       </span>
                     </div>
                     {integration.note ? (
-                      <p className="mt-2 text-sm text-[#8B94A7]">{integration.note}</p>
+                      <p className="mt-2 text-sm text-[#8B96B0]">{integration.note}</p>
                     ) : null}
                     <p className="mt-2 text-sm">
                       Last connection attempt:{" "}
-                      <span className="text-[#8B94A7]">
+                      <span className="text-[#8B96B0]">
                         {integration.connectedAt
                           ? integration.connectedAt
                           : "Never attempted in demo mode"}
@@ -357,7 +357,7 @@ export default function IntegrationsRoute() {
                         }))
                       }
                       aria-expanded={isExpanded}
-                      className="mt-3 rounded-lg border border-[#1E2430] px-3 py-2 text-sm text-[#E6EAF2] hover:border-[#10B981]/40"
+                      className="mt-3 rounded-lg border border-[#1E2A44] px-3 py-2 text-sm text-[#E8EDF7] hover:border-[#3B82F6]/40"
                     >
                       {isExpanded
                         ? "Hide permission explanation"
@@ -375,11 +375,11 @@ export default function IntegrationsRoute() {
                         type="button"
                         disabled
                         title="Backend OAuth is not available yet, so no connection can be started from here."
-                        className="cursor-not-allowed rounded-lg border border-[#1E2430] px-3 py-2 text-sm text-[#8B94A7] opacity-60"
+                        className="cursor-not-allowed rounded-lg border border-[#1E2A44] px-3 py-2 text-sm text-[#8B96B0] opacity-60"
                       >
                         Connect (backend-gated)
                       </button>
-                      <span className="self-center text-xs text-[#8B94A7]">
+                      <span className="self-center text-xs text-[#8B96B0]">
                         Connect is disabled until the backend OAuth flow
                         lands. It does not open a sign-in page or store any
                         credential.
@@ -390,9 +390,9 @@ export default function IntegrationsRoute() {
               })}
             </section>
 
-            <section className="mt-6 rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+            <section className="mt-6 rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
               <h2 className="text-sm font-semibold">How errors will be shown</h2>
-              <p className="mt-2 text-sm leading-relaxed text-[#8B94A7]">
+              <p className="mt-2 text-sm leading-relaxed text-[#8B96B0]">
                 No connection error is recorded in demo mode, so none is
                 invented here. When the backend lands, a failed connection
                 attempt will show the backend's error code and message on
