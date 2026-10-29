@@ -1,30 +1,23 @@
 import { defineAction } from "@agent-native/core/action";
 import { z } from "zod";
-
 import { demoIncidents } from "../shared/tracemind/demo-data.js";
 import { incidentSchema } from "../shared/tracemind/schemas.js";
+import { createIncidentStore } from "../server/tracemind/monitoring/incident-store.js";
 
-/**
- * Phase 2 demo read: one incident by id, from the labelled demo dataset.
- * Returns null when the id is unknown, so the detail page can show a
- * real "not found" state instead of fabricating an incident. The future
- * backend action keeps this shape; only the data source changes.
- */
 export default defineAction({
-  description:
-    "Get one TraceMind incident by id. Phase 2 returns labelled demo data only.",
-  schema: z.object({
-    id: z.string().describe("Incident id, for example INC-1042"),
-  }),
-  outputSchema: z.object({
-    incident: incidentSchema.nullable(),
-    demo: z.boolean(),
-  }),
+  description: "Get a TraceMind incident by ID from PostgreSQL when configured.",
+  schema: z.object({ id: z.string() }),
+  outputSchema: z.object({ incident: incidentSchema.nullable(), demo: z.boolean() }),
   http: { method: "GET" },
-  run: async (args) => {
-    return {
-      incident: demoIncidents.find((incident) => incident.id === args.id) ?? null,
-      demo: true,
-    };
+  run: async ({ id }) => {
+    if (!process.env.DATABASE_URL) {
+      return { incident: demoIncidents.find(item => item.id === id) ?? null, demo: true };
+    }
+    const store = createIncidentStore(process.env.DATABASE_URL);
+    try {
+      return { incident: await store.getIncident(id), demo: false };
+    } finally {
+      await store.close();
+    }
   },
 });
