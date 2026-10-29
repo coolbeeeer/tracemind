@@ -59,6 +59,30 @@ The poll verifies log access again, then runs one monitoring cycle
 with the durable checkpoint and per-service lock. It writes incidents
 and logs to the configured database only.
 
+### Historical verification (errors older than the poll lookback)
+
+The normal poll only looks back five minutes from its first run, plus
+a one-minute checkpoint overlap. Genuine errors older than that are
+not collected by a normal poll, and the checkpoint must not be moved
+to force a pass. Instead, run the read-only historical check, which
+runs the existing detector over a past window and writes nothing:
+
+```sh
+export TRACEMIND_GCP_PROJECT_ID=elantra-gameolive
+export TRACEMIND_GCP_SERVICE=dev-game-play-service
+export TRACEMIND_GCP_REGION=asia-south2
+export TRACEMIND_AUTH_MODE=user
+export TRACEMIND_LOOKBACK_HOURS=24
+npx -y tsx scripts/verify-historical-incidents.ts
+```
+
+It prints events collected, error events, and any detected groups
+with their counts and first/last seen times. No database rows, no
+checkpoint, and no incident records are written. A detected group
+here proves the detector groups the real errors; it does not by
+itself prove the live poll chain, which still needs a fresh error
+within the poll window or a deployed run.
+
 ## What this route does not do
 
 It does not replace a proper product sign-in flow. A future
