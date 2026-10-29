@@ -1,5 +1,6 @@
 import { defineAction } from "@agent-native/core/action";
 import type { ActionRunContext } from "@agent-native/core/action";
+import { resolveCredential } from "@agent-native/core/credentials";
 import { z } from "zod";
 
 import { investigationSchema } from "../shared/tracemind/schemas.js";
@@ -41,6 +42,10 @@ export function authorizeStartInvestigation(
  *   starting a duplicate paid run.
  * - needsApproval: the agent loop must get human approval before this
  *   paid, non-idempotent-by-default call runs.
+ * - Model credential: resolved through the framework credential vault
+ *   for the authenticated caller, never from process.env and never
+ *   from caller input. The database URL remains the deploy-level
+ *   allowlisted key used by the existing live read actions.
  */
 export default defineAction({
   description:
@@ -57,9 +62,14 @@ export default defineAction({
   requiresAuth: true,
   authorize: authorizeStartInvestigation,
   needsApproval: true,
-  run: async ({ incidentId }) => {
+  run: async ({ incidentId }, ctx) => {
     const databaseUrl = process.env.DATABASE_URL;
-    const openaiApiKey = process.env.OPENAI_API_KEY;
+    const openaiApiKey = ctx?.userEmail
+      ? await resolveCredential("OPENAI_API_KEY", {
+          userEmail: ctx.userEmail,
+          ...(ctx.orgId ? { orgId: ctx.orgId } : {}),
+        })
+      : undefined;
     if (!databaseUrl || !openaiApiKey) {
       throw new Error("Server credentials are required");
     }

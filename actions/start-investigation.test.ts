@@ -29,6 +29,9 @@ vi.mock("../server/tracemind/investigation/investigation-lock.js", () => ({
 vi.mock("../server/tracemind/investigation/investigate-stored-incident.js", () => ({
   investigateStoredIncident: mocks.orchestrate,
 }));
+vi.mock("@agent-native/core/credentials", () => ({
+  resolveCredential: async () => "server-key",
+}));
 
 import action, { authorizeStartInvestigation } from "./start-investigation.js";
 
@@ -55,7 +58,6 @@ describe("start-investigation run", () => {
     vi.clearAllMocks();
     mocks.lockAcquired = true;
     process.env.DATABASE_URL = "postgres://unused";
-    process.env.OPENAI_API_KEY = "server-key";
     mocks.getIncident.mockResolvedValue(incident);
     mocks.listForIncident.mockResolvedValue([]);
     mocks.orchestrate.mockResolvedValue(completed);
