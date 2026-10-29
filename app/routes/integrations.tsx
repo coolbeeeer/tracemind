@@ -45,6 +45,11 @@ export default function IntegrationsRoute() {
       window.location.href = data.authorizationUrl;
     },
   });
+  const disconnectMutation = useActionMutation("disconnect-google-connection", {
+    onSuccess: () => {
+      window.location.href = "/integrations?google=disconnected";
+    },
+  });
   const integrationsQuery = useActionQuery("list-integrations", {});
   const integrations = integrationsQuery.data?.integrations ?? [];
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
@@ -103,6 +108,10 @@ export default function IntegrationsRoute() {
           <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
             Google Cloud connection could not be completed. Please try again.
           </div>
+        ) : googleResult === "disconnected" ? (
+          <div className="mt-5 rounded-xl border border-[#1E2430] bg-white/5 px-4 py-3 text-sm text-[#8B94A7]">
+            Google Cloud disconnected. Its stored tokens and connection record were removed.
+          </div>
         ) : null}
 
         <section
@@ -128,6 +137,20 @@ export default function IntegrationsRoute() {
             <p className="mt-2 text-sm text-[#F87171]">
               {actionErrorMessage(connectMutation.error) ??
                 "Could not start the Google Cloud connection. Please try again."}
+            </p>
+          ) : null}
+          <button
+            type="button"
+            disabled={disconnectMutation.isPending}
+            onClick={() => disconnectMutation.mutate({})}
+            className="mt-3 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-[#8B94A7] hover:bg-white/10 disabled:opacity-50"
+          >
+            {disconnectMutation.isPending ? "Disconnecting…" : "Disconnect Google Cloud"}
+          </button>
+          {disconnectMutation.error ? (
+            <p className="mt-2 text-sm text-[#F87171]">
+              {actionErrorMessage(disconnectMutation.error) ??
+                "Could not disconnect Google Cloud. Please try again."}
             </p>
           ) : null}
         </section>
