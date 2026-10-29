@@ -1,8 +1,10 @@
 import {
   actionErrorMessage,
+  useActionMutation,
   useActionQuery,
 } from "@agent-native/core/client/hooks";
 import { useState } from "react";
+import { useSearchParams } from "react-router";
 
 import { DemoBadge } from "@/components/tracemind/badges";
 import { DemoBanner } from "@/components/tracemind/dashboard-bits";
@@ -36,6 +38,13 @@ const permissionText: Record<Integration["provider"], string> = {
 const gcpProjectIdPattern = /^[a-z][a-z0-9-]{4,61}[a-z0-9]$/;
 
 export default function IntegrationsRoute() {
+  const [searchParams] = useSearchParams();
+  const googleResult = searchParams.get("google");
+  const connectMutation = useActionMutation("start-google-connection", {
+    onSuccess: (data) => {
+      window.location.href = data.authorizationUrl;
+    },
+  });
   const integrationsQuery = useActionQuery("list-integrations", {});
   const integrations = integrationsQuery.data?.integrations ?? [];
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
@@ -81,6 +90,47 @@ export default function IntegrationsRoute() {
         <div className="mt-5">
           <DemoBanner />
         </div>
+
+        {googleResult === "connected" ? (
+          <div className="mt-5 rounded-xl border border-[#10B981]/30 bg-[#10B981]/10 px-4 py-3 text-sm text-[#34D399]">
+            Google Cloud connected. Log-read access was granted through Google sign-in.
+          </div>
+        ) : googleResult === "denied" ? (
+          <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
+            Google Cloud connection was not granted. You can try connecting again.
+          </div>
+        ) : googleResult === "failed" ? (
+          <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
+            Google Cloud connection could not be completed. Please try again.
+          </div>
+        ) : null}
+
+        <section
+          aria-label="Connect Google Cloud"
+          className="mt-6 rounded-xl border border-[#1E2430] bg-[#11141B] p-4"
+        >
+          <h2 className="text-sm font-semibold">Connect Google Cloud</h2>
+          <p className="mt-2 text-sm leading-relaxed text-[#8B94A7]">
+            Sign in with Google and grant read-only access to Cloud
+            Logging. TraceMind reads only logs you can already read;
+            it does not deploy, modify, or delete anything, and it
+            never stores cloud credentials in the browser.
+          </p>
+          <button
+            type="button"
+            disabled={connectMutation.isPending}
+            onClick={() => connectMutation.mutate({})}
+            className="mt-4 rounded-lg border border-[#10B981]/40 bg-[#10B981]/10 px-3 py-2 text-sm text-[#10B981] hover:bg-[#10B981]/20 disabled:opacity-50"
+          >
+            {connectMutation.isPending ? "Connecting…" : "Connect Google Cloud"}
+          </button>
+          {connectMutation.error ? (
+            <p className="mt-2 text-sm text-[#F87171]">
+              {actionErrorMessage(connectMutation.error) ??
+                "Could not start the Google Cloud connection. Please try again."}
+            </p>
+          ) : null}
+        </section>
 
         <section
           aria-label="Set up Google Cloud"

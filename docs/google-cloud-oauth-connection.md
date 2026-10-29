@@ -92,22 +92,57 @@ it will be proven during the local OAuth round trip, not before.
   the connection as permission-denied and return a generic
   failure redirect.
 
+## Session identity, verified in the scaffold
+
+A React Router server loader cannot be the callback's identity
+source in this scaffold. The SSR handler runs page routes in an
+anonymous context: it calls `requestForAnonymousSsr` and passes
+`{ userEmail: undefined, orgId: undefined }` into the request
+context, by design. A loader therefore has no trusted session
+email to read, and no cookie decoding or header trust may be
+substituted for one.
+
+The trusted identity source is the framework action layer:
+`requiresAuth` actions receive `ctx.userEmail` from framework
+action authorization, and the callback completes through an
+authenticated action, never through a loader. The flow is:
+
+1. **Start** (`start-google-connection`, authenticated action):
+   the caller supplies nothing; the redirect URI, client ID,
+   and transaction encryption key are deployment configuration
+   resolved from the vault (organization scope, set by the
+   TraceMind developer, not by end users). The action creates
+   the transaction (state, verifier, redirect URI, 10-minute
+   expiry) and returns only the authorization URL.
+2. **Consent**: the Integrations page redirects the browser to
+   that URL. The session cookie is same-origin, so it should
+   survive the redirect to Google and back; if the session is
+   lost, completion fails safely and the user reconnects.
+3. **Callback page** (`/auth/google/callback`, a React Router
+   page, not a loader): it sends the one-time state and code
+   through `complete-google-connection`, an authenticated
+   action. If Google returned an error instead of a code, the
+   page navigates to the generic denied destination without
+   calling the action and without forwarding provider detail.
+4. **Complete** (`complete-google-connection`, authenticated
+   action): `ctx.userEmail` is the trusted session email; the
+   callback logic requires it to match the transaction owner,
+   then exchanges the code, validates scope and refresh-token
+   availability, saves vault tokens and metadata, and returns
+   only a fixed internal redirect destination. The page then
+   navigates there, clearing the code from the address bar.
+
 ## Not built yet
 
-- **React Router loader wiring for the callback.** The callback
-  logic deliberately does not resolve the authenticated session
-  itself: its caller must supply a verified session email, and
-  a missing or mismatched email is a rejection. How a React
-  Router server loader securely resolves that email from the
-  request in this scaffold is not yet verified, and guessing
-  cookie handling would be insecure. Until that resolution is
-  verified, no loader has been wired, and the Connect button
-  stays backend-gated.
-- **Connect button and Disconnect.** The button must start a
-  transaction (state, verifier, redirect URI, 10-minute expiry),
-  store it, and redirect to Google; Disconnect must delete
-  vault tokens and the connection record and stop polling for
-  that user. Neither is built yet.
+- **Live round trip.** The full flow is built and tested with
+  mocked stores and vault, but a live Google consent round trip
+  (real client, real redirect URI, real token exchange, real
+  vault write and read, refresh after expiry, disconnect)
+  is not yet proven. It needs a deployed TraceMind address and
+  a developer OAuth client with the exact callback URI; those
+  are developer setup, not end-user steps.
+- **Disconnect.** Must delete vault tokens and the connection
+  record and stop polling for that user. Not built yet.
 - **Connection metadata store.** Which user, which project,
   service, and region, and the connection status (not connected,
   connecting, connected, permission denied, reconnect required)
