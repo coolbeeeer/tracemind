@@ -17,6 +17,7 @@ import {
   IconActivity,
   IconAlertTriangle,
   IconBrain,
+  IconFileText,
   IconEdit,
   IconHome,
   IconLayoutDashboard,
@@ -190,6 +191,13 @@ function TraceMindNavLink({ collapsed }: { collapsed: boolean }) {
       tooltip: "TraceMind investigations",
       active: location.pathname.startsWith("/investigations"),
       Icon: IconBrain,
+    },
+    {
+      to: "/logs",
+      label: "Logs",
+      tooltip: "TraceMind logs",
+      active: location.pathname.startsWith("/logs"),
+      Icon: IconFileText,
     },
     {
       to: "/integrations",
