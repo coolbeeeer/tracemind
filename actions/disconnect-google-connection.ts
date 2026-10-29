@@ -20,13 +20,18 @@ export function authorizeGoogleDisconnection(_input: unknown, ctx?: { userEmail?
 
 async function revokeGoogleToken(refreshToken: string, request: typeof fetch): Promise<void> {
   try {
-    await request("https://oauth2.googleapis.com/revoke", {
+    const response = await request("https://oauth2.googleapis.com/revoke", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `token=${encodeURIComponent(refreshToken)}`,
     });
+    if (!response.ok) {
+      // Sanitized status only. Never log the token or the response body.
+      console.warn(`Google token revocation failed with HTTP status ${response.status}`);
+    }
   } catch {
     // Best-effort only; deletion below is the guarantee.
+    console.warn("Google token revocation request failed");
   }
 }
 

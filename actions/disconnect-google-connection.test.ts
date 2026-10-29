@@ -52,4 +52,11 @@ describe("disconnect-google-connection", () => {
     expect(result).toEqual({ disconnected: true });
     expect(mocks.deleteConnection).toHaveBeenCalledOnce();
   });
+
+  it("does not report success when metadata deletion fails, even though vault tokens were deleted", async () => {
+    mocks.deleteConnection.mockRejectedValueOnce(new Error("database unavailable"));
+    await expect(action.run({}, { userEmail: "owner@example.com", caller: "frontend" } as never))
+      .rejects.toThrow(/database unavailable/);
+    expect(mocks.deleteTokens).toHaveBeenCalledOnce();
+  });
 });
