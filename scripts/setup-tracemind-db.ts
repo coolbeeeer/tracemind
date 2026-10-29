@@ -27,6 +27,11 @@ async function main() {
       "utf8",
     );
     await sql.unsafe(checkpointSchema).execute();
+    const investigationSchema = await readFile(
+      new URL("../server/tracemind/investigation/schema.sql", import.meta.url),
+      "utf8",
+    );
+    await sql.unsafe(investigationSchema).execute();
     const rows = await sql`
       select to_regclass('public.tracemind_incidents') as incidents,
              to_regclass('public.tracemind_logs') as logs
