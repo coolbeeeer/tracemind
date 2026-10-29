@@ -1,3 +1,4 @@
+import { withMonitoringCheckpoint } from "../server/tracemind/monitoring/poll-checkpoint.js";
 import { createIncidentStore } from "../server/tracemind/monitoring/incident-store.js";
 import { runMonitoringCycle } from "../server/tracemind/monitoring/run-monitoring-cycle.js";
 import { getRuntimeGoogleAccessToken } from "../server/tracemind/integrations/google-metadata-token.js";
@@ -19,16 +20,16 @@ async function main() {
   try {
     const accessToken = await getRuntimeGoogleAccessToken();
     await verifyGcpLoggingAccess({ projectId, serviceName, region, accessToken });
-    const result = await runMonitoringCycle({
-      query: {
-        projectId, serviceName, region,
-        since: new Date(Date.now() - 5 * 60_000).toISOString(),
-        maxPages: 4,
-      },
-      accessToken,
-      store,
-    });
-    console.log(JSON.stringify({ status: "completed", ...result }));
+    const outcome = await withMonitoringCheckpoint(
+      databaseUrl,
+      { projectId, serviceName, region },
+      since => runMonitoringCycle({
+        query: { projectId, serviceName, region, since, maxPages: 4 },
+        accessToken,
+        store,
+      }),
+    );
+    console.log(JSON.stringify({ status: outcome.skipped ? "skipped" : "completed", ...outcome.result }));
   } finally {
     await store.close();
   }
