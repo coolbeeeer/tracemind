@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { redactMonitoringEvents } from "./redact-events.js";
 import { fetchCloudRunLogs, type CloudRunLogQuery } from "./cloud-run-client.js";
 import { detectIncidents, fingerprintError } from "./detect-incidents.js";
 import { reconcileIncidents } from "./reconcile-incidents.js";
@@ -20,11 +21,12 @@ export interface MonitoringRunOptions {
  * service and persist polling checkpoints independently.
  */
 export async function runMonitoringCycle(options: MonitoringRunOptions) {
-  const events = await fetchCloudRunLogs(
+  const rawEvents = await fetchCloudRunLogs(
     options.query,
     options.accessToken,
     options.request ?? fetch,
   );
+  const events = redactMonitoringEvents(rawEvents);
   const detected = detectIncidents(events);
   const existing = await options.store.listOpenRecords(options.query.serviceName);
   const changes = reconcileIncidents(
