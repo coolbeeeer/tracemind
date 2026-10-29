@@ -175,7 +175,7 @@ export async function getValidGoogleAccessToken(input: {
     refreshToken: input.stored.refreshToken,
     clientId: input.clientId,
     clientSecret: input.clientSecret,
-    request: input.request,
+    ...(input.request ? { request: input.request } : {}),
   });
   const stored: StoredGoogleTokens = {
     accessToken: refreshed.accessToken,
