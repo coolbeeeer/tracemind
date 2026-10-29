@@ -198,6 +198,26 @@ export default function IntegrationsRoute() {
           ) : null}
         </section>
 
+        <section
+          aria-label="Run as yourself, without project administration"
+          className="mt-6 rounded-xl border border-[#1E2430] bg-[#11141B] p-4"
+        >
+          <h2 className="text-sm font-semibold">No project administration? Run as yourself</h2>
+          <p className="mt-2 text-sm leading-relaxed text-[#8B94A7]">
+            The setup plan above needs a project administrator, because
+            granting a role at project level is an administrator-only
+            operation. Most users do not have that access. For a demo
+            or self-hosted run, the watcher can instead run as the
+            operator, using the operator&apos;s own Google login, with
+            no service account and no project permission change. It
+            reads only what the operator can already read. See
+            docs/user-log-access.md in the repository for the probe
+            and poll steps. A future product version should replace
+            this operator run with a real Google sign-in that grants
+            log-read permission directly; that flow is not built yet.
+          </p>
+        </section>
+
         {integrationsQuery.error ? (
           <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
             {actionErrorMessage(integrationsQuery.error) ??
