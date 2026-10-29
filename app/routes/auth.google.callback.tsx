@@ -43,6 +43,13 @@ export default function GoogleCallbackRoute() {
       navigate("/integrations?google=failed", { replace: true });
       return;
     }
+    // Strip the one-time code and state from the address bar and
+    // browser history BEFORE the completion request runs, so the
+    // sensitive URL does not linger in history or telemetry. The
+    // values are already captured in memory above; nothing here
+    // consumes the transaction, which only the authenticated
+    // action does.
+    window.history.replaceState(null, "", "/auth/google/callback");
     complete.mutate({ state, code });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
