@@ -9,9 +9,9 @@ import { verifyGcpLoggingAccess } from "../server/tracemind/integrations/verify-
  */
 async function main() {
   const databaseUrl = process.env.DATABASE_URL;
-  const projectId = process.env.TRACEMIND_GCP_PROJECT_ID;
-  const serviceName = process.env.TRACEMIND_GCP_SERVICE;
-  const region = process.env.TRACEMIND_GCP_REGION;
+  const projectId = process.env.TRACEMIND_GCP_PROJECT_ID; // guard:allow-env-credential — operator-run one-shot script only; deployment configuration, not a user credential. Backend owner to review at branch integration.
+  const serviceName = process.env.TRACEMIND_GCP_SERVICE; // guard:allow-env-credential — operator-run one-shot script only; deployment configuration, not a user credential. Backend owner to review at branch integration.
+  const region = process.env.TRACEMIND_GCP_REGION; // guard:allow-env-credential — operator-run one-shot script only; deployment configuration, not a user credential. Backend owner to review at branch integration.
   if (!databaseUrl || !projectId || !serviceName || !region) {
     throw new Error("DATABASE_URL and TRACEMIND_GCP_PROJECT_ID/SERVICE/REGION are required");
   }

@@ -69,21 +69,23 @@ export function detectIncidents(
       const burst = entries.slice(start, end);
       if (burst.length < minOccurrences) return;
       // Avoid treating a long, low-frequency stream as a spike.
-      const firstThreshold = burst[minOccurrences - 1].ms - burst[0].ms;
+      // burst.length >= minOccurrences here (checked above), so these
+      // indexes are defined; the assertions only satisfy strict indexing.
+      const firstThreshold = burst[minOccurrences - 1]!.ms - burst[0]!.ms;
       if (firstThreshold > windowMs) return;
       incidents.push({
         fingerprint,
-        serviceId: burst[0].event.serviceId,
-        firstSeenAt: burst[0].event.timestamp,
-        lastSeenAt: burst[burst.length - 1].event.timestamp,
+        serviceId: burst[0]!.event.serviceId,
+        firstSeenAt: burst[0]!.event.timestamp,
+        lastSeenAt: burst[burst.length - 1]!.event.timestamp,
         occurrenceCount: burst.length,
         sampleEventIds: burst.slice(0, 10).map(x => x.event.id),
-        summary: burst[burst.length - 1].event.message.slice(0, 300),
+        summary: burst[burst.length - 1]!.event.message.slice(0, 300),
         severity: burst.some(x => (x.event.httpStatus ?? 0) >= 500) ? "critical" : "warning",
       });
     };
     for (let i = 1; i < entries.length; i++) {
-      if (entries[i].ms - entries[i - 1].ms > windowMs) {
+      if (entries[i]!.ms - entries[i - 1]!.ms > windowMs) {
         emit(burstStart, i);
         burstStart = i;
       }

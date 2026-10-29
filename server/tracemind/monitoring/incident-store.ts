@@ -43,7 +43,8 @@ export function createIncidentStore(connectionString: string): IncidentStore & {
     },
     async getIncident(id) {
       const rows = await sql`select incident from tracemind_incidents where id = ${id} limit 1`;
-      return rows.length ? rows[0].incident as Incident : null;
+      const row = rows[0];
+      return row ? (row.incident as Incident) : null;
     },
     async listOpenRecords(serviceId) {
       const rows = await sql`
@@ -71,7 +72,7 @@ export function createIncidentStore(connectionString: string): IncidentStore & {
               (${record.incident.id}, ${record.incident.serviceId}, ${record.fingerprint},
                ${record.incident.status}, ${record.incident.detectedAt},
                ${record.firstSeenAt}, ${record.lastSeenAt},
-               ${record.occurrenceCount}, ${tx.json(record.incident)})
+               ${record.occurrenceCount}, ${tx.json(JSON.parse(JSON.stringify(record.incident)))})
             on conflict (id) do update set
               last_seen_at = greatest(tracemind_incidents.last_seen_at, excluded.last_seen_at),
               occurrence_count = greatest(tracemind_incidents.occurrence_count, excluded.occurrence_count)
@@ -118,7 +119,8 @@ export function createIncidentStore(connectionString: string): IncidentStore & {
         where id = ${id}
         returning incident
       `;
-      return rows.length ? rows[0].incident as Incident : null;
+      const row = rows[0];
+      return row ? (row.incident as Incident) : null;
     },
     close: () => sql.end(),
   };

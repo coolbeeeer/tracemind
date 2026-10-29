@@ -15,7 +15,7 @@ describe("monitoring incident lifecycle", () => {
   it("emits one candidate for a five-error burst", () => {
     const candidates = detectIncidents(Array.from({ length: 5 }, (_, i) => error(i, i)));
     expect(candidates).toHaveLength(1);
-    expect(candidates[0].occurrenceCount).toBe(5);
+    expect(candidates[0]?.occurrenceCount).toBe(5);
   });
 
   it("does not emit a candidate for isolated errors", () => {
@@ -30,8 +30,8 @@ describe("monitoring incident lifecycle", () => {
     const repeated = reconcileIncidents(second, initial.inserts, () => "INC-2");
     expect(repeated.inserts).toHaveLength(0);
     expect(repeated.updates).toHaveLength(1);
-    expect(repeated.updates[0].incident.id).toBe("INC-1");
-    expect(repeated.updates[0].lastSeenAt).toBe(error(4, 3).timestamp);
+    expect(repeated.updates[0]?.incident.id).toBe("INC-1");
+    expect(repeated.updates[0]?.lastSeenAt).toBe(error(4, 3).timestamp);
   });
 
   it("does not update when no new errors have arrived", () => {
