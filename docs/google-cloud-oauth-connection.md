@@ -32,16 +32,46 @@ log-access verification (`verifyGcpLoggingAccess`, one entry) are
 reused unchanged for the post-connection check: a connection is
 only shown as Connected after a verified log read.
 
+## Route registration, verified 2026-10-29
+
+Two probes were run against the dev server and then deleted, with
+the repo left clean:
+
+- A Nitro-style file at `server/routes/api/tracemind-probe.get.ts`
+  returned 401, exactly like a definitely non-existent
+  `/api/no-such-route-xyz123`. That 401 is global `/api/*` auth
+  handling, not proof of a handler, so it proves nothing about
+  Nitro route registration and must not be cited as proof.
+- A React Router page route at `app/routes/tracemind-probe.tsx`
+  with a server loader returned 200, and the SSR payload contained
+  loader data for `routes/tracemind-probe` with the probe value.
+  Page routes are auto-discovered by this scaffold, and their
+  loaders run server-side.
+
+Conclusion: the OAuth callback should be a React Router route
+with a server loader that validates state, exchanges the code,
+persists through the vault, and redirects to a fixed internal
+page, not a Nitro file route under `server/routes/api/`. The
+backend-contracts note about that directory describes a future
+backend route, not the scaffold's verified route mechanism.
+
+## Vault lifecycle, partially verified
+
+The framework credential vault API surface is verified from its
+type definitions: `saveCredential`, `resolveCredential`,
+`hasCredential`, and `deleteCredential` / `deleteResolvedCredential`,
+with user and org scopes, over an encrypted store. A live
+write → read → update-after-refresh → delete cycle inside the
+app context is not proven by unit tests, which mock the vault;
+it will be proven during the local OAuth round trip, not before.
+
 ## Not built yet
 
-- **HTTP callback route.** The scaffold's `server/routes/` currently
-  contains only the SSR handler, and backend contracts say OAuth
-  callbacks live under `server/routes/api/` only when the backend
-  implements them. That directory does not exist. No callback file
-  has been added on an assumed route-registration rule, because a
-  route that does not actually register would be a fake connection.
-  Callback wiring requires verifying how Nitro registers a route
-  in this scaffold, plus an exact registered HTTPS redirect URI.
+- **HTTP callback route.** See the route-registration section
+  above: it will be a React Router route with a server loader,
+  not a Nitro file route. It is not built yet, and the Connect
+  button stays backend-gated until it is.
+- **Connection metadata store.** See below.
 - **Connection metadata store.** Which user, which project,
   service, and region, and the connection status (not connected,
   connecting, connected, permission denied, reconnect required)
