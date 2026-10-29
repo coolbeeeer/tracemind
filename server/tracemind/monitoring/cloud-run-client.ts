@@ -70,5 +70,16 @@ export async function fetchCloudRunLogs(
     pageToken = body.nextPageToken;
     if (!pageToken) break;
   }
+  if (pageToken) {
+    // The page limit was reached while Cloud Logging still has more
+    // entries. Returning the partial set would present an incomplete
+    // collection as a success, and the polling checkpoint would then
+    // advance past logs that were never read. Fail instead, so the
+    // checkpoint stays where it was and the next poll retries the
+    // same window.
+    throw new Error(
+      "Cloud Logging pagination truncated: more entries remain after the configured page limit",
+    );
+  }
   return events;
 }
