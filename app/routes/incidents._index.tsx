@@ -33,6 +33,10 @@ export default function IncidentsRoute() {
   const servicesQuery = useActionQuery("list-services", {});
 
   const incidents = incidentsQuery.data?.incidents ?? [];
+  // The list action returns demo:true for the labelled demo dataset and
+  // demo:false for real database rows. The banner must follow that flag,
+  // not assume demo mode, now that the action can serve live data.
+  const isDemo = incidentsQuery.data?.demo ?? true;
   const services = servicesQuery.data?.services ?? [];
   const serviceName = (serviceId: string) =>
     services.find((s) => s.id === serviceId)?.name ?? serviceId;
@@ -59,11 +63,25 @@ export default function IncidentsRoute() {
               detail view.
             </p>
           </div>
-          <DemoBadge />
+          {isDemo ? (
+            <DemoBadge />
+          ) : (
+            <span className="inline-flex items-center rounded-full border border-[#10B981]/30 bg-[#10B981]/15 px-2 py-0.5 text-[11px] font-medium text-[#34D399]">
+              Live
+            </span>
+          )}
         </div>
 
         <div className="mt-5">
-          <DemoBanner />
+          {isDemo ? (
+            <DemoBanner />
+          ) : (
+            <div className="rounded-xl border border-[#10B981]/30 bg-[#10B981]/10 px-4 py-3 text-sm text-[#34D399]">
+              Live data: these incidents come from the configured database,
+              not the demo dataset. Service names on this page are still
+              demo-backed until the service action is wired to live data.
+            </div>
+          )}
         </div>
 
         {incidentsQuery.error ?? servicesQuery.error ? (

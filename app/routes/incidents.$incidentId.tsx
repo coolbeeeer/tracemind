@@ -21,6 +21,9 @@ export default function IncidentDetailRoute() {
   const investigationsQuery = useActionQuery("list-investigations", {});
 
   const incident = incidentQuery.data?.incident ?? null;
+  // Same rule as the incidents list: the banner follows the action's
+  // demo flag, so a live incident is never labelled demo.
+  const isDemo = incidentQuery.data?.demo ?? true;
   const services = servicesQuery.data?.services ?? [];
   const investigations = investigationsQuery.data?.investigations ?? [];
   const investigation = investigations.find(
@@ -56,11 +59,24 @@ export default function IncidentDetailRoute() {
               </p>
             ) : null}
           </div>
-          <DemoBadge />
+          {isDemo ? (
+            <DemoBadge />
+          ) : (
+            <span className="inline-flex items-center rounded-full border border-[#10B981]/30 bg-[#10B981]/15 px-2 py-0.5 text-[11px] font-medium text-[#34D399]">
+              Live
+            </span>
+          )}
         </div>
 
         <div className="mt-5">
-          <DemoBanner />
+          {isDemo ? (
+            <DemoBanner />
+          ) : (
+            <div className="rounded-xl border border-[#10B981]/30 bg-[#10B981]/10 px-4 py-3 text-sm text-[#34D399]">
+              Live data: this incident comes from the configured database,
+              not the demo dataset.
+            </div>
+          )}
         </div>
 
         {error ? (
@@ -75,7 +91,7 @@ export default function IncidentDetailRoute() {
             <p className="text-sm">
               No incident with id{" "}
               <span className="font-mono">{incidentId}</span> exists in the
-              demo dataset.
+              {isDemo ? " demo dataset." : " database."}
             </p>
             <Link
               to="/incidents"
