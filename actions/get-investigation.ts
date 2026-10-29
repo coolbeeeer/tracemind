@@ -2,6 +2,7 @@ import { defineAction } from "@agent-native/core/action";
 import { z } from "zod";
 
 import { demoInvestigations } from "../shared/tracemind/demo-data.js";
+import { createInvestigationStore } from "../server/tracemind/investigation/investigation-store.js";
 import { investigationSchema } from "../shared/tracemind/schemas.js";
 
 /**
@@ -21,6 +22,11 @@ export default defineAction({
   }),
   http: { method: "GET" },
   run: async (args) => {
+    if (process.env.DATABASE_URL) {
+      const store = createInvestigationStore(process.env.DATABASE_URL);
+      try { return { investigation: await store.get(args.id), demo: false }; }
+      finally { await store.close(); }
+    }
     return {
       investigation:
         demoInvestigations.find(
