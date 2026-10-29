@@ -42,5 +42,8 @@ describe("Cloud Run monitoring cycle", () => {
     expect(records[0]?.incident.demo).toBe(false);
     expect(logs.every(log => log.incidentId === records[0]?.incident.id)).toBe(true);
     expect(logs[0]?.message).toContain("password=[REDACTED]");
+    expect(records[0]?.incident.title).not.toContain("abc123");
+    expect(records[0]?.incident.description).not.toContain("abc123");
+    expect(records[0]?.fingerprint).not.toContain("abc123");
   });
 });
