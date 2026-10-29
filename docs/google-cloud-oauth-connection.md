@@ -65,13 +65,49 @@ write → read → update-after-refresh → delete cycle inside the
 app context is not proven by unit tests, which mock the vault;
 it will be proven during the local OAuth round trip, not before.
 
+## Built after the primitives
+
+- **OAuth transaction and connection stores**
+  (`server/tracemind/integrations/oauth-stores.ts`,
+  `schema.sql`, added to the setup script): transactions store
+  only a SHA-256 state hash, an encrypted PKCE verifier
+  (AES-256-GCM, key from the vault, separate from the database),
+  the exact redirect URI, an expiry, and a consumed timestamp.
+  Claiming is a single atomic UPDATE that succeeds only for an
+  unconsumed, unexpired row, so a replayed callback cannot
+  exchange the code twice. Connection metadata stores user,
+  status, granted scopes, and chosen project/service/region, and
+  never a token.
+- **Vault token store** (`google-token-store.ts`): refresh token,
+  access token, and access-token expiry as user-scoped vault
+  entries, with delete for disconnect.
+- **Callback logic** (`google-callback.ts`, tested with fake
+  stores): validates state and provider error, claims the
+  transaction atomically, requires the session email to match
+  the transaction owner, exchanges the code, validates scope
+  and refresh-token availability, saves vault tokens and
+  metadata, and redirects to a fixed internal path with only a
+  generic result category. No code, token, or provider error
+  detail ever appears in a redirect URL. Exchange failures mark
+  the connection as permission-denied and return a generic
+  failure redirect.
+
 ## Not built yet
 
-- **HTTP callback route.** See the route-registration section
-  above: it will be a React Router route with a server loader,
-  not a Nitro file route. It is not built yet, and the Connect
-  button stays backend-gated until it is.
-- **Connection metadata store.** See below.
+- **React Router loader wiring for the callback.** The callback
+  logic deliberately does not resolve the authenticated session
+  itself: its caller must supply a verified session email, and
+  a missing or mismatched email is a rejection. How a React
+  Router server loader securely resolves that email from the
+  request in this scaffold is not yet verified, and guessing
+  cookie handling would be insecure. Until that resolution is
+  verified, no loader has been wired, and the Connect button
+  stays backend-gated.
+- **Connect button and Disconnect.** The button must start a
+  transaction (state, verifier, redirect URI, 10-minute expiry),
+  store it, and redirect to Google; Disconnect must delete
+  vault tokens and the connection record and stop polling for
+  that user. Neither is built yet.
 - **Connection metadata store.** Which user, which project,
   service, and region, and the connection status (not connected,
   connecting, connected, permission denied, reconnect required)
