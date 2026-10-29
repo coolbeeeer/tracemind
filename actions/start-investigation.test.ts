@@ -46,10 +46,28 @@ const completed = {
 };
 
 describe("start-investigation authorization", () => {
-  it("refuses unauthenticated callers", () => {
+  it("refuses unauthenticated callers and non-owners, and allows owners", () => {
+    vi.stubEnv("TRACEMIND_OWNER_EMAILS", "owner@example.com");
     expect(authorizeStartInvestigation({ incidentId: "INC-1" })).toBe(false);
     expect(authorizeStartInvestigation({ incidentId: "INC-1" }, {})).toBe(false);
+    expect(authorizeStartInvestigation({ incidentId: "INC-1" }, { userEmail: "other@example.com" } as never)).toBe(false);
     expect(authorizeStartInvestigation({ incidentId: "INC-1" }, { userEmail: "owner@example.com" } as never)).toBe(true);
+  });
+
+  it("fails closed when no owner allowlist is configured", () => {
+    vi.unstubAllEnvs();
+    expect(authorizeStartInvestigation({ incidentId: "INC-1" }, { userEmail: "owner@example.com" } as never)).toBe(false);
+    vi.stubEnv("TRACEMIND_OWNER_EMAILS", "owner@example.com");
+  });
+
+  it("refuses a different authenticated user without calling the model", async () => {
+    const result = await action.run(
+      { incidentId: "INC-1" },
+      { userEmail: "other@example.com", caller: "frontend" } as never,
+    ).catch((error: unknown) => error);
+    expect(result).toBeInstanceOf(Error);
+    expect((result as Error).message).toMatch(/Not authorized/);
+    expect(mocks.orchestrate).not.toHaveBeenCalled();
   });
 });
 
@@ -57,6 +75,7 @@ describe("start-investigation run", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.lockAcquired = true;
+    vi.stubEnv("TRACEMIND_OWNER_EMAILS", "owner@example.com");
     process.env.DATABASE_URL = "postgres://unused";
     mocks.getIncident.mockResolvedValue(incident);
     mocks.listForIncident.mockResolvedValue([]);

@@ -10,19 +10,47 @@ import { tryAcquireInvestigationLock } from "../server/tracemind/investigation/i
 import { investigateStoredIncident } from "../server/tracemind/investigation/investigate-stored-incident.js";
 
 /**
+ * Server-configured owner allowlist for the single-owner hackathon
+ * deployment. Set TRACEMIND_OWNER_EMAILS to the owner's email address
+ * (comma-separated if more than one owner). This is configuration,
+ * not a credential, and it is never read from caller input.
+ *
+ * This is explicitly a single-owner control, not a multi-tenant
+ * access model: it proves the caller is an owner, and run() then
+ * proves the incident is a live database row. It does not prove a
+ * per-incident ownership relationship, because incidents carry no
+ * owner or tenant field. A multi-tenant deployment must add that
+ * field and enforce it before using this action.
+ */
+export function ownerAllowlist(): string[] {
+  // guard:allow-env-credential — owner email allowlist is deployment configuration, not a credential; emails are identifiers, not secrets, and are never returned in output. Backend owner to review.
+  return (process.env.TRACEMIND_OWNER_EMAILS ?? "")
+    .split(",")
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+export function isOwner(userEmail?: string): boolean {
+  if (!userEmail) return false;
+  return ownerAllowlist().includes(userEmail.trim().toLowerCase());
+}
+
+/**
  * Authorization gate for the investigation trigger. An authenticated
- * identity alone is not enough: the gate only confirms a caller is
- * authenticated at all. Incident-level authorization happens in run():
- * the incident must exist in the configured database, must not be a
- * demo incident, and must not already have a completed investigation.
- * Without a database row, there is nothing to authorize against, so
- * the call is refused before any model call or credential use.
+ * identity alone is not enough: the caller must be an owner on the
+ * server-configured allowlist. If the allowlist is unset, nobody is
+ * authorized (fail closed). Incident-level authorization happens in
+ * run(): the incident must exist in the configured database, must
+ * not be a demo incident, and must not already have a completed
+ * investigation. Without a database row, there is nothing to
+ * authorize against, so the call is refused before any model call
+ * or credential use.
  */
 export function authorizeStartInvestigation(
   _args: { incidentId: string },
   ctx?: ActionRunContext,
 ): boolean {
-  return Boolean(ctx?.userEmail);
+  return isOwner(ctx?.userEmail);
 }
 
 /**
@@ -63,6 +91,11 @@ export default defineAction({
   authorize: authorizeStartInvestigation,
   needsApproval: true,
   run: async ({ incidentId }, ctx) => {
+    // Defense in depth: the framework enforces authorize() before
+    // run(), but run() must not trust that alone.
+    if (!isOwner(ctx?.userEmail)) {
+      throw new Error("Not authorized");
+    }
     const databaseUrl = process.env.DATABASE_URL;
     const openaiApiKey = ctx?.userEmail
       ? await resolveCredential("OPENAI_API_KEY", {
