@@ -1,4 +1,5 @@
 import { fetchCloudRunLogs } from "../server/tracemind/monitoring/cloud-run-client.js";
+import { redactMonitoringEvents } from "../server/tracemind/monitoring/redact-events.js";
 import { detectIncidents } from "../server/tracemind/monitoring/detect-incidents.js";
 import { getRuntimeGoogleAccessToken } from "../server/tracemind/integrations/google-metadata-token.js";
 import { getUserGoogleAccessToken } from "../server/tracemind/integrations/google-user-token.js";
@@ -32,9 +33,13 @@ async function main() {
   const accessToken = authMode === "user"
     ? await getUserGoogleAccessToken()
     : await getRuntimeGoogleAccessToken();
-  const events = await fetchCloudRunLogs({
+  const rawEvents = await fetchCloudRunLogs({
     projectId, serviceName, region, since, pageSize: 250, maxPages: 20,
   }, accessToken);
+  // Exactly the production pipeline: same client (which fails on
+  // pagination truncation instead of returning a partial set), same
+  // redaction, then the same detector. No separate approximation.
+  const events = redactMonitoringEvents(rawEvents);
   const errorEvents = events.filter(e => e.severity === "ERROR" || (e.httpStatus ?? 0) >= 500);
   const incidents = detectIncidents(events);
   console.log(JSON.stringify({
