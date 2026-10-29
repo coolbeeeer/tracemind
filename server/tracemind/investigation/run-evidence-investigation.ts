@@ -45,7 +45,10 @@ export async function runEvidenceInvestigation(input: {
   const evidenceIds = new Set(logs.map(log => log.id));
   const sources: Array<{ id: string; url: string; content: string }> = [];
   if (input.github) {
-    const source = await fetchGitHubSourceEvidence({ ...input.github, request: input.request });
+    const source = await fetchGitHubSourceEvidence({
+      ...input.github,
+      ...(input.request ? { request: input.request } : {}),
+    });
     const id = `github:${input.github.owner}/${input.github.repo}@${source.ref}:${source.path}`;
     evidenceIds.add(id);
     sources.push({ id, url: source.sourceUrl, content: source.content.slice(0, 12000) });
