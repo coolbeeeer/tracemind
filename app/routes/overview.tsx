@@ -1,3 +1,4 @@
+import { IconAlertTriangle, IconExclamationCircle, IconChartBar, IconServer } from "@tabler/icons-react";
 import {
   actionErrorMessage,
   useActionQuery,
@@ -29,7 +30,7 @@ function SkeletonBlock({ className = "" }: { className?: string }) {
   return (
     <div
       aria-label="Loading"
-      className={`animate-pulse rounded-2xl ${className}`}
+      className={`animate-pulse rounded-xl ${className}`}
       style={{ backgroundColor: redesign.panelBg }}
     />
   );
@@ -169,16 +170,6 @@ export default function OverviewRoute() {
   const serviceName = (serviceId: string) =>
     services.find((s) => s.id === serviceId)?.name ?? serviceId;
 
-  // Viewer-local time of day, so the greeting is never wrong the way a
-  // hardcoded "Good morning." is at 22:00.
-  const greetingHour = new Date().getHours();
-  const greeting =
-    greetingHour < 12
-      ? "Good morning."
-      : greetingHour < 18
-        ? "Good afternoon."
-        : "Good evening.";
-
   return (
     <main
       className="min-h-full"
@@ -188,16 +179,16 @@ export default function OverviewRoute() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              {greeting}
+              System overview
             </h1>
-            <p className="mt-1 text-sm text-[#8B96B0]">
-              Here&apos;s what&apos;s happening with your systems.
+            <p className="mt-1 text-sm text-[#969CA9]">
+              Health, incidents, and investigation activity across your workspace.
             </p>
           </div>
           {incidentsAreDemo ? (
             <DemoBadge />
           ) : (
-            <span className="inline-flex items-center rounded-full border border-[#10B981]/30 bg-[#10B981]/15 px-2 py-0.5 text-[11px] font-medium text-[#34D399]">
+            <span className="inline-flex items-center rounded-full border border-[#5B8DEF]/30 bg-[#5B8DEF]/15 px-2 py-0.5 text-[11px] font-medium text-[#8AACF4]">
               Live incidents · demo services
             </span>
           )}
@@ -210,7 +201,7 @@ export default function OverviewRoute() {
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search incidents…"
             aria-label="Search incidents"
-            className="min-w-0 flex-1 rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#3B82F6] sm:max-w-sm"
+            className="min-w-0 flex-1 rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#5B8DEF] sm:max-w-sm"
             style={inputStyle}
           />
           <select
@@ -219,7 +210,7 @@ export default function OverviewRoute() {
               setTimeRange(event.target.value as "24h" | "7d" | "all")
             }
             aria-label="Time range"
-            className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
+            className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#5B8DEF]"
             style={inputStyle}
           >
             <option value="24h">Last 24 hours</option>
@@ -232,7 +223,7 @@ export default function OverviewRoute() {
           {incidentsAreDemo ? (
             <DemoBanner />
           ) : (
-            <div className="rounded-xl border border-[#10B981]/30 bg-[#10B981]/10 px-4 py-3 text-sm text-[#34D399]">
+            <div className="rounded-xl border border-[#5B8DEF]/30 bg-[#5B8DEF]/10 px-4 py-3 text-sm text-[#8AACF4]">
               Mixed data: incidents on this page come from the
               configured database, while services, health, deployments,
               and investigations here are still demo data.
@@ -263,28 +254,28 @@ export default function OverviewRoute() {
                 label="Active incidents"
                 value={String(stats.active)}
                 sub={`${stats.critical} critical, ${stats.warning} warning`}
-                icon="◉"
+                icon={<IconAlertTriangle className="size-5" />}
                 accent={redesign.red}
               />
               <StatCard
                 label="Critical incidents"
                 value={String(stats.critical)}
                 sub="Requires immediate attention"
-                icon="⚠"
+                icon={<IconExclamationCircle className="size-5" />}
                 accent={redesign.amber}
               />
               <StatCard
-                label="Errors in window"
+                label="Service errors"
                 value={String(stats.errors)}
                 sub="Sum across services"
-                icon="▦"
+                icon={<IconChartBar className="size-5" />}
                 accent={redesign.blue}
               />
               <StatCard
                 label="Services monitored"
                 value={String(stats.total)}
                 sub={`${stats.healthy} healthy`}
-                icon="⬢"
+                icon={<IconServer className="size-5" />}
                 accent={redesign.violet}
               />
             </section>
@@ -301,7 +292,7 @@ export default function OverviewRoute() {
                     label="Error rate trend for payments-api"
                   />
                 </div>
-                <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-xs text-[#8B96B0]">
+                <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-xs text-[#969CA9]">
                   {health.map((point) => (
                     <span key={point.timestamp}>
                       {formatTime(point.timestamp)}: {point.errorRate.toFixed(1)}%
@@ -325,7 +316,7 @@ export default function OverviewRoute() {
 
             <section className="mt-4 grid gap-4 lg:grid-cols-3">
               <Panel label="Needs attention">
-                <PanelTitle action={<Link to="/incidents" className="inline-block py-1 hover:text-[#3B82F6]">View all →</Link>}>
+                <PanelTitle action={<Link to="/incidents" className="inline-block py-1 hover:text-[#5B8DEF]">View all →</Link>}>
                   Needs attention
                 </PanelTitle>
                 <ul className="mt-4 space-y-3">
@@ -333,14 +324,14 @@ export default function OverviewRoute() {
                     <li key={incident.id}>
                       <Link
                         to={`/incidents/${incident.id}`}
-                        className="flex items-start gap-3 hover:text-[#3B82F6]"
+                        className="flex items-start gap-3 hover:text-[#5B8DEF]"
                       >
                         <SeverityBadge severity={incident.severity} />
                         <span className="min-w-0">
                           <span className="block truncate text-sm font-medium">
                             {incident.title}
                           </span>
-                          <span className="block text-xs text-[#8B96B0]">
+                          <span className="block text-xs text-[#969CA9]">
                             {serviceName(incident.serviceId)} · {incident.status} · {formatDateTime(incident.detectedAt)}
                           </span>
                         </span>
@@ -348,13 +339,13 @@ export default function OverviewRoute() {
                     </li>
                   ))}
                   {needsAttention.length === 0 ? (
-                    <li className="text-sm text-[#8B96B0]">Nothing needs attention.</li>
+                    <li className="text-sm text-[#969CA9]">Nothing needs attention.</li>
                   ) : null}
                 </ul>
               </Panel>
 
               <Panel label="Service health">
-                <PanelTitle action={<Link to="/services" className="inline-block py-1 hover:text-[#3B82F6]">View all →</Link>}>
+                <PanelTitle action={<Link to="/services" className="inline-block py-1 hover:text-[#5B8DEF]">View all →</Link>}>
                   Service health
                 </PanelTitle>
                 <ul className="mt-4 space-y-3">
@@ -364,7 +355,7 @@ export default function OverviewRoute() {
                         <StatusDot status={service.status} />
                         <span className="truncate">{service.name}</span>
                       </span>
-                      <span className="shrink-0 text-xs capitalize text-[#8B96B0]">
+                      <span className="shrink-0 text-xs capitalize text-[#969CA9]">
                         {service.status} · {service.errorCount} errors
                       </span>
                     </li>
@@ -378,13 +369,13 @@ export default function OverviewRoute() {
                   {recentActivity.map((item) => (
                     <li key={item.key} className="text-sm">
                       <p className="font-medium">{item.text}</p>
-                      <p className="truncate text-xs text-[#8B96B0]">
+                      <p className="truncate text-xs text-[#969CA9]">
                         {item.detail} · {formatDateTime(item.time)}
                       </p>
                     </li>
                   ))}
                   {recentActivity.length === 0 ? (
-                    <li className="text-sm text-[#8B96B0]">No recent activity.</li>
+                    <li className="text-sm text-[#969CA9]">No recent activity.</li>
                   ) : null}
                 </ul>
               </Panel>
@@ -392,34 +383,34 @@ export default function OverviewRoute() {
 
             <section className="mt-4 grid gap-4 lg:grid-cols-3">
               <Panel label="Recent incidents" className="lg:col-span-2">
-                <PanelTitle action={<Link to="/incidents" className="inline-block py-1 hover:text-[#3B82F6]">View all →</Link>}>
+                <PanelTitle action={<Link to="/incidents" className="inline-block py-1 hover:text-[#5B8DEF]">View all →</Link>}>
                   Recent incidents{" "}
                   {incidentsAreDemo ? (
                     <DemoBadge />
                   ) : (
-                    <span className="inline-flex items-center rounded-full border border-[#10B981]/30 bg-[#10B981]/15 px-2 py-0.5 text-[11px] font-medium text-[#34D399]">
+                    <span className="inline-flex items-center rounded-full border border-[#5B8DEF]/30 bg-[#5B8DEF]/15 px-2 py-0.5 text-[11px] font-medium text-[#8AACF4]">
                       Live
                     </span>
                   )}
                 </PanelTitle>
                 {searchedIncidents.length === 0 && allIncidents.length > 0 ? (
-                  <p className="mt-3 text-sm text-[#8B96B0]">
+                  <p className="mt-3 text-sm text-[#969CA9]">
                     No incidents in this time window. Try All time to see
                     older incidents.
                   </p>
                 ) : null}
-                <ul className="mt-3 divide-y divide-[#1E2A44]">
+                <ul className="mt-3 divide-y divide-[#2B2E36]">
                   {searchedIncidents.map((incident) => (
                     <li key={incident.id} className="flex flex-wrap items-start gap-3 py-3 first:pt-0 last:pb-0">
                       <SeverityBadge severity={incident.severity} />
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-medium">
-                          <span className="font-mono text-xs text-[#8B96B0]">{incident.id}</span>{" "}
-                          <Link to={`/incidents/${incident.id}`} className="hover:text-[#3B82F6]">
+                          <span className="font-mono text-xs text-[#969CA9]">{incident.id}</span>{" "}
+                          <Link to={`/incidents/${incident.id}`} className="hover:text-[#5B8DEF]">
                             {incident.title}
                           </Link>
                         </p>
-                        <p className="mt-0.5 text-xs text-[#8B96B0]">
+                        <p className="mt-0.5 text-xs text-[#969CA9]">
                           {serviceName(incident.serviceId)} · {incident.status} · investigation{" "}
                           {incident.investigationStatus} · {formatDateTime(incident.detectedAt)}
                         </p>
@@ -427,7 +418,7 @@ export default function OverviewRoute() {
                     </li>
                   ))}
                   {searchedIncidents.length === 0 ? (
-                    <li className="py-3 text-sm text-[#8B96B0]">
+                    <li className="py-3 text-sm text-[#969CA9]">
                       No incidents match this search and time range.
                     </li>
                   ) : null}
@@ -441,9 +432,9 @@ export default function OverviewRoute() {
                     <li key={deployment.id} className="flex items-baseline justify-between gap-3">
                       <span>
                         <span className="font-medium">{serviceName(deployment.serviceId)}</span>{" "}
-                        <span className="font-mono text-xs text-[#8B96B0]">{deployment.version}</span>
+                        <span className="font-mono text-xs text-[#969CA9]">{deployment.version}</span>
                       </span>
-                      <span className="shrink-0 text-xs text-[#8B96B0]">
+                      <span className="shrink-0 text-xs text-[#969CA9]">
                         {formatDateTime(deployment.deployedAt)}
                       </span>
                     </li>

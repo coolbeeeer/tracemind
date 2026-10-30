@@ -13,9 +13,9 @@ export function meta() {
 }
 
 const statusStyles: Record<Integration["status"], string> = {
-  connected: "bg-[#10B981]/15 text-[#34D399] border-[#10B981]/30",
+  connected: "bg-[#5B8DEF]/15 text-[#8AACF4] border-[#5B8DEF]/30",
   "not-connected": "bg-[#EF4444]/15 text-[#F87171] border-[#EF4444]/30",
-  "coming-soon": "bg-white/5 text-[#8B96B0] border-white/10",
+  "coming-soon": "bg-white/5 text-[#969CA9] border-white/10",
 };
 
 const statusLabel: Record<Integration["status"], string> = {
@@ -71,17 +71,17 @@ export default function IntegrationsRoute() {
   ).length;
 
   return (
-    <main className="min-h-full bg-[#070B16] text-[#E8EDF7]">
+    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#60A5FA]">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#8AACF4]">
               Integrations
             </p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
               Integrations
             </h1>
-            <p className="mt-1 text-sm text-[#8B96B0]">
+            <p className="mt-1 text-sm text-[#969CA9]">
               Google Cloud connects from this page through Google
               sign-in. The provider cards below are demo data and do
               not reflect that connection.
@@ -92,7 +92,7 @@ export default function IntegrationsRoute() {
           </span>
         </div>
 
-        <div className="mt-5 rounded-2xl border border-[#F59E0B]/30 bg-[#F59E0B]/10 px-4 py-3 text-sm text-[#E8EDF7]">
+        <div className="mt-5 rounded-xl border border-[#F59E0B]/30 bg-[#F59E0B]/10 px-4 py-3 text-sm text-[#ECEEF2]">
           Demo data: the provider cards below are synthetic. They do
           not show whether Google Cloud is actually connected; the
           connection result appears as a banner at the top of this
@@ -100,29 +100,29 @@ export default function IntegrationsRoute() {
         </div>
 
         {googleResult === "connected" ? (
-          <div className="mt-5 rounded-2xl border border-[#10B981]/30 bg-[#10B981]/10 px-4 py-3 text-sm text-[#34D399]">
+          <div className="mt-5 rounded-xl border border-[#5B8DEF]/30 bg-[#5B8DEF]/10 px-4 py-3 text-sm text-[#8AACF4]">
             Google Cloud connected. Log-read access was granted through Google sign-in.
           </div>
         ) : googleResult === "denied" ? (
-          <div className="mt-5 rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
+          <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
             Google Cloud connection was not granted. You can try connecting again.
           </div>
         ) : googleResult === "failed" ? (
-          <div className="mt-5 rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
+          <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
             Google Cloud connection could not be completed. Please try again.
           </div>
         ) : googleResult === "disconnected" ? (
-          <div className="mt-5 rounded-2xl border border-[#1E2A44] bg-white/5 px-4 py-3 text-sm text-[#8B96B0]">
+          <div className="mt-5 rounded-xl border border-[#2B2E36] bg-white/5 px-4 py-3 text-sm text-[#969CA9]">
             Google Cloud disconnected. Its stored tokens and connection record were removed.
           </div>
         ) : null}
 
         <section
           aria-label="Connect Google Cloud"
-          className="mt-6 rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4"
+          className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4"
         >
           <h2 className="text-sm font-semibold">Connect Google Cloud</h2>
-          <p className="mt-2 text-sm leading-relaxed text-[#8B96B0]">
+          <p className="mt-2 text-sm leading-relaxed text-[#969CA9]">
             Sign in with Google and grant read-only access to Cloud
             Logging. TraceMind reads only logs you can already read;
             it does not deploy, modify, or delete anything, and it
@@ -132,7 +132,7 @@ export default function IntegrationsRoute() {
             type="button"
             disabled={connectMutation.isPending}
             onClick={() => connectMutation.mutate({})}
-            className="mt-4 rounded-lg border border-[#3B82F6]/40 bg-[#3B82F6]/10 px-3 py-2 text-sm text-[#60A5FA] hover:bg-[#3B82F6]/20 disabled:opacity-50"
+            className="mt-4 rounded-lg border border-[#5B8DEF]/40 bg-[#5B8DEF]/10 px-3 py-2 text-sm text-[#8AACF4] hover:bg-[#5B8DEF]/20 disabled:opacity-50"
           >
             {connectMutation.isPending ? "Connecting…" : "Connect Google Cloud"}
           </button>
@@ -146,7 +146,7 @@ export default function IntegrationsRoute() {
             type="button"
             disabled={disconnectMutation.isPending}
             onClick={() => disconnectMutation.mutate({})}
-            className="mt-3 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-[#8B96B0] hover:bg-white/10 disabled:opacity-50"
+            className="mt-3 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-[#969CA9] hover:bg-white/10 disabled:opacity-50"
           >
             {disconnectMutation.isPending ? "Disconnecting…" : "Disconnect Google Cloud"}
           </button>
@@ -160,7 +160,7 @@ export default function IntegrationsRoute() {
 
         <section
           aria-label="Set up Google Cloud"
-          className="mt-6 rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4"
+          className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4"
         >
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-sm font-semibold">Set up Google Cloud</h2>
@@ -168,7 +168,7 @@ export default function IntegrationsRoute() {
               Not connected
             </span>
           </div>
-          <p className="mt-2 text-sm leading-relaxed text-[#8B96B0]">
+          <p className="mt-2 text-sm leading-relaxed text-[#969CA9]">
             This prepares an administrator-reviewed, keyless setup plan. It
             does not connect anything, grant permissions, start OAuth, or
             store any credential. Monitoring stays off until the backend
@@ -199,11 +199,11 @@ export default function IntegrationsRoute() {
               onChange={(event) => setProjectIdInput(event.target.value)}
               placeholder="e.g. elantra-gameolive"
               autoComplete="off"
-              className="rounded-lg border border-[#1E2A44] bg-[#070B16] px-3 py-2 text-sm text-[#E8EDF7] outline-none focus:border-[#3B82F6]"
+              className="rounded-lg border border-[#2B2E36] bg-[#101114] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]"
             />
             <button
               type="submit"
-              className="rounded-lg border border-[#3B82F6]/40 bg-[#3B82F6]/10 px-3 py-2 text-sm text-[#60A5FA] hover:bg-[#3B82F6]/20"
+              className="rounded-lg border border-[#5B8DEF]/40 bg-[#5B8DEF]/10 px-3 py-2 text-sm text-[#8AACF4] hover:bg-[#5B8DEF]/20"
             >
               Prepare setup plan
             </button>
@@ -218,7 +218,7 @@ export default function IntegrationsRoute() {
             </p>
           ) : null}
           {gcpPlanQuery.isPending && submittedProjectId ? (
-            <p className="mt-3 text-sm text-[#8B96B0]">Preparing the setup plan…</p>
+            <p className="mt-3 text-sm text-[#969CA9]">Preparing the setup plan…</p>
           ) : null}
           {gcpPlan ? (
             <div className="mt-4 space-y-4">
@@ -249,7 +249,7 @@ export default function IntegrationsRoute() {
                             setCopiedCommand(null);
                           }
                         }}
-                        className="shrink-0 rounded-lg border border-[#1E2A44] px-2 py-1 text-xs text-[#E8EDF7] hover:border-[#3B82F6]/40"
+                        className="shrink-0 rounded-lg border border-[#2B2E36] px-2 py-1 text-xs text-[#ECEEF2] hover:border-[#5B8DEF]/40"
                       >
                         {copiedCommand === index ? "Copied" : "Copy"}
                       </button>
@@ -259,13 +259,13 @@ export default function IntegrationsRoute() {
               </div>
               <div>
                 <h3 className="text-sm font-semibold">Next steps</h3>
-                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[#8B96B0]">
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[#969CA9]">
                   {gcpPlan.nextSteps.map((step) => (
                     <li key={step}>{step}</li>
                   ))}
                 </ul>
               </div>
-              <p className="text-xs text-[#8B96B0]">
+              <p className="text-xs text-[#969CA9]">
                 Status remains Not connected. Do not create or upload
                 service-account JSON keys. Only a successful backend
                 verification can switch this to Connected.
@@ -276,10 +276,10 @@ export default function IntegrationsRoute() {
 
         <section
           aria-label="Run as yourself, without project administration"
-          className="mt-6 rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4"
+          className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4"
         >
           <h2 className="text-sm font-semibold">No project administration? Run as yourself</h2>
-          <p className="mt-2 text-sm leading-relaxed text-[#8B96B0]">
+          <p className="mt-2 text-sm leading-relaxed text-[#969CA9]">
             The setup plan above needs a project administrator, because
             granting a role at project level is an administrator-only
             operation. Most users do not have that access. The Connect
@@ -295,31 +295,31 @@ export default function IntegrationsRoute() {
         </section>
 
         {integrationsQuery.error ? (
-          <div className="mt-5 rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
+          <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
             {actionErrorMessage(integrationsQuery.error) ??
               "Could not load integrations. Please try again."}
           </div>
         ) : null}
 
         {integrationsQuery.isPending ? (
-          <div className="mt-5 animate-pulse rounded-xl bg-[#0E1526] h-64" aria-label="Loading" />
+          <div className="mt-5 animate-pulse rounded-xl bg-[#181A20] h-64" aria-label="Loading" />
         ) : (
           <>
             <section
               aria-label="Connection summary"
               className="mt-5 grid gap-4 sm:grid-cols-3"
             >
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-[#8B96B0]">Connected</p>
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Connected</p>
                 <p className="mt-2 text-3xl font-semibold">{connected}</p>
               </div>
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-[#8B96B0]">Disconnected</p>
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Disconnected</p>
                 <p className="mt-2 text-3xl font-semibold text-[#F87171]">{disconnected}</p>
               </div>
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-[#8B96B0]">Unavailable</p>
-                <p className="mt-2 text-3xl font-semibold text-[#8B96B0]">{unavailable}</p>
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Unavailable</p>
+                <p className="mt-2 text-3xl font-semibold text-[#969CA9]">{unavailable}</p>
               </div>
             </section>
 
@@ -329,7 +329,7 @@ export default function IntegrationsRoute() {
                 return (
                   <div
                     key={integration.id}
-                    className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4"
+                    className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <h2 className="text-sm font-semibold">{integration.label}</h2>
@@ -340,13 +340,13 @@ export default function IntegrationsRoute() {
                       </span>
                     </div>
                     {integration.note ? (
-                      <p className="mt-2 text-sm text-[#8B96B0]">{integration.note}</p>
+                      <p className="mt-2 text-sm text-[#969CA9]">{integration.note}</p>
                     ) : null}
                     <p className="mt-2 text-sm">
                       {integration.provider === "gcp-run" ? (
                         <>
                           Connection:{" "}
-                          <span className="text-[#8B96B0]">
+                          <span className="text-[#969CA9]">
                             managed in the Connect section above; this
                             card&apos;s status is demo data
                           </span>
@@ -354,7 +354,7 @@ export default function IntegrationsRoute() {
                       ) : (
                         <>
                           Last connection attempt:{" "}
-                          <span className="text-[#8B96B0]">
+                          <span className="text-[#969CA9]">
                             {integration.connectedAt
                               ? integration.connectedAt
                               : "Never attempted in demo mode"}
@@ -372,7 +372,7 @@ export default function IntegrationsRoute() {
                         }))
                       }
                       aria-expanded={isExpanded}
-                      className="mt-3 rounded-lg border border-[#1E2A44] px-3 py-2 text-sm text-[#E8EDF7] hover:border-[#3B82F6]/40"
+                      className="mt-3 rounded-lg border border-[#2B2E36] px-3 py-2 text-sm text-[#ECEEF2] hover:border-[#5B8DEF]/40"
                     >
                       {isExpanded
                         ? "Hide permission explanation"
@@ -386,7 +386,7 @@ export default function IntegrationsRoute() {
                     ) : null}
 
                     {integration.provider === "gcp-run" ? (
-                      <p className="mt-3 text-xs text-[#8B96B0]">
+                      <p className="mt-3 text-xs text-[#969CA9]">
                         Google Cloud connection starts from the Connect
                         section above. This card&apos;s status is demo
                         data and does not change after connecting.
@@ -397,11 +397,11 @@ export default function IntegrationsRoute() {
                           type="button"
                           disabled
                           title="No sign-in flow exists for this provider yet, so no connection can be started from here."
-                          className="cursor-not-allowed rounded-lg border border-[#1E2A44] px-3 py-2 text-sm text-[#8B96B0] opacity-60"
+                          className="cursor-not-allowed rounded-lg border border-[#2B2E36] px-3 py-2 text-sm text-[#969CA9] opacity-60"
                         >
                           Connect (not available)
                         </button>
-                        <span className="self-center text-xs text-[#8B96B0]">
+                        <span className="self-center text-xs text-[#969CA9]">
                           No sign-in flow exists for this provider yet.
                           It does not open a sign-in page or store any
                           credential.
@@ -413,9 +413,9 @@ export default function IntegrationsRoute() {
               })}
             </section>
 
-            <section className="mt-6 rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+            <section className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
               <h2 className="text-sm font-semibold">How errors will be shown</h2>
-              <p className="mt-2 text-sm leading-relaxed text-[#8B96B0]">
+              <p className="mt-2 text-sm leading-relaxed text-[#969CA9]">
                 A failed Google Cloud sign-in shows a banner at the top
                 of this page (not granted, or could not be completed),
                 and no error is invented beyond that. The provider cards

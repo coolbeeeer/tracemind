@@ -17,7 +17,7 @@ export function meta() {
 const levelStyles: Record<string, string> = {
   error: "border-[#EF4444]/30 bg-[#EF4444]/10 text-[#F87171]",
   warn: "border-[#F59E0B]/30 bg-[#F59E0B]/10 text-[#FBBF24]",
-  info: "border-[#3B82F6]/30 bg-[#3B82F6]/10 text-[#60A5FA]",
+  info: "border-[#5B8DEF]/30 bg-[#5B8DEF]/10 text-[#8AACF4]",
 };
 
 const inputStyle = {
@@ -84,7 +84,7 @@ export default function LogsRoute() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Logs</h1>
-            <p className="mt-1 text-sm text-[#8B96B0]">
+            <p className="mt-1 text-sm text-[#969CA9]">
               Log entries for one incident at a time. Pick an incident, then
               search and filter its logs.
             </p>
@@ -104,15 +104,15 @@ export default function LogsRoute() {
 
         {loading ? (
           <div
-            className="mt-5 h-64 animate-pulse rounded-2xl"
+            className="mt-5 h-64 animate-pulse rounded-xl"
             style={{ backgroundColor: redesign.panelBg }}
             aria-label="Loading"
           />
         ) : incidents.length === 0 ? (
           <Panel label="No incidents" className="mt-5">
-            <p className="text-sm text-[#8B96B0]">
+            <p className="text-sm text-[#969CA9]">
               No incidents exist yet, so there are no logs to show.{" "}
-              <Link to="/incidents" className="text-[#60A5FA] hover:underline">
+              <Link to="/incidents" className="text-[#8AACF4] hover:underline">
                 View incidents
               </Link>
             </p>
@@ -120,13 +120,13 @@ export default function LogsRoute() {
         ) : (
           <Panel label="Logs" className="mt-5">
             <div className="flex flex-wrap gap-3">
-              <label className="flex min-w-[200px] flex-1 flex-col gap-1 text-xs text-[#8B96B0]">
+              <label className="flex min-w-[200px] flex-1 flex-col gap-1 text-xs text-[#969CA9]">
                 Incident
                 <select
                   value={selectedIncidentId}
                   onChange={(event) => setIncidentId(event.target.value)}
                   aria-label="Select incident"
-                  className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
+                  className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#5B8DEF]"
                   style={inputStyle}
                 >
                   {incidents.map((incident) => (
@@ -142,14 +142,14 @@ export default function LogsRoute() {
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search logs…"
                 aria-label="Search logs"
-                className="min-w-[200px] flex-1 rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
+                className="min-w-[200px] flex-1 rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#5B8DEF]"
                 style={inputStyle}
               />
               <select
                 value={level}
                 onChange={(event) => setLevel(event.target.value as LevelFilter)}
                 aria-label="Filter by level"
-                className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
+                className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#5B8DEF]"
                 style={inputStyle}
               >
                 <option value="all">All levels</option>
@@ -161,7 +161,7 @@ export default function LogsRoute() {
                 value={serviceId}
                 onChange={(event) => setServiceId(event.target.value)}
                 aria-label="Filter by service"
-                className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
+                className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#5B8DEF]"
                 style={inputStyle}
               >
                 <option value="all">All services</option>
@@ -173,16 +173,16 @@ export default function LogsRoute() {
               </select>
             </div>
 
-            <p className="mt-3 text-xs text-[#8B96B0]">
+            <p className="mt-3 text-xs text-[#969CA9]">
               Showing {filteredLogs.length} of {logs.length} log entries
               {selectedIncident ? ` for ${selectedIncident.id}` : ""}.
             </p>
 
-            <ul className="mt-3 divide-y divide-[#1E2A44]">
+            <ul className="mt-3 divide-y divide-[#2B2E36]">
               {filteredLogs.map((log) => (
                 <li key={log.id} className="flex flex-col gap-1.5 py-3 first:pt-0 last:pb-0 sm:flex-row sm:flex-wrap sm:items-start sm:gap-3">
                   <span className="flex flex-wrap items-center gap-3">
-                    <span className="w-32 shrink-0 text-xs text-[#8B96B0]">
+                    <span className="w-32 shrink-0 text-xs text-[#969CA9]">
                       {formatDateTime(log.timestamp)}
                     </span>
                     <span
@@ -193,7 +193,7 @@ export default function LogsRoute() {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block text-sm break-words" title={log.message}>{log.message}</span>
-                    <span className="block text-xs break-all text-[#8B96B0]">
+                    <span className="block text-xs break-all text-[#969CA9]">
                       {serviceName(log.serviceId)}
                       {log.traceId ? ` · trace ${log.traceId}` : ""}
                     </span>
@@ -202,7 +202,7 @@ export default function LogsRoute() {
               ))}
             </ul>
             {filteredLogs.length === 0 ? (
-              <p className="mt-4 text-sm text-[#8B96B0]">
+              <p className="mt-4 text-sm text-[#969CA9]">
                 No log entries match these filters.
               </p>
             ) : null}

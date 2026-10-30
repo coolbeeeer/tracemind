@@ -12,14 +12,13 @@ import {
 } from "@agent-native/toolkit/app/chat/ownership-history";
 import { OrgSwitcher } from "@agent-native/toolkit/app/org";
 import { openCommandMenu } from "@agent-native/toolkit/app/shared";
-import { AgentNativeIcon } from "@agent-native/toolkit/app/shared/AgentNativeIcon";
 import {
+  IconTopologyStar3,
+  IconPlus,
   IconActivity,
   IconAlertTriangle,
   IconBrain,
   IconFileText,
-  IconEdit,
-  IconHome,
   IconLayoutDashboard,
   IconLayoutSidebarLeftCollapse,
   IconLayoutSidebarLeftExpand,
@@ -39,7 +38,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { APP_TITLE } from "@/lib/app-config";
-import { chatThreadPath, HOME_PATH, threadIdFromPath } from "@/lib/chat-paths";
+import { chatThreadPath, threadIdFromPath } from "@/lib/chat-paths";
 import { cn } from "@/lib/utils";
 
 const CHAT_STORAGE_KEY = "chat";
@@ -125,42 +124,6 @@ function persistActiveThreadId(threadId: string) {
   } catch {}
 }
 
-function HomeNavLink({ collapsed }: { collapsed: boolean }) {
-  const t = useT();
-  const location = useLocation();
-  const active = location.pathname === HOME_PATH;
-  const link = (
-    <Link
-      to={HOME_PATH}
-      aria-current={active ? "page" : undefined}
-      aria-label={collapsed ? t("navigation.home") : undefined}
-      className={cn(
-        "flex items-center text-sidebar-accent-foreground transition-colors hover:bg-sidebar-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-        active && "bg-sidebar-accent",
-        collapsed
-          ? "size-8 justify-center rounded-md"
-          : "h-8 w-full gap-3 rounded-lg px-3 text-sm font-medium",
-      )}
-    >
-      <IconHome className="size-4 shrink-0" strokeWidth={1.8} />
-      <span className={collapsed ? "sr-only" : "truncate"}>
-        {t("navigation.home")}
-      </span>
-    </Link>
-  );
-
-  if (collapsed) {
-    return (
-      <Tooltip>
-        <TooltipTrigger asChild>{link}</TooltipTrigger>
-        <TooltipContent side="right">{t("navigation.home")}</TooltipContent>
-      </Tooltip>
-    );
-  }
-
-  return <div className="px-2">{link}</div>;
-}
-
 function TraceMindNavLink({ collapsed }: { collapsed: boolean }) {
   const location = useLocation();
   const links = [
@@ -230,10 +193,11 @@ function TraceMindNavLink({ collapsed }: { collapsed: boolean }) {
       aria-label={collapsed ? link.tooltip : undefined}
       className={cn(
         "flex items-center text-sidebar-accent-foreground transition-colors hover:bg-sidebar-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-        link.active && "bg-sidebar-accent",
+        link.active &&
+          "bg-sidebar-accent text-primary border-l-2 border-primary",
         collapsed
           ? "size-8 justify-center rounded-md"
-          : "h-8 w-full gap-3 rounded-lg px-3 text-sm font-medium",
+          : "h-10 w-full gap-3 rounded-lg px-3 text-[13px] font-medium",
       )}
     >
       <link.Icon className="size-4 shrink-0" strokeWidth={1.8} />
@@ -256,8 +220,8 @@ function TraceMindNavLink({ collapsed }: { collapsed: boolean }) {
 
   return (
     <div className="px-2">
-      <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wide text-sidebar-foreground">
-        TraceMind
+      <p className="px-3 pb-3 pt-3 text-[10px] font-medium uppercase tracking-[0.15em] text-sidebar-foreground">
+        Workspace
       </p>
       {links.map(renderLink)}
     </div>
@@ -355,14 +319,14 @@ function ChatThreadsSection({ collapsed }: { collapsed: boolean }) {
       type="button"
       onClick={() => void handleNewChat()}
       className={cn(
-        "flex items-center text-sidebar-accent-foreground transition-colors hover:bg-sidebar-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+        "flex items-center text-primary transition-colors hover:bg-sidebar-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring border border-primary/50",
         collapsed
           ? "size-8 justify-center rounded-md"
-          : "h-8 w-full gap-3 rounded-lg px-3 text-sm font-medium",
+          : "h-10 w-full gap-3 rounded-lg px-3 text-[13px] font-medium",
       )}
       aria-label={collapsed ? t("chat.newChat") : undefined}
     >
-      <IconEdit className="size-4 shrink-0" strokeWidth={1.8} />
+      <IconPlus className="size-4 shrink-0" strokeWidth={1.8} />
       <span className={collapsed ? "sr-only" : "truncate"}>
         {t("chat.newChat")}
       </span>
@@ -379,8 +343,8 @@ function ChatThreadsSection({ collapsed }: { collapsed: boolean }) {
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <div className="px-2 pb-3">{newChatButton}</div>
+    <div className="flex min-h-0 flex-1 flex-col border-t border-sidebar-border mt-4 pt-4">
+      <div className="px-3 pb-4">{newChatButton}</div>
       <OwnershipChatHistoryRail
         {...history}
         onNewChat={() => void handleNewChat()}
@@ -408,7 +372,7 @@ function ChatThreadsSection({ collapsed }: { collapsed: boolean }) {
         railLabels={{
           newChat: t("chat.newChat"),
         }}
-        className="chat-sidebar-history min-h-0 flex-1"
+        className="chat-sidebar-history min-h-0 flex-1 overflow-y-auto"
         listClassName="pb-4"
       />
     </div>
@@ -485,9 +449,9 @@ export function Sidebar({
                 aria-label={APP_TITLE}
                 className="flex size-8 items-center justify-center rounded outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
               >
-                <AgentNativeIcon
+                <IconTopologyStar3
                   aria-hidden="true"
-                  className="h-3.5 w-6 text-sidebar-accent-foreground"
+                  className="size-6 text-primary"
                 />
               </Link>
             </TooltipTrigger>
@@ -499,12 +463,12 @@ export function Sidebar({
               to="/"
               className="flex min-w-0 flex-1 items-center gap-3 rounded outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
             >
-              <AgentNativeIcon
+              <IconTopologyStar3
                 aria-hidden="true"
-                className="h-3.5 w-6 shrink-0 text-sidebar-accent-foreground"
+                className="size-6 shrink-0 text-primary"
               />
               <span className="truncate text-sm font-semibold text-sidebar-accent-foreground">
-                {APP_TITLE}
+                TraceMind
               </span>
             </Link>
           </>
@@ -518,7 +482,6 @@ export function Sidebar({
           collapsed ? "items-center gap-1 px-1 py-2" : "pt-1",
         )}
       >
-        <HomeNavLink collapsed={collapsed} />
         <TraceMindNavLink collapsed={collapsed} />
         <ChatThreadsSection collapsed={collapsed} />
       </nav>

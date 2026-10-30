@@ -2,12 +2,10 @@ import { DemoBadge } from "./badges";
 
 export function DemoBanner() {
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[#F59E0B]/30 bg-[#F59E0B]/10 px-4 py-3">
+    <div className="flex flex-wrap items-center gap-2 rounded-lg border border-border bg-card px-3 py-2">
       <DemoBadge />
-      <p className="text-sm text-[#E6EAF2]">
-        Demo mode: every service, incident, and investigation on this page is
-        synthetic data. No live cloud account is connected, and no result
-        here is a real investigation.
+      <p className="text-xs leading-relaxed text-muted-foreground">
+        Sample data for this view. These records are not live monitoring or real investigations.
       </p>
     </div>
   );
@@ -25,17 +23,17 @@ export function StatCard({
   accent?: string;
 }) {
   return (
-    <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
-      <p className="text-xs font-medium uppercase tracking-wide text-[#8B96B0]">
+    <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+      <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">
         {label}
       </p>
       <p
-        className="mt-2 text-3xl font-semibold tracking-tight text-[#E8EDF7]"
+        className="mt-2 text-3xl font-semibold tracking-tight text-[#ECEEF2]"
         style={accent ? { color: accent } : undefined}
       >
         {value}
       </p>
-      {sub ? <p className="mt-1 text-xs text-[#8B96B0]">{sub}</p> : null}
+      {sub ? <p className="mt-1 text-xs text-[#969CA9]">{sub}</p> : null}
     </div>
   );
 }
@@ -48,7 +46,7 @@ export function StatCard({
  */
 export function Sparkline({
   values,
-  stroke = "#10B981",
+  stroke = "#5B8DEF",
   label,
 }: {
   values: number[];
@@ -65,7 +63,7 @@ export function Sparkline({
         viewBox={`0 0 ${width} ${height}`}
         className="h-14 w-full"
       >
-        <line x1="0" y1={height / 2} x2={width} y2={height / 2} stroke="#1E2430" strokeWidth="2" />
+        <line x1="0" y1={height / 2} x2={width} y2={height / 2} stroke="#2B2E36" strokeWidth="2" />
       </svg>
     );
   }

@@ -55,11 +55,11 @@ export default function GoogleCallbackRoute() {
   }, []);
 
   return (
-    <main className="min-h-full bg-[#0A0C10] text-[#E6EAF2]">
+    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <p className="text-sm text-[#8B94A7]">Completing your Google Cloud connection…</p>
+        <p className="text-sm text-[#969CA9]">Completing your Google Cloud connection…</p>
         <p className="mt-2 text-sm">
-          <Link className="text-[#10B981]" to="/integrations">Return to Integrations</Link>
+          <Link className="text-[#5B8DEF]" to="/integrations">Return to Integrations</Link>
         </p>
       </div>
     </main>

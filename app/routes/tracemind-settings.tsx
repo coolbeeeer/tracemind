@@ -12,7 +12,7 @@ export function meta() {
 }
 
 const inputClass =
-  "rounded-lg border border-[#1E2430] bg-[#0A0C10] px-3 py-2 text-sm text-[#E6EAF2] outline-none focus:border-[#10B981]";
+  "rounded-lg border border-[#2B2E36] bg-[#101114] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]";
 
 interface SettingsState {
   checkInterval: string;
@@ -45,7 +45,7 @@ function Toggle({
         type="checkbox"
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
-        className="size-4 accent-[#10B981]"
+        className="size-4 accent-[#5B8DEF]"
       />
     </label>
   );
@@ -93,17 +93,17 @@ export default function TraceMindSettingsRoute() {
   };
 
   return (
-    <main className="min-h-full bg-[#0A0C10] text-[#E6EAF2]">
+    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#10B981]">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#5B8DEF]">
               Settings
             </p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
               TraceMind settings
             </h1>
-            <p className="mt-1 text-sm text-[#8B94A7]">
+            <p className="mt-1 text-sm text-[#969CA9]">
               This page lives at /tracemind-settings, not /settings, because
               /settings is owned by the Agent-Native template.
             </p>
@@ -117,7 +117,7 @@ export default function TraceMindSettingsRoute() {
 
         <div className="mt-5 rounded-xl border border-[#F59E0B]/30 bg-[#F59E0B]/10 px-4 py-3">
           <p className="text-sm font-medium">Session-only settings</p>
-          <p className="mt-1 text-sm text-[#E6EAF2]">
+          <p className="mt-1 text-sm text-[#ECEEF2]">
             Every control on this page works in this session only. Nothing
             here is saved to a backend, and no change here affects live
             monitoring, notifications, or investigation safety until the
@@ -139,11 +139,11 @@ export default function TraceMindSettingsRoute() {
         ) : null}
 
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
-          <section className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+          <section className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
             <h2 className="text-sm font-semibold">Monitoring configuration</h2>
             <div className="mt-3 space-y-3 text-sm">
               <label className="block">
-                <span className="text-[#8B94A7]">Health check interval</span>
+                <span className="text-[#969CA9]">Health check interval</span>
                 <select
                   value={current.checkInterval}
                   onChange={(event) => set("checkInterval", event.target.value)}
@@ -156,7 +156,7 @@ export default function TraceMindSettingsRoute() {
                 </select>
               </label>
               <label className="block">
-                <span className="text-[#8B94A7]">
+                <span className="text-[#969CA9]">
                   Error-rate alert threshold (%)
                 </span>
                 <input
@@ -170,9 +170,9 @@ export default function TraceMindSettingsRoute() {
                 />
               </label>
               <div>
-                <p className="text-[#8B94A7]">Services monitored (session only)</p>
+                <p className="text-[#969CA9]">Services monitored (session only)</p>
                 {services.length === 0 ? (
-                  <p className="mt-2 text-sm text-[#8B94A7]">
+                  <p className="mt-2 text-sm text-[#969CA9]">
                     No services loaded yet.
                   </p>
                 ) : (
@@ -194,13 +194,13 @@ export default function TraceMindSettingsRoute() {
             </div>
           </section>
 
-          <section className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+          <section className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
             <h2 className="text-sm font-semibold">Notification preferences</h2>
-            <p className="mt-2 text-xs text-[#8B94A7]">
+            <p className="mt-2 text-xs text-[#969CA9]">
               No notification channel is connected in demo mode. Turning
               these on does not send any email, message, or webhook.
             </p>
-            <div className="mt-2 divide-y divide-[#1E2430]">
+            <div className="mt-2 divide-y divide-[#2B2E36]">
               <Toggle
                 checked={current.alertCritical}
                 onChange={(checked) => set("alertCritical", checked)}
@@ -228,7 +228,7 @@ export default function TraceMindSettingsRoute() {
               />
             </div>
             <label className="mt-3 block text-sm">
-              <span className="text-[#8B94A7]">Notification email (session only)</span>
+              <span className="text-[#969CA9]">Notification email (session only)</span>
               <input
                 type="email"
                 value={current.notificationEmail}
@@ -240,14 +240,14 @@ export default function TraceMindSettingsRoute() {
             </label>
           </section>
 
-          <section className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4 lg:col-span-2">
+          <section className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4 lg:col-span-2">
             <h2 className="text-sm font-semibold">Investigation safety controls</h2>
-            <p className="mt-2 text-xs text-[#8B94A7]">
+            <p className="mt-2 text-xs text-[#969CA9]">
               These toggles express intent only. Backend enforcement is
               required before any of them can actually constrain an agent,
               and no toggle here permits a fix to be applied on its own.
             </p>
-            <div className="mt-2 divide-y divide-[#1E2430] text-sm">
+            <div className="mt-2 divide-y divide-[#2B2E36] text-sm">
               <Toggle
                 checked={current.requireApproval}
                 onChange={(checked) => set("requireApproval", checked)}
@@ -267,7 +267,7 @@ export default function TraceMindSettingsRoute() {
             <button
               type="button"
               onClick={reset}
-              className="mt-4 rounded-lg border border-[#1E2430] px-3 py-2 text-sm text-[#8B94A7] hover:text-[#E6EAF2]"
+              className="mt-4 rounded-lg border border-[#2B2E36] px-3 py-2 text-sm text-[#969CA9] hover:text-[#ECEEF2]"
             >
               Reset to session defaults
             </button>

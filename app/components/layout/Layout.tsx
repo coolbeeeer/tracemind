@@ -32,6 +32,7 @@ import { TAB_ID } from "@/lib/tab-id";
 // AgentSidebar already lazy-loads its own panel.
 import { AgentInspector } from "./AgentInspector";
 import { MobileAppBar } from "./MobileAppBar";
+import { MobileNavigation } from "./MobileNavigation";
 import { Sidebar } from "./Sidebar";
 
 const Header = lazy(() =>
@@ -166,6 +167,7 @@ function LayoutShell({ children }: LayoutProps) {
       <main className="agent-native-app-main min-w-0 flex-1 overflow-y-auto overscroll-contain">
         {children}
       </main>
+      {!settingsOwnsChrome && !isChatRoute ? <MobileNavigation /> : null}
     </div>
   );
 
