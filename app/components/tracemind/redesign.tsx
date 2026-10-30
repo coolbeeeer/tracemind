@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 
-/** Shared graphite and blue palette. Charts render action data only. */
+/** Shared graphite and blue palette. Charts render action data only.
+ *  green keeps its semantic meaning (healthy / success) and must stay
+ *  visually distinct from the gray used for unknown states. */
 export const redesign = {
   pageBg: "#101114",
   panelBg: "#181A20",
@@ -13,7 +15,7 @@ export const redesign = {
   cyan: "#A4ADBF",
   red: "#EF4444",
   amber: "#F59E0B",
-  green: "#A4ADBF",
+  green: "#10B981",
 };
 
 export function Panel({

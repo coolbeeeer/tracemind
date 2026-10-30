@@ -18,7 +18,7 @@ export function SeverityBadge({ severity }: { severity: Severity }) {
 }
 
 const statusDot: Record<ServiceStatus, string> = {
-  healthy: "bg-[#A4ADBF]",
+  healthy: "bg-[#10B981]",
   degraded: "bg-[#F59E0B]",
   down: "bg-[#EF4444]",
   unknown: "bg-[#969CA9]",
