@@ -20,7 +20,7 @@ type LogLike = Omit<LogEntry, "traceId"> & {
 };
 
 const stepStyles: Record<AgentActionStatus, string> = {
-  pending: "bg-white/5 text-[#8B94A7] border-white/10",
+  pending: "bg-white/5 text-[#8B96B0] border-white/10",
   running: "bg-[#10B981]/15 text-[#34D399] border-[#10B981]/30",
   completed: "bg-[#10B981]/15 text-[#34D399] border-[#10B981]/30",
   failed: "bg-[#EF4444]/15 text-[#F87171] border-[#EF4444]/30",
@@ -39,7 +39,7 @@ export function StepStatusBadge({ status }: { status: AgentActionStatus }) {
 export function ToolTimeline({ steps }: { steps: StepLike[] }) {
   if (steps.length === 0) {
     return (
-      <p className="text-sm text-[#8B94A7]">
+      <p className="text-sm text-[#8B96B0]">
         No tool calls recorded for this investigation yet.
       </p>
     );
@@ -47,22 +47,22 @@ export function ToolTimeline({ steps }: { steps: StepLike[] }) {
   return (
     <ol className="space-y-4">
       {steps.map((step) => (
-        <li key={step.id} className="border-l-2 border-[#1E2430] pl-4">
+        <li key={step.id} className="border-l-2 border-[#1E2A44] pl-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-mono text-sm font-medium">{step.tool}</span>
             <StepStatusBadge status={step.status} />
-            <span className="text-xs text-[#8B94A7]">
+            <span className="text-xs text-[#8B96B0]">
               {formatDateTime(step.startedAt)}
               {step.completedAt ? ` → ${formatTime(step.completedAt)}` : ""}
             </span>
           </div>
-          <p className="mt-1 text-sm text-[#8B94A7]">{step.input}</p>
+          <p className="mt-1 text-sm text-[#8B96B0]">{step.input}</p>
           {step.output ? (
-            <p className="mt-1 rounded-lg bg-white/5 px-3 py-2 text-sm text-[#E6EAF2]">
+            <p className="mt-1 rounded-lg bg-white/5 px-3 py-2 text-sm text-[#E8EDF7]">
               {step.output}
             </p>
           ) : (
-            <p className="mt-1 text-xs text-[#8B94A7]">
+            <p className="mt-1 text-xs text-[#8B96B0]">
               No output recorded yet for this step.
             </p>
           )}
@@ -75,7 +75,7 @@ export function ToolTimeline({ steps }: { steps: StepLike[] }) {
 const levelStyles: Record<LogLike["level"], string> = {
   error: "bg-[#EF4444]/15 text-[#F87171] border-[#EF4444]/30",
   warn: "bg-[#F59E0B]/15 text-[#FBBF24] border-[#F59E0B]/30",
-  info: "bg-white/5 text-[#8B94A7] border-white/10",
+  info: "bg-white/5 text-[#8B96B0] border-white/10",
 };
 
 export function LogTimeline({
@@ -87,7 +87,7 @@ export function LogTimeline({
 }) {
   if (logs.length === 0) {
     return (
-      <p className="text-sm text-[#8B94A7]">
+      <p className="text-sm text-[#8B96B0]">
         No demo logs exist for this incident yet. Real Cloud Logging data
         will fill this timeline when the backend developer's ingestion
         lands; nothing here is fabricated to fill the gap.
@@ -103,7 +103,7 @@ export function LogTimeline({
         <li
           key={log.id}
           id={`log-${log.id}`}
-          className="scroll-mt-24 rounded-lg border border-[#1E2430] px-3 py-2"
+          className="scroll-mt-24 rounded-lg border border-[#1E2A44] px-3 py-2"
         >
           <div className="flex flex-wrap items-center gap-2">
             <span
@@ -111,14 +111,14 @@ export function LogTimeline({
             >
               {log.level}
             </span>
-            <span className="font-mono text-xs text-[#8B94A7]">
+            <span className="font-mono text-xs text-[#8B96B0]">
               {formatDateTime(log.timestamp)}
             </span>
-            <span className="text-xs text-[#8B94A7]">
+            <span className="text-xs text-[#8B96B0]">
               {serviceName(log.serviceId)}
             </span>
             {log.traceId ? (
-              <span className="font-mono text-xs text-[#8B94A7]">
+              <span className="font-mono text-xs text-[#8B96B0]">
                 {log.traceId}
               </span>
             ) : null}
@@ -138,10 +138,10 @@ export function LogTimeline({
 export function DiffViewer({ diff }: { diff: string }) {
   const lines = diff.split("\n");
   return (
-    <div className="overflow-x-auto rounded-lg border border-[#1E2430] bg-[#0A0C10]">
-      <div className="flex items-center gap-2 border-b border-[#1E2430] px-3 py-2">
+    <div className="overflow-x-auto rounded-lg border border-[#1E2A44] bg-[#070B16]">
+      <div className="flex items-center gap-2 border-b border-[#1E2A44] px-3 py-2">
         <DemoBadge />
-        <span className="text-xs text-[#8B94A7]">
+        <span className="text-xs text-[#8B96B0]">
           Demo diff — synthetic, not a real code inspection.
         </span>
       </div>
@@ -152,8 +152,8 @@ export function DiffViewer({ diff }: { diff: string }) {
             : line.startsWith("-") && !line.startsWith("---")
               ? "text-[#F87171]"
               : line.startsWith("@@")
-                ? "text-[#8B94A7]"
-                : "text-[#E6EAF2]";
+                ? "text-[#8B96B0]"
+                : "text-[#E8EDF7]";
           return (
             <div key={index} className={tone}>
               {line || " "}
