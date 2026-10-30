@@ -16,7 +16,7 @@ export function meta() {
 }
 
 const inputClass =
-  "rounded-lg border border-[#1E2430] bg-[#0A0C10] px-3 py-2 text-sm text-[#E6EAF2] outline-none focus:border-[#10B981]";
+  "rounded-lg border border-[#2B2E36] bg-[#101114] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]";
 
 interface ActivityEvent {
   id: string;
@@ -118,17 +118,17 @@ export default function AgentActivityRoute() {
     incidents.find((i) => i.id === incidentId)?.detectedAt;
 
   return (
-    <main className="min-h-full bg-[#0A0C10] text-[#E6EAF2]">
+    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#10B981]">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#5B8DEF]">
               Agent Activity
             </p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
               Agent Activity
             </h1>
-            <p className="mt-1 text-sm text-[#8B94A7]">
+            <p className="mt-1 text-sm text-[#969CA9]">
               Investigation runs and tool executions from the demo dataset.
               These are synthetic records, not live agent runs, and any
               future live runs will appear here in the same shape.
@@ -149,9 +149,9 @@ export default function AgentActivityRoute() {
         ) : null}
 
         {loading ? (
-          <div className="mt-5 animate-pulse rounded-xl bg-[#11141B] h-64" aria-label="Loading" />
+          <div className="mt-5 animate-pulse rounded-xl bg-[#181A20] h-64" aria-label="Loading" />
         ) : (
-          <section className="mt-6 rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+          <section className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
             <div className="flex flex-wrap gap-3">
               <input
                 type="search"
@@ -200,31 +200,31 @@ export default function AgentActivityRoute() {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="rounded-lg border border-[#1E2430] px-3 py-2 text-sm text-[#8B94A7] hover:text-[#E6EAF2]"
+                className="rounded-lg border border-[#2B2E36] px-3 py-2 text-sm text-[#969CA9] hover:text-[#ECEEF2]"
               >
                 Clear filters
               </button>
             </div>
 
-            <p className="mt-3 text-xs text-[#8B94A7]">
+            <p className="mt-3 text-xs text-[#969CA9]">
               Showing {filtered.length} of {events.length} activity events.
             </p>
 
             {events.length === 0 ? (
-              <div className="mt-4 rounded-xl border border-[#1E2430] px-4 py-6 text-center">
+              <div className="mt-4 rounded-xl border border-[#2B2E36] px-4 py-6 text-center">
                 <p className="text-sm">No investigation activity yet.</p>
-                <p className="mt-1 text-xs text-[#8B94A7]">
+                <p className="mt-1 text-xs text-[#969CA9]">
                   Activity will appear here once a real investigation runs;
                   nothing is fabricated to fill this empty state.
                 </p>
               </div>
             ) : filtered.length === 0 ? (
-              <div className="mt-4 rounded-xl border border-[#1E2430] px-4 py-6 text-center">
+              <div className="mt-4 rounded-xl border border-[#2B2E36] px-4 py-6 text-center">
                 <p className="text-sm">No activity matches these filters.</p>
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="mt-3 rounded-lg border border-[#10B981]/40 bg-[#10B981]/10 px-3 py-2 text-sm text-[#10B981]"
+                  className="mt-3 rounded-lg border border-[#5B8DEF]/40 bg-[#5B8DEF]/10 px-3 py-2 text-sm text-[#5B8DEF]"
                 >
                   Clear filters
                 </button>
@@ -234,12 +234,12 @@ export default function AgentActivityRoute() {
                 {filtered.map((event) => (
                   <li
                     key={event.id}
-                    className="rounded-lg border border-[#1E2430] px-3 py-3"
+                    className="rounded-lg border border-[#2B2E36] px-3 py-3"
                   >
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-mono text-sm font-medium">{event.tool}</span>
                       <StepStatusBadge status={event.status} />
-                      <span className="text-xs text-[#8B94A7]">
+                      <span className="text-xs text-[#969CA9]">
                         {formatDateTime(event.startedAt)}
                         {event.completedAt
                           ? ` → ${formatDateTime(event.completedAt)}`
@@ -247,17 +247,17 @@ export default function AgentActivityRoute() {
                       </span>
                       <Link
                         to={`/investigations/${event.investigationId}`}
-                        className="text-xs text-[#10B981] hover:underline"
+                        className="text-xs text-[#5B8DEF] hover:underline"
                       >
                         {event.investigationId} →
                       </Link>
                       {incidentDetectedAt(event.incidentId) ? (
-                        <span className="text-xs text-[#8B94A7]">
+                        <span className="text-xs text-[#969CA9]">
                           Incident detected {formatDateTime(incidentDetectedAt(event.incidentId) ?? "")}
                         </span>
                       ) : null}
                     </div>
-                    <p className="mt-1 text-sm text-[#8B94A7]">{event.input}</p>
+                    <p className="mt-1 text-sm text-[#969CA9]">{event.input}</p>
                     {event.output ? (
                       <p className="mt-1 rounded-lg bg-white/5 px-3 py-2 text-sm">
                         {event.output}

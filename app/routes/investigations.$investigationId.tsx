@@ -31,7 +31,7 @@ interface ConversationMessage {
 }
 
 const inputClass =
-  "w-full rounded-lg border border-[#1E2A44] bg-[#070B16] px-3 py-2 text-sm text-[#E8EDF7] outline-none focus:border-[#3B82F6]";
+  "w-full rounded-lg border border-[#2B2E36] bg-[#101114] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]";
 
 export default function InvestigationWorkspaceRoute() {
   const { investigationId } = useParams();
@@ -112,15 +112,15 @@ export default function InvestigationWorkspaceRoute() {
   };
 
   return (
-    <main className="min-h-full bg-[#070B16] text-[#E8EDF7]">
+    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
       <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8">
-        <Link to="/investigations" className="inline-block py-1 text-sm text-[#60A5FA] hover:underline">
+        <Link to="/investigations" className="inline-block py-1 text-sm text-[#8AACF4] hover:underline">
           ← Back to investigations
         </Link>
 
         <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#60A5FA]">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#8AACF4]">
               Investigation Workspace
             </p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -131,11 +131,11 @@ export default function InvestigationWorkspaceRoute() {
                     : "Investigation not found")}
             </h1>
             {incident ? (
-              <p className="mt-1 text-sm text-[#8B96B0]">
+              <p className="mt-1 text-sm text-[#969CA9]">
                 Incident{" "}
                 <Link
                   to={`/incidents/${incident.id}`}
-                  className="font-medium text-[#E8EDF7] hover:text-[#60A5FA]"
+                  className="font-medium text-[#ECEEF2] hover:text-[#8AACF4]"
                 >
                   {incident.id} · {incident.title}
                 </Link>
@@ -150,14 +150,14 @@ export default function InvestigationWorkspaceRoute() {
         </div>
 
         {error ? (
-          <div className="mt-5 rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
+          <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
             {actionErrorMessage(error) ??
               "Could not load this investigation. Please try again."}
           </div>
         ) : null}
 
         {!loading && !investigation ? (
-          <div className="mt-5 rounded-2xl border border-[#1E2A44] bg-[#0E1526] px-4 py-6">
+          <div className="mt-5 rounded-xl border border-[#2B2E36] bg-[#181A20] px-4 py-6">
             <p className="text-sm">
               No investigation with id{" "}
               <span className="font-mono">{investigationId}</span> exists in
@@ -165,7 +165,7 @@ export default function InvestigationWorkspaceRoute() {
             </p>
             <Link
               to="/investigations"
-              className="mt-3 inline-block rounded-lg border border-[#3B82F6]/40 bg-[#3B82F6]/10 px-3 py-2 text-sm text-[#60A5FA]"
+              className="mt-3 inline-block rounded-lg border border-[#5B8DEF]/40 bg-[#5B8DEF]/10 px-3 py-2 text-sm text-[#8AACF4]"
             >
               Back to investigations
             </Link>
@@ -176,22 +176,22 @@ export default function InvestigationWorkspaceRoute() {
           <div className="mt-6 grid gap-4 lg:grid-cols-12">
             {/* Left panel: incident, service, logs, error timeline, chart */}
             <section className="min-w-0 space-y-4 lg:col-span-3" aria-label="Incident details">
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
                 <h2 className="text-sm font-semibold">Incident details</h2>
                 <div className="mt-3 space-y-2 text-sm">
                   <p>
                     <SeverityBadge severity={incident.severity} />
                   </p>
                   <p>
-                    <span className="text-[#8B96B0]">Status: </span>
+                    <span className="text-[#969CA9]">Status: </span>
                     {incident.status}
                   </p>
                   <p>
-                    <span className="text-[#8B96B0]">Investigation: </span>
+                    <span className="text-[#969CA9]">Investigation: </span>
                     {incident.investigationStatus}
                   </p>
                   <p>
-                    <span className="text-[#8B96B0]">Detected: </span>
+                    <span className="text-[#969CA9]">Detected: </span>
                     {formatDateTime(incident.detectedAt)}
                   </p>
                 </div>
@@ -200,29 +200,29 @@ export default function InvestigationWorkspaceRoute() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
                 <h2 className="text-sm font-semibold">Affected service</h2>
                 {service ? (
                   <div className="mt-3 text-sm">
                     <Link
                       to={`/services/${service.id}`}
-                      className="font-medium hover:text-[#60A5FA]"
+                      className="font-medium hover:text-[#8AACF4]"
                     >
                       {service.name} →
                     </Link>
-                    <p className="mt-1 text-[#8B96B0]">
+                    <p className="mt-1 text-[#969CA9]">
                       {providerLabel(service.provider)} · {service.status} ·{" "}
                       {service.errorCount} errors
                     </p>
                   </div>
                 ) : (
-                  <p className="mt-3 font-mono text-sm text-[#8B96B0]">
+                  <p className="mt-3 font-mono text-sm text-[#969CA9]">
                     {incident.serviceId}
                   </p>
                 )}
                 {health.length > 0 ? (
                   <div className="mt-3">
-                    <p className="text-xs text-[#8B96B0]">
+                    <p className="text-xs text-[#969CA9]">
                       Error rate trend <DemoBadge />
                     </p>
                     <div className="mt-2">
@@ -232,19 +232,19 @@ export default function InvestigationWorkspaceRoute() {
                         label={`Error rate trend for ${serviceName(incident.serviceId)}`}
                       />
                     </div>
-                    <p className="mt-1 text-xs text-[#8B96B0]">
+                    <p className="mt-1 text-xs text-[#969CA9]">
                       {health.map((point) => point.errorRate.toFixed(1)).join("% → ")}%
                     </p>
                   </div>
                 ) : null}
               </div>
 
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
                 <h2 className="text-sm font-semibold">
                   Related errors ({errorLogs.length})
                 </h2>
                 {errorLogs.length === 0 ? (
-                  <p className="mt-3 text-sm text-[#8B96B0]">
+                  <p className="mt-3 text-sm text-[#969CA9]">
                     No error-level logs in this demo incident.
                   </p>
                 ) : (
@@ -253,7 +253,7 @@ export default function InvestigationWorkspaceRoute() {
                       <li key={log.id}>
                         <a
                           href={`#log-${log.id}`}
-                          className="hover:text-[#60A5FA]"
+                          className="hover:text-[#8AACF4]"
                         >
                           {formatTime(log.timestamp)} · {log.message}
                         </a>
@@ -263,7 +263,7 @@ export default function InvestigationWorkspaceRoute() {
                 )}
               </div>
 
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
                 <h2 className="text-sm font-semibold">Log timeline</h2>
                 <div className="mt-3">
                   <LogTimeline logs={logs} serviceName={serviceName} />
@@ -273,11 +273,11 @@ export default function InvestigationWorkspaceRoute() {
 
             {/* Center panel: progress, tools, hypotheses, evidence, fixes */}
             <section className="min-w-0 space-y-4 lg:col-span-6" aria-label="Investigation">
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
                 <h2 className="text-sm font-semibold">
                   AI investigation progress <DemoBadge />
                 </h2>
-                <p className="mt-1 text-xs text-[#8B96B0]">
+                <p className="mt-1 text-xs text-[#969CA9]">
                   Synthetic record only. No agent has executed these steps;
                   they are demo data shaped like a real investigation record.
                 </p>
@@ -286,26 +286,26 @@ export default function InvestigationWorkspaceRoute() {
                   <span className="text-sm">
                     {completedSteps} of {steps.length} steps completed ({progress}%)
                   </span>
-                  <span className="text-xs text-[#8B96B0]">
+                  <span className="text-xs text-[#969CA9]">
                     Started {formatDateTime(investigation.startedAt)}
                   </span>
                 </div>
-                <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#1E2A44]">
+                <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#2B2E36]">
                   <div
-                    className="h-full bg-[#3B82F6]"
+                    className="h-full bg-[#5B8DEF]"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
                 <h2 className="text-sm font-semibold">Tool execution timeline</h2>
                 <div className="mt-3">
                   <ToolTimeline steps={steps} />
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
                 <h2 className="text-sm font-semibold">Root-cause hypotheses</h2>
                 <div className="mt-3 space-y-4">
                   {investigation.hypotheses.map((hypothesis) => {
@@ -318,11 +318,11 @@ export default function InvestigationWorkspaceRoute() {
                     return (
                       <div
                         key={hypothesis.id}
-                        className="rounded-lg border border-[#1E2A44] p-3"
+                        className="rounded-lg border border-[#2B2E36] p-3"
                       >
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <p className="text-sm font-medium">{hypothesis.title}</p>
-                          <span className="text-sm font-semibold text-[#60A5FA]">
+                          <span className="text-sm font-semibold text-[#8AACF4]">
                             {hypothesis.confidence}% confidence
                           </span>
                         </div>
@@ -335,7 +335,7 @@ export default function InvestigationWorkspaceRoute() {
                             Treat this hypothesis as unproven.
                           </p>
                         ) : (
-                          <p className="mt-2 text-xs text-[#8B96B0]">
+                          <p className="mt-2 text-xs text-[#969CA9]">
                             Evidence linked below. Select a reference to jump
                             to that log entry.
                           </p>
@@ -345,13 +345,13 @@ export default function InvestigationWorkspaceRoute() {
                             <a
                               key={evidenceId}
                               href={`#log-${evidenceId}`}
-                              className="rounded-full border border-[#3B82F6]/40 bg-[#3B82F6]/10 px-2 py-0.5 font-mono text-xs text-[#60A5FA]"
+                              className="rounded-full border border-[#5B8DEF]/40 bg-[#5B8DEF]/10 px-2 py-0.5 font-mono text-xs text-[#8AACF4]"
                             >
                               {evidenceId}
                             </a>
                           ))}
                           {evidenceLogs.map((log) => (
-                            <p key={log.id} className="w-full text-sm text-[#8B96B0]">
+                            <p key={log.id} className="w-full text-sm text-[#969CA9]">
                               {log.message}
                             </p>
                           ))}
@@ -360,14 +360,14 @@ export default function InvestigationWorkspaceRoute() {
                     );
                   })}
                   {investigation.hypotheses.length === 0 ? (
-                    <p className="text-sm text-[#8B96B0]">
+                    <p className="text-sm text-[#969CA9]">
                       No hypotheses recorded yet.
                     </p>
                   ) : null}
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
                 <h2 className="text-sm font-semibold">Suggested fixes</h2>
                 <div className="mt-3 space-y-4">
                   {investigation.fixes.map((fix) => {
@@ -375,10 +375,10 @@ export default function InvestigationWorkspaceRoute() {
                     return (
                       <div
                         key={fix.id}
-                        className="rounded-lg border border-[#1E2A44] p-3"
+                        className="rounded-lg border border-[#2B2E36] p-3"
                       >
                         <p className="text-sm font-medium">{fix.title}</p>
-                        <p className="mt-1 text-sm leading-relaxed text-[#8B96B0]">
+                        <p className="mt-1 text-sm leading-relaxed text-[#969CA9]">
                           {fix.description}
                         </p>
                         {fix.diff ? (
@@ -386,12 +386,12 @@ export default function InvestigationWorkspaceRoute() {
                             <DiffViewer diff={fix.diff} />
                           </div>
                         ) : (
-                          <p className="mt-3 text-sm text-[#8B96B0]">
+                          <p className="mt-3 text-sm text-[#969CA9]">
                             No code diff was proposed for this fix in the demo
                             record. No source-code reference is available here.
                           </p>
                         )}
-                        <p className="mt-3 text-xs text-[#8B96B0]">
+                        <p className="mt-3 text-xs text-[#969CA9]">
                           Approval state:{" "}
                           {isApproved ? "approved (demo only)" : "not approved"}.
                           Approvals here are not persisted and apply no code
@@ -401,7 +401,7 @@ export default function InvestigationWorkspaceRoute() {
                     );
                   })}
                   {investigation.fixes.length === 0 ? (
-                    <p className="text-sm text-[#8B96B0]">
+                    <p className="text-sm text-[#969CA9]">
                       No fixes proposed yet.
                     </p>
                   ) : null}
@@ -411,11 +411,11 @@ export default function InvestigationWorkspaceRoute() {
 
             {/* Right panel: conversation, follow-ups, approvals */}
             <section className="min-w-0 space-y-4 lg:col-span-3" aria-label="Agent conversation and controls">
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
                 <h2 className="text-sm font-semibold">
                   Agent conversation <DemoBadge />
                 </h2>
-                <p className="mt-1 text-xs text-[#8B96B0]">
+                <p className="mt-1 text-xs text-[#969CA9]">
                   No live agent is connected in demo mode. Messages below are
                   session-only; the system replies explain that, rather than
                   pretending an agent answered.
@@ -426,11 +426,11 @@ export default function InvestigationWorkspaceRoute() {
                       key={index}
                       className={`rounded-lg px-3 py-2 text-sm ${
                         message.from === "user"
-                          ? "bg-[#3B82F6]/10 border border-[#3B82F6]/30"
-                          : "bg-white/5 border border-[#1E2A44]"
+                          ? "bg-[#5B8DEF]/10 border border-[#5B8DEF]/30"
+                          : "bg-white/5 border border-[#2B2E36]"
                       }`}
                     >
-                      <p className="text-xs font-medium text-[#8B96B0]">
+                      <p className="text-xs font-medium text-[#969CA9]">
                         {message.from === "user" ? "You" : "System (demo)"} ·{" "}
                         {message.time}
                       </p>
@@ -439,7 +439,7 @@ export default function InvestigationWorkspaceRoute() {
                   ))}
                 </ul>
                 <form onSubmit={submitFollowUp} className="mt-4 space-y-2">
-                  <label htmlFor="follow-up" className="text-xs font-medium text-[#8B96B0]">
+                  <label htmlFor="follow-up" className="text-xs font-medium text-[#969CA9]">
                     Follow-up investigation request
                   </label>
                   <textarea
@@ -452,20 +452,20 @@ export default function InvestigationWorkspaceRoute() {
                   />
                   <button
                     type="submit"
-                    className="w-full rounded-lg border border-[#3B82F6]/40 bg-[#3B82F6]/10 px-3 py-2 text-sm font-medium text-[#60A5FA]"
+                    className="w-full rounded-lg border border-[#5B8DEF]/40 bg-[#5B8DEF]/10 px-3 py-2 text-sm font-medium text-[#8AACF4]"
                   >
                     Send follow-up (demo)
                   </button>
-                  <p className="text-xs text-[#8B96B0]">
+                  <p className="text-xs text-[#969CA9]">
                     Sending records the request in this session only. It does
                     not start a real investigation.
                   </p>
                 </form>
               </div>
 
-              <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
                 <h2 className="text-sm font-semibold">Approval controls</h2>
-                <p className="mt-1 text-xs text-[#8B96B0]">
+                <p className="mt-1 text-xs text-[#969CA9]">
                   Demo only. Approvals are not persisted, and no fix is
                   executed, applied, or deployed from here. Real approvals
                   require the backend developer's approval endpoint.
@@ -487,8 +487,8 @@ export default function InvestigationWorkspaceRoute() {
                           aria-pressed={isApproved}
                           className={`shrink-0 rounded-lg border px-3 py-1.5 text-sm ${
                             isApproved
-                              ? "border-[#3B82F6]/40 bg-[#3B82F6]/10 text-[#60A5FA]"
-                              : "border-[#1E2A44] text-[#8B96B0]"
+                              ? "border-[#5B8DEF]/40 bg-[#5B8DEF]/10 text-[#8AACF4]"
+                              : "border-[#2B2E36] text-[#969CA9]"
                           }`}
                         >
                           {isApproved ? "Approved (demo)" : "Approve (demo)"}
@@ -497,7 +497,7 @@ export default function InvestigationWorkspaceRoute() {
                     );
                   })}
                   {investigation.fixes.length === 0 ? (
-                    <li className="text-sm text-[#8B96B0]">
+                    <li className="text-sm text-[#969CA9]">
                       No fixes to approve yet.
                     </li>
                   ) : null}

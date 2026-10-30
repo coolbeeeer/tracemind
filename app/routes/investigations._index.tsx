@@ -17,17 +17,17 @@ export default function InvestigationsRoute() {
   const investigations = investigationsQuery.data?.investigations ?? [];
 
   return (
-    <main className="min-h-full bg-[#070B16] text-[#E8EDF7]">
+    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#60A5FA]">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#8AACF4]">
               Investigations
             </p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
               Investigations
             </h1>
-            <p className="mt-1 text-sm text-[#8B96B0]">
+            <p className="mt-1 text-sm text-[#969CA9]">
               Demo investigation records only. No agent has run anything
               here yet; the workspace shows what a real investigation
               record will look like.
@@ -41,20 +41,20 @@ export default function InvestigationsRoute() {
         </div>
 
         {investigationsQuery.error ? (
-          <div className="mt-5 rounded-2xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
+          <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
             {actionErrorMessage(investigationsQuery.error) ??
               "Could not load investigations. Please try again."}
           </div>
         ) : null}
 
         {investigationsQuery.isPending ? (
-          <div className="mt-5 animate-pulse rounded-xl bg-[#0E1526] h-64" aria-label="Loading" />
+          <div className="mt-5 animate-pulse rounded-xl bg-[#181A20] h-64" aria-label="Loading" />
         ) : (
-          <section className="mt-6 rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+          <section className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[640px] text-left text-sm">
                 <thead>
-                  <tr className="text-xs text-[#8B96B0]">
+                  <tr className="text-xs text-[#969CA9]">
                     <th className="py-2 pr-3 font-medium">Investigation</th>
                     <th className="py-2 pr-3 font-medium">Incident</th>
                     <th className="py-2 pr-3 font-medium">Status</th>
@@ -64,11 +64,11 @@ export default function InvestigationsRoute() {
                 </thead>
                 <tbody>
                   {investigations.map((investigation) => (
-                    <tr key={investigation.id} className="border-t border-[#1E2A44]">
+                    <tr key={investigation.id} className="border-t border-[#2B2E36]">
                       <td className="py-2.5 pr-3">
                         <Link
                           to={`/investigations/${investigation.id}`}
-                          className="font-medium hover:text-[#60A5FA]"
+                          className="font-medium hover:text-[#8AACF4]"
                         >
                           {investigation.id}
                         </Link>
@@ -76,14 +76,14 @@ export default function InvestigationsRoute() {
                       <td className="py-2.5 pr-3">
                         <Link
                           to={`/incidents/${investigation.incidentId}`}
-                          className="hover:text-[#60A5FA]"
+                          className="hover:text-[#8AACF4]"
                         >
                           {investigation.incidentId}
                         </Link>
                       </td>
                       <td className="py-2.5 pr-3">{investigation.status}</td>
                       <td className="py-2.5 pr-3">{investigation.steps.length}</td>
-                      <td className="py-2.5 text-[#8B96B0]">
+                      <td className="py-2.5 text-[#969CA9]">
                         {formatDateTime(investigation.startedAt)}
                       </td>
                     </tr>
@@ -92,7 +92,7 @@ export default function InvestigationsRoute() {
               </table>
             </div>
             {investigations.length === 0 ? (
-              <p className="mt-4 text-sm text-[#8B96B0]">
+              <p className="mt-4 text-sm text-[#969CA9]">
                 No demo investigations yet.
               </p>
             ) : null}

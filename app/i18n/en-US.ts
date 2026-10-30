@@ -31,7 +31,7 @@ const messages = {
     optionsFor: "Chat options for {{title}}",
     pinChat: "Pin chat",
     pinned: "Pinned",
-    recents: "Recents",
+    recents: "Recent chats",
     retryPreviousRequest:
       "Retry my previous request now that the model provider is connected.",
     invalidHandoffOptions:

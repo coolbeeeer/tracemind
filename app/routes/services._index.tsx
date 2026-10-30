@@ -2,221 +2,458 @@ import {
   actionErrorMessage,
   useActionQuery,
 } from "@agent-native/core/client/hooks";
+import {
+  IconBrandGithub,
+  IconBrandAws,
+  IconCloud,
+  IconCube,
+  IconChevronRight,
+  IconPlus,
+  IconSearch,
+  IconArrowRight,
+} from "@tabler/icons-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router";
 
-import { DemoBadge, StatusDot } from "@/components/tracemind/badges";
-import {
-  DemoBanner,
-  StatCard,
-} from "@/components/tracemind/dashboard-bits";
-import {
-  formatDateTime,
-  providerLabel,
-} from "@/lib/tracemind/format";
+import { DemoBadge } from "@/components/tracemind/badges";
+import { Button } from "@/components/ui/button";
+import { formatDateTime, providerLabel } from "@/lib/tracemind/format";
+
+import type {
+  Service,
+  ServiceProvider,
+  ServiceStatus,
+} from "../../shared/tracemind/models.js";
 
 export function meta() {
   return [{ title: "Services — TraceMind" }];
 }
-
-const inputClass =
-  "rounded-lg border border-[#1E2430] bg-[#0A0C10] px-3 py-2 text-sm text-[#E6EAF2] outline-none focus:border-[#10B981]";
-
+const statusLabels: Record<ServiceStatus, string> = {
+  healthy: "Operational",
+  degraded: "Degraded",
+  down: "Critical",
+  unknown: "Unknown",
+};
+function ProviderIcon({ provider }: { provider: ServiceProvider }) {
+  const Icon =
+    provider === "github"
+      ? IconBrandGithub
+      : provider === "aws"
+        ? IconBrandAws
+        : IconCloud;
+  return (
+    <Icon
+      className="size-5 shrink-0 text-muted-foreground"
+      strokeWidth={1.6}
+      aria-hidden="true"
+    />
+  );
+}
+function ServiceBadge({ status }: { status: ServiceStatus }) {
+  return (
+    <span className="tm-status" data-status={status}>
+      {statusLabels[status]}
+    </span>
+  );
+}
+function ServiceName({ service }: { service: Service }) {
+  return (
+    <span className="tm-service-name">
+      <IconCube
+        className="size-5 shrink-0 text-muted-foreground"
+        strokeWidth={1.5}
+        aria-hidden="true"
+      />
+      <span className="min-w-0 break-words">
+        {service.name}
+        <small>{providerLabel(service.provider)}</small>
+      </span>
+    </span>
+  );
+}
 export default function ServicesRoute() {
   const servicesQuery = useActionQuery("list-services", {});
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("all");
   const [provider, setProvider] = useState("all");
   const [monitoring, setMonitoring] = useState("all");
-
   const services = servicesQuery.data?.services ?? [];
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return services.filter((service) => {
-      if (status !== "all" && service.status !== status) return false;
-      if (provider !== "all" && service.provider !== provider) return false;
-      if (monitoring === "enabled" && !service.monitoringEnabled) return false;
-      if (monitoring === "disabled" && service.monitoringEnabled) return false;
-      if (q && !service.name.toLowerCase().includes(q)) return false;
-      return true;
-    });
-  }, [services, query, status, provider, monitoring]);
-
-  const stats = useMemo(() => {
-    const healthy = services.filter((s) => s.status === "healthy").length;
-    const unhealthy = services.filter(
-      (s) => s.status === "degraded" || s.status === "down",
-    ).length;
-    const disabled = services.filter((s) => !s.monitoringEnabled).length;
-    return { total: services.length, healthy, unhealthy, disabled };
-  }, [services]);
-
+  const filtered = useMemo(
+    () =>
+      services.filter((service) => {
+        if (status !== "all" && service.status !== status) return false;
+        if (provider !== "all" && service.provider !== provider) return false;
+        if (monitoring === "enabled" && !service.monitoringEnabled)
+          return false;
+        if (monitoring === "disabled" && service.monitoringEnabled)
+          return false;
+        return (
+          !query.trim() ||
+          service.name.toLowerCase().includes(query.trim().toLowerCase())
+        );
+      }),
+    [services, query, status, provider, monitoring],
+  );
+  const healthy = services.filter((s) => s.status === "healthy").length;
+  const degraded = services.filter((s) => s.status === "degraded").length;
+  const critical = services.filter((s) => s.status === "down").length;
+  const monitored = services.filter((s) => s.monitoringEnabled).length;
+  const coverage = services.length
+    ? Math.round((monitored / services.length) * 100)
+    : 0;
+  const attention = services.filter(
+    (s) => s.status === "down" || s.status === "degraded",
+  );
+  const paused = services.filter((s) => !s.monitoringEnabled);
+  const hasFilters = Boolean(
+    query || status !== "all" || provider !== "all" || monitoring !== "all",
+  );
   const clearFilters = () => {
     setQuery("");
     setStatus("all");
     setProvider("all");
     setMonitoring("all");
   };
-
+  const isDemo = servicesQuery.data?.demo ?? true;
   return (
-    <main className="min-h-full bg-[#0A0C10] text-[#E6EAF2]">
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#10B981]">
-              Services
-            </p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
-              Connected services
-            </h1>
-            <p className="mt-1 text-sm text-[#8B94A7]">
-              Health, provider, error count, and monitoring status. Select a
-              service for its detail view and monitoring history.
-            </p>
-          </div>
-          <DemoBadge />
+    <div className="tm-services">
+      <div className="tm-page-heading">
+        <div>
+          <h1>Services</h1>
+          <p>Monitor health across your connected infrastructure.</p>
         </div>
-
-        <div className="mt-5">
-          <DemoBanner />
+        <div className="flex items-center gap-3">
+          {isDemo && <DemoBadge />}
+          <Button asChild size="sm">
+            <Link to="/integrations">
+              <IconPlus className="size-4" />
+              Connect service
+            </Link>
+          </Button>
         </div>
-
-        {servicesQuery.error ? (
-          <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">
+      </div>
+      {isDemo && (
+        <p className="mb-5 text-xs leading-relaxed text-muted-foreground">
+          Showing sample services. Health and monitoring states below are demo
+          data.
+        </p>
+      )}
+      {servicesQuery.error ? (
+        <div role="alert" className="tm-panel p-5 text-sm text-red-300">
+          <p>
             {actionErrorMessage(servicesQuery.error) ??
-              "Could not load services. Please try again."}
-          </div>
-        ) : null}
-
-        {servicesQuery.isPending ? (
-          <div className="mt-5 animate-pulse rounded-xl bg-[#11141B] h-64" aria-label="Loading" />
-        ) : (
-          <>
-            <section
-              aria-label="Service summary"
-              className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
-            >
-              <StatCard label="Connected services" value={String(stats.total)} />
-              <StatCard label="Healthy" value={String(stats.healthy)} accent="#10B981" />
-              <StatCard label="Unhealthy" value={String(stats.unhealthy)} accent="#EF4444" sub="Degraded + down" />
-              <StatCard label="Monitoring disabled" value={String(stats.disabled)} accent="#F59E0B" />
-            </section>
-
-            <section className="mt-6 rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
-              <div className="flex flex-wrap gap-3">
+              "Could not load services."}
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            className="mt-3"
+            onClick={() => void servicesQuery.refetch()}
+          >
+            Try again
+          </Button>
+        </div>
+      ) : servicesQuery.isPending ? (
+        <div role="status" aria-label="Loading services" className="space-y-5">
+          <div className="h-28 animate-pulse rounded-xl bg-card" />
+          <div className="h-96 animate-pulse rounded-xl bg-card" />
+        </div>
+      ) : (
+        <>
+          <section className="tm-summary" aria-label="Service summary">
+            <div>
+              <strong>{services.length}</strong>
+              <span>Total services</span>
+            </div>
+            <div>
+              <strong>{healthy}</strong>
+              <span>Operational</span>
+            </div>
+            <div>
+              <strong className="text-amber-300">{degraded}</strong>
+              <span>Degraded</span>
+            </div>
+            <div>
+              <strong className="text-red-400">{critical}</strong>
+              <span>Critical</span>
+            </div>
+          </section>
+          <section className="tm-panel" aria-label="Services directory">
+            <div className="tm-toolbar">
+              <label className="tm-search relative min-w-0 flex-1">
+                <IconSearch
+                  className="absolute left-3 top-3 size-4 text-muted-foreground"
+                  aria-hidden="true"
+                />
                 <input
                   type="search"
                   value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Search services by name"
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search services…"
                   aria-label="Search services by name"
-                  className={`${inputClass} min-w-[220px] flex-1`}
+                  className="tm-field w-full pl-9"
                 />
-                <select
-                  value={status}
-                  onChange={(event) => setStatus(event.target.value)}
-                  aria-label="Filter by status"
-                  className={inputClass}
-                >
-                  <option value="all">All statuses</option>
-                  <option value="healthy">Healthy</option>
-                  <option value="degraded">Degraded</option>
-                  <option value="down">Down</option>
-                  <option value="unknown">Unknown</option>
-                </select>
-                <select
-                  value={provider}
-                  onChange={(event) => setProvider(event.target.value)}
-                  aria-label="Filter by provider"
-                  className={inputClass}
-                >
-                  <option value="all">All providers</option>
-                  <option value="gcp-run">Google Cloud Run</option>
-                  <option value="github">GitHub</option>
-                  <option value="aws">AWS</option>
-                  <option value="other">Other</option>
-                </select>
-                <select
-                  value={monitoring}
-                  onChange={(event) => setMonitoring(event.target.value)}
-                  aria-label="Filter by monitoring"
-                  className={inputClass}
-                >
-                  <option value="all">Monitoring: any</option>
-                  <option value="enabled">Monitoring enabled</option>
-                  <option value="disabled">Monitoring disabled</option>
-                </select>
-                <button
-                  type="button"
-                  onClick={clearFilters}
-                  className="rounded-lg border border-[#1E2430] px-3 py-2 text-sm text-[#8B94A7] hover:text-[#E6EAF2]"
-                >
+              </label>
+              <select
+                value={provider}
+                onChange={(e) => setProvider(e.target.value)}
+                aria-label="Filter by provider"
+                className="tm-field"
+              >
+                <option value="all">All providers</option>
+                <option value="gcp-run">Google Cloud Run</option>
+                <option value="github">GitHub</option>
+                <option value="aws">AWS</option>
+                <option value="other">Other</option>
+              </select>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                aria-label="Filter by status"
+                className="tm-field"
+              >
+                <option value="all">All statuses</option>
+                <option value="healthy">Operational</option>
+                <option value="degraded">Degraded</option>
+                <option value="down">Critical</option>
+                <option value="unknown">Unknown</option>
+              </select>
+              <select
+                value={monitoring}
+                onChange={(e) => setMonitoring(e.target.value)}
+                aria-label="Filter by monitoring"
+                className="tm-field"
+              >
+                <option value="all">Monitoring</option>
+                <option value="enabled">Enabled</option>
+                <option value="disabled">Paused</option>
+              </select>
+              {hasFilters && (
+                <Button variant="ghost" size="sm" onClick={clearFilters}>
                   Clear filters
-                </button>
-              </div>
-
-              <p className="mt-3 text-xs text-[#8B94A7]">
-                Showing {filtered.length} of {services.length} services.
-              </p>
-
-              <div className="mt-3 overflow-x-auto">
-                <table className="w-full min-w-[640px] text-left text-sm">
-                  <thead>
-                    <tr className="text-xs text-[#8B94A7]">
-                      <th className="py-2 pr-3 font-medium">Service</th>
-                      <th className="py-2 pr-3 font-medium">Provider</th>
-                      <th className="py-2 pr-3 font-medium">Status</th>
-                      <th className="py-2 pr-3 font-medium">Errors</th>
-                      <th className="py-2 pr-3 font-medium">Monitoring</th>
-                      <th className="py-2 font-medium">Last checked</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filtered.map((service) => (
-                      <tr key={service.id} className="border-t border-[#1E2430]">
-                        <td className="py-2.5 pr-3">
-                          <Link
-                            to={`/services/${service.id}`}
-                            className="flex items-center gap-2 font-medium hover:text-[#10B981]"
-                          >
-                            <StatusDot status={service.status} />
-                            {service.name}
-                          </Link>
-                        </td>
-                        <td className="py-2.5 pr-3 text-[#8B94A7]">
-                          {providerLabel(service.provider)}
-                        </td>
-                        <td className="py-2.5 pr-3 capitalize">{service.status}</td>
-                        <td className="py-2.5 pr-3">{service.errorCount}</td>
-                        <td className="py-2.5 pr-3">
-                          {service.monitoringEnabled ? "Enabled" : "Disabled"}
-                        </td>
-                        <td className="py-2.5 text-[#8B94A7]">
+                </Button>
+              )}
+            </div>
+            <div className="tm-desktop-services overflow-x-auto">
+              <table className="tm-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Service</th>
+                    <th scope="col">Provider</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Errors</th>
+                    <th scope="col">Monitoring</th>
+                    <th scope="col">Last checked</th>
+                    <th scope="col">
+                      <span className="sr-only">Details</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((service) => (
+                    <tr
+                      key={service.id}
+                      data-critical={service.status === "down"}
+                    >
+                      <td>
+                        <Link
+                          to={`/services/${service.id}`}
+                          className="hover:text-primary focus-visible:outline-primary"
+                        >
+                          <ServiceName service={service} />
+                        </Link>
+                      </td>
+                      <td>
+                        <span className="flex items-center gap-2">
+                          <ProviderIcon provider={service.provider} />
+                          <span className="tm-provider-label text-muted-foreground">
+                            {providerLabel(service.provider)}
+                          </span>
+                        </span>
+                      </td>
+                      <td>
+                        <ServiceBadge status={service.status} />
+                      </td>
+                      <td
+                        className={`tabular-nums ${service.status === "down" ? "text-red-400" : service.status === "degraded" ? "text-amber-300" : "text-muted-foreground"}`}
+                      >
+                        {service.errorCount.toLocaleString()}
+                      </td>
+                      <td>
+                        <span
+                          className="tm-monitor"
+                          data-enabled={service.monitoringEnabled}
+                        >
+                          {service.monitoringEnabled ? "Enabled" : "Paused"}
+                        </span>
+                      </td>
+                      <td className="text-muted-foreground whitespace-nowrap">
+                        <time dateTime={service.lastCheckedAt}>
                           {formatDateTime(service.lastCheckedAt)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              {filtered.length === 0 ? (
-                <div className="mt-4 rounded-xl border border-[#1E2430] px-4 py-6 text-center">
-                  <p className="text-sm">No services match these filters.</p>
-                  <button
-                    type="button"
+                        </time>
+                      </td>
+                      <td>
+                        <Link
+                          to={`/services/${service.id}`}
+                          aria-label={`View ${service.name}`}
+                          className="flex size-8 items-center justify-center rounded-md hover:bg-secondary focus-visible:outline-primary"
+                        >
+                          <IconChevronRight className="size-4 text-muted-foreground" />
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="tm-mobile-services">
+              {filtered.map((service) => (
+                <Link
+                  key={service.id}
+                  to={`/services/${service.id}`}
+                  className="tm-mobile-service hover:bg-secondary focus-visible:outline-primary"
+                  data-critical={service.status === "down"}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <ServiceName service={service} />
+                    <ServiceBadge status={service.status} />
+                  </div>
+                  <div className="mt-3 flex items-center justify-between gap-2 pl-8 text-xs">
+                    <span
+                      className={
+                        service.status === "down"
+                          ? "text-red-400"
+                          : "text-muted-foreground"
+                      }
+                    >
+                      {service.errorCount} errors
+                    </span>
+                    <span
+                      className="tm-monitor"
+                      data-enabled={service.monitoringEnabled}
+                    >
+                      {service.monitoringEnabled ? "Enabled" : "Paused"}
+                    </span>
+                    <IconChevronRight className="size-4 text-muted-foreground" />
+                  </div>
+                  <p className="mt-2 pl-8 text-[11px] text-muted-foreground">
+                    Checked {formatDateTime(service.lastCheckedAt)}
+                  </p>
+                </Link>
+              ))}
+            </div>
+            {!filtered.length && (
+              <div className="px-5 py-12 text-center">
+                <IconSearch className="mx-auto mb-3 size-6 text-muted-foreground" />
+                <p className="text-sm">
+                  {services.length
+                    ? "No services match these filters."
+                    : "No services to display."}
+                </p>
+                {hasFilters ? (
+                  <Button
+                    variant="outline"
+                    className="mt-4"
+                    size="sm"
                     onClick={clearFilters}
-                    className="mt-3 rounded-lg border border-[#10B981]/40 bg-[#10B981]/10 px-3 py-2 text-sm text-[#10B981]"
                   >
                     Clear filters
-                  </button>
-                </div>
-              ) : null}
+                  </Button>
+                ) : (
+                  <Link
+                    to="/integrations"
+                    className="mt-3 inline-block text-sm text-primary"
+                  >
+                    Connect a service
+                  </Link>
+                )}
+              </div>
+            )}
+            <p className="tm-table-footer" aria-live="polite">
+              Showing {filtered.length} of {services.length} services
+              {isDemo ? " · Demo data" : ""}
+            </p>
+          </section>
+          <div className="tm-secondary-panels">
+            <section
+              className="tm-panel"
+              aria-label="Services needing attention"
+            >
+              <h2>
+                Needs attention{" "}
+                <span className="ml-1 text-muted-foreground">
+                  {attention.length}
+                </span>
+              </h2>
+              {attention.map((service) => (
+                <Link
+                  to={`/services/${service.id}`}
+                  className="tm-attention-row hover:text-primary"
+                  key={service.id}
+                >
+                  <div className="min-w-0 flex-1">
+                    <ServiceName service={service} />
+                    <p className="mt-2 pl-8 text-xs text-muted-foreground">
+                      {service.errorCount} errors in the reporting window
+                    </p>
+                  </div>
+                  <ServiceBadge status={service.status} />
+                  <IconChevronRight className="size-4 shrink-0 text-muted-foreground" />
+                </Link>
+              ))}
+              {!attention.length && (
+                <p className="text-sm text-muted-foreground">
+                  No services currently need attention.
+                </p>
+              )}
             </section>
-          </>
-        )}
-      </div>
-    </main>
+            <section className="tm-panel" aria-label="Monitoring coverage">
+              <h2>Monitoring coverage</h2>
+              <div
+                role="progressbar"
+                aria-label="Services with monitoring enabled"
+                aria-valuenow={coverage}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                className="h-2 overflow-hidden rounded-full bg-secondary"
+              >
+                <div
+                  className="h-full rounded-full bg-primary"
+                  style={{ width: `${coverage}%` }}
+                />
+              </div>
+              <p className="mt-3 flex justify-between text-xs text-muted-foreground">
+                <span>
+                  {monitored} of {services.length} services monitored
+                </span>
+                <span>{coverage}%</span>
+              </p>
+              {paused.map((service) => (
+                <Link
+                  to={`/services/${service.id}`}
+                  key={service.id}
+                  className="tm-attention-row mt-4"
+                >
+                  <div className="flex-1">
+                    <ServiceName service={service} />
+                    <p className="mt-2 pl-8 text-xs text-muted-foreground">
+                      Monitoring is paused.
+                    </p>
+                  </div>
+                  <span className="tm-status text-amber-300">Paused</span>
+                  <IconArrowRight className="size-4 text-muted-foreground" />
+                </Link>
+              ))}
+              {isDemo && (
+                <p className="mt-4 text-[11px] leading-relaxed text-muted-foreground">
+                  Coverage reflects sample service settings, not live
+                  collectors.
+                </p>
+              )}
+            </section>
+          </div>
+        </>
+      )}
+    </div>
   );
 }

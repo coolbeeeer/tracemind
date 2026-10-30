@@ -1,26 +1,19 @@
 import type { ReactNode } from "react";
 
-/**
- * Blue-violet redesign shared pieces, matching the approved mockup:
- * deep navy background, blue-to-violet accents, rounded panels, and
- * SVG charts with no chart library. Every chart renders only the
- * data it is given; empty series render flat/empty, never a
- * fabricated trend. Counts, deltas, and breakdowns are always
- * computed from action data by the caller, never hardcoded.
- */
+/** Shared graphite and blue palette. Charts render action data only. */
 export const redesign = {
-  pageBg: "#070B16",
-  panelBg: "#0E1526",
-  panelBgSoft: "#111B31",
-  border: "#1E2A44",
-  text: "#E8EDF7",
-  muted: "#8B96B0",
-  blue: "#3B82F6",
-  violet: "#8B5CF6",
-  cyan: "#22D3EE",
+  pageBg: "#101114",
+  panelBg: "#181A20",
+  panelBgSoft: "#1D2027",
+  border: "#2B2E36",
+  text: "#ECEEF2",
+  muted: "#969CA9",
+  blue: "#5B8DEF",
+  violet: "#8EA6CF",
+  cyan: "#A4ADBF",
   red: "#EF4444",
   amber: "#F59E0B",
-  green: "#22C55E",
+  green: "#A4ADBF",
 };
 
 export function Panel({
@@ -35,7 +28,7 @@ export function Panel({
   return (
     <section
       aria-label={label}
-      className={`rounded-2xl border p-4 sm:p-5 ${className}`}
+      className={`rounded-xl border p-4 sm:p-5 ${className}`}
       style={{ borderColor: redesign.border, backgroundColor: redesign.panelBg }}
     >
       {children}
@@ -52,8 +45,8 @@ export function PanelTitle({
 }) {
   return (
     <div className="flex flex-wrap items-baseline justify-between gap-2">
-      <h2 className="text-sm font-semibold text-[#E8EDF7]">{children}</h2>
-      {action ? <span className="text-xs text-[#8B96B0]">{action}</span> : null}
+      <h2 className="text-sm font-semibold text-[#ECEEF2]">{children}</h2>
+      {action ? <span className="text-xs text-[#969CA9]">{action}</span> : null}
     </div>
   );
 }
@@ -73,7 +66,7 @@ export function StatCard({
 }) {
   return (
     <div
-      className="rounded-2xl border p-4"
+      className="rounded-xl border p-4"
       style={{ borderColor: redesign.border, backgroundColor: redesign.panelBg }}
     >
       <div className="flex items-center justify-between gap-2">
@@ -84,9 +77,9 @@ export function StatCard({
           {icon}
         </span>
       </div>
-      <p className="mt-3 text-2xl font-bold tracking-tight text-[#E8EDF7]">{value}</p>
-      <p className="mt-0.5 text-xs font-medium text-[#8B96B0]">{label}</p>
-      {sub ? <p className="mt-1 text-xs text-[#8B96B0]">{sub}</p> : null}
+      <p className="mt-3 text-2xl font-bold tracking-tight text-[#ECEEF2]">{value}</p>
+      <p className="mt-0.5 text-xs font-medium text-[#969CA9]">{label}</p>
+      {sub ? <p className="mt-1 text-xs text-[#969CA9]">{sub}</p> : null}
     </div>
   );
 }
@@ -196,8 +189,8 @@ export function DonutChart({
         {segments.map((segment) => (
           <li key={segment.label} className="flex items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: segment.color }} />
-            <span className="text-[#8B96B0]">{segment.label}</span>
-            <span className="ml-auto pl-4 font-medium text-[#E8EDF7]">
+            <span className="text-[#969CA9]">{segment.label}</span>
+            <span className="ml-auto pl-4 font-medium text-[#ECEEF2]">
               {total > 0 ? Math.round((segment.value / total) * 100) : 0}%
             </span>
           </li>
