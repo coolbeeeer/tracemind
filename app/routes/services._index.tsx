@@ -20,7 +20,7 @@ export function meta() {
 }
 
 const inputClass =
-  "rounded-lg border border-[#1E2430] bg-[#0A0C10] px-3 py-2 text-sm text-[#E6EAF2] outline-none focus:border-[#10B981]";
+  "rounded-lg border border-[#1E2A44] bg-[#070B16] px-3 py-2 text-sm text-[#E8EDF7] outline-none focus:border-[#10B981]";
 
 export default function ServicesRoute() {
   const servicesQuery = useActionQuery("list-services", {});
@@ -60,7 +60,7 @@ export default function ServicesRoute() {
   };
 
   return (
-    <main className="min-h-full bg-[#0A0C10] text-[#E6EAF2]">
+    <main className="min-h-full bg-[#070B16] text-[#E8EDF7]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -70,7 +70,7 @@ export default function ServicesRoute() {
             <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
               Connected services
             </h1>
-            <p className="mt-1 text-sm text-[#8B94A7]">
+            <p className="mt-1 text-sm text-[#8B96B0]">
               Health, provider, error count, and monitoring status. Select a
               service for its detail view and monitoring history.
             </p>
@@ -90,20 +90,34 @@ export default function ServicesRoute() {
         ) : null}
 
         {servicesQuery.isPending ? (
-          <div className="mt-5 animate-pulse rounded-xl bg-[#11141B] h-64" aria-label="Loading" />
+          <div className="mt-5 animate-pulse rounded-xl bg-[#0E1526] h-64" aria-label="Loading" />
         ) : (
           <>
             <section
               aria-label="Service summary"
               className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
             >
-              <StatCard label="Connected services" value={String(stats.total)} />
-              <StatCard label="Healthy" value={String(stats.healthy)} accent="#10B981" />
+              <StatCard
+                label="Connected services"
+                value={String(stats.total)}
+                sub={`${stats.healthy} healthy · ${stats.unhealthy} unhealthy`}
+              />
+              <StatCard
+                label="Healthy"
+                value={String(stats.healthy)}
+                accent="#10B981"
+                sub={`of ${stats.total} connected`}
+              />
               <StatCard label="Unhealthy" value={String(stats.unhealthy)} accent="#EF4444" sub="Degraded + down" />
-              <StatCard label="Monitoring disabled" value={String(stats.disabled)} accent="#F59E0B" />
+              <StatCard
+                label="Monitoring disabled"
+                value={String(stats.disabled)}
+                accent="#F59E0B"
+                sub="No health checks running"
+              />
             </section>
 
-            <section className="mt-6 rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+            <section className="mt-6 rounded-xl border border-[#1E2A44] bg-[#0E1526] p-4">
               <div className="flex flex-wrap gap-3">
                 <input
                   type="search"
@@ -150,20 +164,20 @@ export default function ServicesRoute() {
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="rounded-lg border border-[#1E2430] px-3 py-2 text-sm text-[#8B94A7] hover:text-[#E6EAF2]"
+                  className="rounded-lg border border-[#1E2A44] px-3 py-2 text-sm text-[#8B96B0] hover:text-[#E8EDF7]"
                 >
                   Clear filters
                 </button>
               </div>
 
-              <p className="mt-3 text-xs text-[#8B94A7]">
+              <p className="mt-3 text-xs text-[#8B96B0]">
                 Showing {filtered.length} of {services.length} services.
               </p>
 
               <div className="mt-3 overflow-x-auto">
                 <table className="w-full min-w-[640px] text-left text-sm">
                   <thead>
-                    <tr className="text-xs text-[#8B94A7]">
+                    <tr className="text-xs text-[#8B96B0]">
                       <th className="py-2 pr-3 font-medium">Service</th>
                       <th className="py-2 pr-3 font-medium">Provider</th>
                       <th className="py-2 pr-3 font-medium">Status</th>
@@ -174,7 +188,7 @@ export default function ServicesRoute() {
                   </thead>
                   <tbody>
                     {filtered.map((service) => (
-                      <tr key={service.id} className="border-t border-[#1E2430]">
+                      <tr key={service.id} className="border-t border-[#1E2A44]">
                         <td className="py-2.5 pr-3">
                           <Link
                             to={`/services/${service.id}`}
@@ -184,7 +198,7 @@ export default function ServicesRoute() {
                             {service.name}
                           </Link>
                         </td>
-                        <td className="py-2.5 pr-3 text-[#8B94A7]">
+                        <td className="py-2.5 pr-3 text-[#8B96B0]">
                           {providerLabel(service.provider)}
                         </td>
                         <td className="py-2.5 pr-3 capitalize">{service.status}</td>
@@ -192,7 +206,7 @@ export default function ServicesRoute() {
                         <td className="py-2.5 pr-3">
                           {service.monitoringEnabled ? "Enabled" : "Disabled"}
                         </td>
-                        <td className="py-2.5 text-[#8B94A7]">
+                        <td className="py-2.5 text-[#8B96B0]">
                           {formatDateTime(service.lastCheckedAt)}
                         </td>
                       </tr>
@@ -202,7 +216,7 @@ export default function ServicesRoute() {
               </div>
 
               {filtered.length === 0 ? (
-                <div className="mt-4 rounded-xl border border-[#1E2430] px-4 py-6 text-center">
+                <div className="mt-4 rounded-xl border border-[#1E2A44] px-4 py-6 text-center">
                   <p className="text-sm">No services match these filters.</p>
                   <button
                     type="button"

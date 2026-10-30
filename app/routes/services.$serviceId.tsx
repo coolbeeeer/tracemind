@@ -53,7 +53,7 @@ export default function ServiceDetailRoute() {
   );
 
   return (
-    <main className="min-h-full bg-[#0A0C10] text-[#E6EAF2]">
+    <main className="min-h-full bg-[#070B16] text-[#E8EDF7]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <Link to="/services" className="text-sm text-[#10B981] hover:underline">
           ← Back to services
@@ -83,7 +83,7 @@ export default function ServiceDetailRoute() {
         ) : null}
 
         {!loading && !service ? (
-          <div className="mt-5 rounded-xl border border-[#1E2430] bg-[#11141B] px-4 py-6">
+          <div className="mt-5 rounded-xl border border-[#1E2A44] bg-[#0E1526] px-4 py-6">
             <p className="text-sm">
               No service with id <span className="font-mono">{serviceId}</span>{" "}
               exists in the demo dataset.
@@ -100,38 +100,38 @@ export default function ServiceDetailRoute() {
         {service ? (
           <>
             <section className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-[#8B94A7]">Status</p>
+              <div className="rounded-xl border border-[#1E2A44] bg-[#0E1526] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#8B96B0]">Status</p>
                 <p className="mt-2 flex items-center gap-2 text-lg font-semibold capitalize">
                   <StatusDot status={service.status} />
                   {service.status}
                 </p>
               </div>
-              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-[#8B94A7]">Provider</p>
+              <div className="rounded-xl border border-[#1E2A44] bg-[#0E1526] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#8B96B0]">Provider</p>
                 <p className="mt-2 text-lg font-semibold">{providerLabel(service.provider)}</p>
               </div>
-              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-[#8B94A7]">Errors in window</p>
+              <div className="rounded-xl border border-[#1E2A44] bg-[#0E1526] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#8B96B0]">Errors in window</p>
                 <p className="mt-2 text-lg font-semibold">{service.errorCount}</p>
               </div>
-              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-[#8B94A7]">Monitoring</p>
+              <div className="rounded-xl border border-[#1E2A44] bg-[#0E1526] p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[#8B96B0]">Monitoring</p>
                 <p className="mt-2 text-lg font-semibold">
                   {service.monitoringEnabled ? "Enabled" : "Disabled"}
                 </p>
-                <p className="mt-1 text-xs text-[#8B94A7]">
+                <p className="mt-1 text-xs text-[#8B96B0]">
                   Last checked {formatDateTime(service.lastCheckedAt)}
                 </p>
               </div>
             </section>
 
-            <section className="mt-6 rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+            <section className="mt-6 rounded-xl border border-[#1E2A44] bg-[#0E1526] p-4">
               <h2 className="text-sm font-semibold">
                 Monitoring history <DemoBadge />
               </h2>
               {health.length === 0 ? (
-                <p className="mt-3 text-sm text-[#8B94A7]">
+                <p className="mt-3 text-sm text-[#8B96B0]">
                   No demo health points exist for this service yet. The backend
                   developer's monitoring history will fill this section when it
                   lands; nothing here is fabricated to fill the gap.
@@ -148,7 +148,7 @@ export default function ServiceDetailRoute() {
                   <div className="mt-3 overflow-x-auto">
                     <table className="w-full min-w-[560px] text-left text-sm">
                       <thead>
-                        <tr className="text-xs text-[#8B94A7]">
+                        <tr className="text-xs text-[#8B96B0]">
                           <th className="py-2 pr-3 font-medium">Time</th>
                           <th className="py-2 pr-3 font-medium">Error rate</th>
                           <th className="py-2 pr-3 font-medium">Requests</th>
@@ -158,7 +158,7 @@ export default function ServiceDetailRoute() {
                       </thead>
                       <tbody>
                         {health.map((point) => (
-                          <tr key={point.timestamp} className="border-t border-[#1E2430]">
+                          <tr key={point.timestamp} className="border-t border-[#1E2A44]">
                             <td className="py-2.5 pr-3">{formatTime(point.timestamp)}</td>
                             <td className="py-2.5 pr-3">{point.errorRate.toFixed(1)}%</td>
                             <td className="py-2.5 pr-3">{point.requestCount}</td>
@@ -174,18 +174,18 @@ export default function ServiceDetailRoute() {
             </section>
 
             <section className="mt-6 grid gap-4 lg:grid-cols-2">
-              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+              <div className="rounded-xl border border-[#1E2A44] bg-[#0E1526] p-4">
                 <h2 className="text-sm font-semibold">Recent deployments</h2>
                 {serviceDeployments.length === 0 ? (
-                  <p className="mt-3 text-sm text-[#8B94A7]">
+                  <p className="mt-3 text-sm text-[#8B96B0]">
                     No demo deployments recorded for this service.
                   </p>
                 ) : (
                   <ul className="mt-3 space-y-3 text-sm">
                     {serviceDeployments.map((deployment) => (
                       <li key={deployment.id} className="flex items-baseline justify-between gap-3">
-                        <span className="font-mono text-xs text-[#8B94A7]">{deployment.version}</span>
-                        <span className="text-xs text-[#8B94A7]">
+                        <span className="font-mono text-xs text-[#8B96B0]">{deployment.version}</span>
+                        <span className="text-xs text-[#8B96B0]">
                           {formatDateTime(deployment.deployedAt)}
                         </span>
                       </li>
@@ -193,10 +193,10 @@ export default function ServiceDetailRoute() {
                   </ul>
                 )}
               </div>
-              <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
+              <div className="rounded-xl border border-[#1E2A44] bg-[#0E1526] p-4">
                 <h2 className="text-sm font-semibold">Incidents for this service</h2>
                 {serviceIncidents.length === 0 ? (
-                  <p className="mt-3 text-sm text-[#8B94A7]">
+                  <p className="mt-3 text-sm text-[#8B96B0]">
                     No demo incidents for this service.
                   </p>
                 ) : (
@@ -210,7 +210,7 @@ export default function ServiceDetailRoute() {
                         >
                           {incident.title}
                         </Link>
-                        <span className="text-xs text-[#8B94A7]">
+                        <span className="text-xs text-[#8B96B0]">
                           {incident.status} · {formatDateTime(incident.detectedAt)}
                         </span>
                       </li>

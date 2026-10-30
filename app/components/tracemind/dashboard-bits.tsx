@@ -25,17 +25,17 @@ export function StatCard({
   accent?: string;
 }) {
   return (
-    <div className="rounded-xl border border-[#1E2430] bg-[#11141B] p-4">
-      <p className="text-xs font-medium uppercase tracking-wide text-[#8B94A7]">
+    <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
+      <p className="text-xs font-medium uppercase tracking-wide text-[#8B96B0]">
         {label}
       </p>
       <p
-        className="mt-2 text-3xl font-semibold tracking-tight text-[#E6EAF2]"
+        className="mt-2 text-3xl font-semibold tracking-tight text-[#E8EDF7]"
         style={accent ? { color: accent } : undefined}
       >
         {value}
       </p>
-      {sub ? <p className="mt-1 text-xs text-[#8B94A7]">{sub}</p> : null}
+      {sub ? <p className="mt-1 text-xs text-[#8B96B0]">{sub}</p> : null}
     </div>
   );
 }

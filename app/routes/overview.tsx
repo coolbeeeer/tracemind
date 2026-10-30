@@ -169,6 +169,16 @@ export default function OverviewRoute() {
   const serviceName = (serviceId: string) =>
     services.find((s) => s.id === serviceId)?.name ?? serviceId;
 
+  // Viewer-local time of day, so the greeting is never wrong the way a
+  // hardcoded "Good morning." is at 22:00.
+  const greetingHour = new Date().getHours();
+  const greeting =
+    greetingHour < 12
+      ? "Good morning."
+      : greetingHour < 18
+        ? "Good afternoon."
+        : "Good evening.";
+
   return (
     <main
       className="min-h-full"
@@ -178,7 +188,7 @@ export default function OverviewRoute() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              Good morning.
+              {greeting}
             </h1>
             <p className="mt-1 text-sm text-[#8B96B0]">
               Here&apos;s what&apos;s happening with your systems.
