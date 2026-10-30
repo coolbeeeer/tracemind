@@ -180,18 +180,20 @@ export default function LogsRoute() {
 
             <ul className="mt-3 divide-y divide-[#1E2A44]">
               {filteredLogs.map((log) => (
-                <li key={log.id} className="flex flex-wrap items-start gap-3 py-3 first:pt-0 last:pb-0">
-                  <span className="w-32 shrink-0 text-xs text-[#8B96B0]">
-                    {formatDateTime(log.timestamp)}
-                  </span>
-                  <span
-                    className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[11px] font-medium uppercase ${levelStyles[log.level] ?? ""}`}
-                  >
-                    {log.level}
+                <li key={log.id} className="flex flex-col gap-1.5 py-3 first:pt-0 last:pb-0 sm:flex-row sm:flex-wrap sm:items-start sm:gap-3">
+                  <span className="flex flex-wrap items-center gap-3">
+                    <span className="w-32 shrink-0 text-xs text-[#8B96B0]">
+                      {formatDateTime(log.timestamp)}
+                    </span>
+                    <span
+                      className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[11px] font-medium uppercase ${levelStyles[log.level] ?? ""}`}
+                    >
+                      {log.level}
+                    </span>
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm">{log.message}</span>
-                    <span className="block text-xs text-[#8B96B0]">
+                    <span className="block text-sm break-words" title={log.message}>{log.message}</span>
+                    <span className="block text-xs break-all text-[#8B96B0]">
                       {serviceName(log.serviceId)}
                       {log.traceId ? ` · trace ${log.traceId}` : ""}
                     </span>

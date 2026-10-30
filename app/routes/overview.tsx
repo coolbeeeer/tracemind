@@ -198,7 +198,7 @@ export default function OverviewRoute() {
             type="search"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search incidents, logs, services…"
+            placeholder="Search incidents…"
             aria-label="Search incidents"
             className="min-w-0 flex-1 rounded-xl border px-3 py-2 text-sm outline-none focus:border-[#3B82F6] sm:max-w-sm"
             style={inputStyle}
@@ -315,7 +315,7 @@ export default function OverviewRoute() {
 
             <section className="mt-4 grid gap-4 lg:grid-cols-3">
               <Panel label="Needs attention">
-                <PanelTitle action={<Link to="/incidents" className="hover:text-[#3B82F6]">View all →</Link>}>
+                <PanelTitle action={<Link to="/incidents" className="inline-block py-1 hover:text-[#3B82F6]">View all →</Link>}>
                   Needs attention
                 </PanelTitle>
                 <ul className="mt-4 space-y-3">
@@ -344,7 +344,7 @@ export default function OverviewRoute() {
               </Panel>
 
               <Panel label="Service health">
-                <PanelTitle action={<Link to="/services" className="hover:text-[#3B82F6]">View all →</Link>}>
+                <PanelTitle action={<Link to="/services" className="inline-block py-1 hover:text-[#3B82F6]">View all →</Link>}>
                   Service health
                 </PanelTitle>
                 <ul className="mt-4 space-y-3">
@@ -382,7 +382,7 @@ export default function OverviewRoute() {
 
             <section className="mt-4 grid gap-4 lg:grid-cols-3">
               <Panel label="Recent incidents" className="lg:col-span-2">
-                <PanelTitle action={<Link to="/incidents" className="hover:text-[#3B82F6]">View all →</Link>}>
+                <PanelTitle action={<Link to="/incidents" className="inline-block py-1 hover:text-[#3B82F6]">View all →</Link>}>
                   Recent incidents{" "}
                   {incidentsAreDemo ? (
                     <DemoBadge />
@@ -392,6 +392,12 @@ export default function OverviewRoute() {
                     </span>
                   )}
                 </PanelTitle>
+                {searchedIncidents.length === 0 && allIncidents.length > 0 ? (
+                  <p className="mt-3 text-sm text-[#8B96B0]">
+                    No incidents in this time window. Try All time to see
+                    older incidents.
+                  </p>
+                ) : null}
                 <ul className="mt-3 divide-y divide-[#1E2A44]">
                   {searchedIncidents.map((incident) => (
                     <li key={incident.id} className="flex flex-wrap items-start gap-3 py-3 first:pt-0 last:pb-0">

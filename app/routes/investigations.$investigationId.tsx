@@ -114,7 +114,7 @@ export default function InvestigationWorkspaceRoute() {
   return (
     <main className="min-h-full bg-[#070B16] text-[#E8EDF7]">
       <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8">
-        <Link to="/investigations" className="text-sm text-[#60A5FA] hover:underline">
+        <Link to="/investigations" className="inline-block py-1 text-sm text-[#60A5FA] hover:underline">
           ← Back to investigations
         </Link>
 
@@ -175,7 +175,7 @@ export default function InvestigationWorkspaceRoute() {
         {investigation && incident ? (
           <div className="mt-6 grid gap-4 lg:grid-cols-12">
             {/* Left panel: incident, service, logs, error timeline, chart */}
-            <section className="space-y-4 lg:col-span-3" aria-label="Incident details">
+            <section className="min-w-0 space-y-4 lg:col-span-3" aria-label="Incident details">
               <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
                 <h2 className="text-sm font-semibold">Incident details</h2>
                 <div className="mt-3 space-y-2 text-sm">
@@ -272,7 +272,7 @@ export default function InvestigationWorkspaceRoute() {
             </section>
 
             {/* Center panel: progress, tools, hypotheses, evidence, fixes */}
-            <section className="space-y-4 lg:col-span-6" aria-label="Investigation">
+            <section className="min-w-0 space-y-4 lg:col-span-6" aria-label="Investigation">
               <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
                 <h2 className="text-sm font-semibold">
                   AI investigation progress <DemoBadge />
@@ -410,7 +410,7 @@ export default function InvestigationWorkspaceRoute() {
             </section>
 
             {/* Right panel: conversation, follow-ups, approvals */}
-            <section className="space-y-4 lg:col-span-3" aria-label="Agent conversation and controls">
+            <section className="min-w-0 space-y-4 lg:col-span-3" aria-label="Agent conversation and controls">
               <div className="rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
                 <h2 className="text-sm font-semibold">
                   Agent conversation <DemoBadge />

@@ -41,7 +41,7 @@ export default function IncidentDetailRoute() {
   return (
     <main className="min-h-full bg-[#070B16] text-[#E8EDF7]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <Link to="/incidents" className="text-sm text-[#60A5FA] hover:underline">
+        <Link to="/incidents" className="inline-block py-1 text-sm text-[#60A5FA] hover:underline">
           ← Back to incidents
         </Link>
 

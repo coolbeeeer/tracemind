@@ -155,7 +155,7 @@ export default function IncidentsRoute() {
                   </div>
                   <Link
                     to={`/incidents/${incident.id}`}
-                    className="mt-2 block text-sm font-medium hover:text-[#60A5FA]"
+                    className="mt-2 block py-1 text-sm font-medium hover:text-[#60A5FA]"
                   >
                     {incident.title}
                   </Link>
