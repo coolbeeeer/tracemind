@@ -92,7 +92,9 @@ export default function LogsRoute() {
           {selectedIncidentId !== "" ? (isDemo ? <DemoBadge /> : null) : null}
         </div>
 
-        <div className="mt-4">{isDemo ? <DemoBanner /> : null}</div>
+        <div className="mt-4">
+          {selectedIncidentId !== "" && isDemo ? <DemoBanner /> : null}
+        </div>
 
         {error ? (
           <div className="mt-5 rounded-xl border border-[#EF4444]/30 bg-[#EF4444]/10 px-4 py-3 text-sm text-[#F87171]">

@@ -6,8 +6,6 @@ import {
 import { useState } from "react";
 import { useSearchParams } from "react-router";
 
-import { DemoBadge } from "@/components/tracemind/badges";
-import { DemoBanner } from "@/components/tracemind/dashboard-bits";
 import type { Integration } from "../../shared/tracemind/models.js";
 
 export function meta() {
@@ -28,7 +26,7 @@ const statusLabel: Record<Integration["status"], string> = {
 
 const permissionText: Record<Integration["provider"], string> = {
   "gcp-run":
-    "When the backend lands, Google Cloud Run connection will request read-only access to Cloud Run services and Cloud Logging. It will not deploy, modify, or delete anything, and it will not store cloud credentials in the browser.",
+    "Google Cloud connection requests read-only access to Cloud Logging through Google sign-in, started from the Connect section above. It does not deploy, modify, or delete anything, and tokens are stored server-side, never in the browser.",
   github:
     "When the backend lands, GitHub connection will request read access to repository contents for code inspection during investigations. It will not write code, open pull requests, or store GitHub tokens in the browser.",
   aws: "AWS is coming soon, per the brief. No permissions are requested in this demo.",
@@ -84,16 +82,21 @@ export default function IntegrationsRoute() {
               Integrations
             </h1>
             <p className="mt-1 text-sm text-[#8B96B0]">
-              Connection status for the providers TraceMind monitors. No
-              connection is active in demo mode, and no OAuth flow is
-              started from this page.
+              Google Cloud connects from this page through Google
+              sign-in. The provider cards below are demo data and do
+              not reflect that connection.
             </p>
           </div>
-          <DemoBadge />
+          <span className="inline-flex items-center rounded-full border border-[#F59E0B]/40 bg-[#F59E0B]/15 px-2 py-0.5 text-[11px] font-semibold text-[#FBBF24]">
+            Cards: demo data
+          </span>
         </div>
 
-        <div className="mt-5">
-          <DemoBanner />
+        <div className="mt-5 rounded-2xl border border-[#F59E0B]/30 bg-[#F59E0B]/10 px-4 py-3 text-sm text-[#E8EDF7]">
+          Demo data: the provider cards below are synthetic. They do
+          not show whether Google Cloud is actually connected; the
+          connection result appears as a banner at the top of this
+          page after sign-in.
         </div>
 
         {googleResult === "connected" ? (
@@ -279,15 +282,15 @@ export default function IntegrationsRoute() {
           <p className="mt-2 text-sm leading-relaxed text-[#8B96B0]">
             The setup plan above needs a project administrator, because
             granting a role at project level is an administrator-only
-            operation. Most users do not have that access. For a demo
-            or self-hosted run, the watcher can instead run as the
-            operator, using the operator&apos;s own Google login, with
-            no service account and no project permission change. It
-            reads only what the operator can already read. See
+            operation. Most users do not have that access. The Connect
+            Google Cloud section above is now the direct sign-in path
+            for that access. For a demo or self-hosted run where
+            sign-in is not configured, the watcher can instead run as
+            the operator, using the operator&apos;s own Google login,
+            with no service account and no project permission change.
+            It reads only what the operator can already read. See
             docs/user-log-access.md in the repository for the probe
-            and poll steps. A future product version should replace
-            this operator run with a real Google sign-in that grants
-            log-read permission directly; that flow is not built yet.
+            and poll steps.
           </p>
         </section>
 
@@ -320,7 +323,7 @@ export default function IntegrationsRoute() {
               </div>
             </section>
 
-            <section className="mt-6 grid gap-4 lg:grid-cols-2">
+            <section aria-label="Provider cards (demo data)" className="mt-6 grid gap-4 lg:grid-cols-2">
               {integrations.map((integration) => {
                 const isExpanded = expanded[integration.id] ?? false;
                 return (
@@ -340,12 +343,24 @@ export default function IntegrationsRoute() {
                       <p className="mt-2 text-sm text-[#8B96B0]">{integration.note}</p>
                     ) : null}
                     <p className="mt-2 text-sm">
-                      Last connection attempt:{" "}
-                      <span className="text-[#8B96B0]">
-                        {integration.connectedAt
-                          ? integration.connectedAt
-                          : "Never attempted in demo mode"}
-                      </span>
+                      {integration.provider === "gcp-run" ? (
+                        <>
+                          Connection:{" "}
+                          <span className="text-[#8B96B0]">
+                            managed in the Connect section above; this
+                            card&apos;s status is demo data
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          Last connection attempt:{" "}
+                          <span className="text-[#8B96B0]">
+                            {integration.connectedAt
+                              ? integration.connectedAt
+                              : "Never attempted in demo mode"}
+                          </span>
+                        </>
+                      )}
                     </p>
 
                     <button
@@ -370,21 +385,29 @@ export default function IntegrationsRoute() {
                       </p>
                     ) : null}
 
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      <button
-                        type="button"
-                        disabled
-                        title="Backend OAuth is not available yet, so no connection can be started from here."
-                        className="cursor-not-allowed rounded-lg border border-[#1E2A44] px-3 py-2 text-sm text-[#8B96B0] opacity-60"
-                      >
-                        Connect (backend-gated)
-                      </button>
-                      <span className="self-center text-xs text-[#8B96B0]">
-                        Connect is disabled until the backend OAuth flow
-                        lands. It does not open a sign-in page or store any
-                        credential.
-                      </span>
-                    </div>
+                    {integration.provider === "gcp-run" ? (
+                      <p className="mt-3 text-xs text-[#8B96B0]">
+                        Google Cloud connection starts from the Connect
+                        section above. This card&apos;s status is demo
+                        data and does not change after connecting.
+                      </p>
+                    ) : (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          disabled
+                          title="No sign-in flow exists for this provider yet, so no connection can be started from here."
+                          className="cursor-not-allowed rounded-lg border border-[#1E2A44] px-3 py-2 text-sm text-[#8B96B0] opacity-60"
+                        >
+                          Connect (not available)
+                        </button>
+                        <span className="self-center text-xs text-[#8B96B0]">
+                          No sign-in flow exists for this provider yet.
+                          It does not open a sign-in page or store any
+                          credential.
+                        </span>
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -393,13 +416,12 @@ export default function IntegrationsRoute() {
             <section className="mt-6 rounded-2xl border border-[#1E2A44] bg-[#0E1526] p-4">
               <h2 className="text-sm font-semibold">How errors will be shown</h2>
               <p className="mt-2 text-sm leading-relaxed text-[#8B96B0]">
-                No connection error is recorded in demo mode, so none is
-                invented here. When the backend lands, a failed connection
-                attempt will show the backend's error code and message on
-                the affected card, with the connection remaining in the
-                Disconnected state until a successful backend confirmation
-                arrives. A connection is only shown as Connected after
-                that backend confirmation, never from this frontend alone.
+                A failed Google Cloud sign-in shows a banner at the top
+                of this page (not granted, or could not be completed),
+                and no error is invented beyond that. The provider cards
+                below are demo data, so they do not record connection
+                errors. A card is only shown as Connected after a
+                backend confirmation, never from this frontend alone.
               </p>
             </section>
           </>

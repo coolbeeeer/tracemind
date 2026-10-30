@@ -230,7 +230,7 @@ export const demoInvestigations: Investigation[] = [
 ];
 
 export const demoIntegrations: Integration[] = [
-  { id: "int-gcp", provider: "gcp-run", label: "Google Cloud Run", status: "not-connected", note: "Backend-gated. No OAuth flow is implemented yet." },
+  { id: "int-gcp", provider: "gcp-run", label: "Google Cloud Run", status: "not-connected", note: "Demo status only. The real Google Cloud connection is managed in the Connect section above." },
   { id: "int-github", provider: "github", label: "GitHub", status: "not-connected", note: "Backend-gated. No OAuth flow is implemented yet." },
   { id: "int-aws", provider: "aws", label: "AWS", status: "coming-soon", note: "Coming soon, per the brief." },
   { id: "int-other", provider: "other", label: "Other providers", status: "coming-soon", note: "Coming soon, per the brief." },

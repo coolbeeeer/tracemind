@@ -55,6 +55,11 @@ export default function OverviewRoute() {
 
   const services = servicesQuery.data?.services ?? [];
   const allIncidents = incidentsQuery.data?.incidents ?? [];
+  // Incidents can go live while services, health, deployments, and
+  // investigations stay demo-backed, so the page badge and banner
+  // must follow the incidents action's own demo flag, not assume
+  // the whole page is synthetic.
+  const incidentsAreDemo = incidentsQuery.data?.demo ?? true;
   const health = healthQuery.data?.health ?? [];
   const investigations = investigationsQuery.data?.investigations ?? [];
   const deployments = deploymentsQuery.data?.deployments ?? [];
@@ -179,7 +184,13 @@ export default function OverviewRoute() {
               Here&apos;s what&apos;s happening with your systems.
             </p>
           </div>
-          <DemoBadge />
+          {incidentsAreDemo ? (
+            <DemoBadge />
+          ) : (
+            <span className="inline-flex items-center rounded-full border border-[#10B981]/30 bg-[#10B981]/15 px-2 py-0.5 text-[11px] font-medium text-[#34D399]">
+              Live incidents · demo services
+            </span>
+          )}
         </div>
 
         <div className="mt-4 flex flex-wrap gap-3">
@@ -208,7 +219,15 @@ export default function OverviewRoute() {
         </div>
 
         <div className="mt-4">
-          <DemoBanner />
+          {incidentsAreDemo ? (
+            <DemoBanner />
+          ) : (
+            <div className="rounded-xl border border-[#10B981]/30 bg-[#10B981]/10 px-4 py-3 text-sm text-[#34D399]">
+              Mixed data: incidents on this page come from the
+              configured database, while services, health, deployments,
+              and investigations here are still demo data.
+            </div>
+          )}
         </div>
 
         {error ? (
@@ -364,7 +383,14 @@ export default function OverviewRoute() {
             <section className="mt-4 grid gap-4 lg:grid-cols-3">
               <Panel label="Recent incidents" className="lg:col-span-2">
                 <PanelTitle action={<Link to="/incidents" className="hover:text-[#3B82F6]">View all →</Link>}>
-                  Recent incidents <DemoBadge />
+                  Recent incidents{" "}
+                  {incidentsAreDemo ? (
+                    <DemoBadge />
+                  ) : (
+                    <span className="inline-flex items-center rounded-full border border-[#10B981]/30 bg-[#10B981]/15 px-2 py-0.5 text-[11px] font-medium text-[#34D399]">
+                      Live
+                    </span>
+                  )}
                 </PanelTitle>
                 <ul className="mt-3 divide-y divide-[#1E2A44]">
                   {searchedIncidents.map((incident) => (
