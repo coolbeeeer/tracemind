@@ -55,7 +55,7 @@ export default function GoogleCallbackRoute() {
   }, []);
 
   return (
-    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
+    <main className="min-h-full bg-[#0A0B10] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <p className="text-sm text-[#969CA9]">Completing your Google Cloud connection…</p>
         <p className="mt-2 text-sm">

@@ -53,7 +53,7 @@ export default function ServiceDetailRoute() {
   );
 
   return (
-    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
+    <main className="min-h-full bg-[#0A0B10] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <Link to="/services" className="text-sm text-[#5B8DEF] hover:underline">
           ← Back to services
@@ -83,7 +83,7 @@ export default function ServiceDetailRoute() {
         ) : null}
 
         {!loading && !service ? (
-          <div className="mt-5 rounded-xl border border-[#2B2E36] bg-[#181A20] px-4 py-6">
+          <div className="mt-5 rounded-xl border border-[#232833] bg-[#14161D] px-4 py-6">
             <p className="text-sm">
               No service with id <span className="font-mono">{serviceId}</span>{" "}
               exists in the demo dataset.
@@ -100,22 +100,22 @@ export default function ServiceDetailRoute() {
         {service ? (
           <>
             <section className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Status</p>
                 <p className="mt-2 flex items-center gap-2 text-lg font-semibold capitalize">
                   <StatusDot status={service.status} />
                   {service.status}
                 </p>
               </div>
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Provider</p>
                 <p className="mt-2 text-lg font-semibold">{providerLabel(service.provider)}</p>
               </div>
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Errors in window</p>
                 <p className="mt-2 text-lg font-semibold">{service.errorCount}</p>
               </div>
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Monitoring</p>
                 <p className="mt-2 text-lg font-semibold">
                   {service.monitoringEnabled ? "Enabled" : "Disabled"}
@@ -126,7 +126,7 @@ export default function ServiceDetailRoute() {
               </div>
             </section>
 
-            <section className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+            <section className="mt-6 rounded-xl border border-[#232833] bg-[#14161D] p-4">
               <h2 className="text-sm font-semibold">
                 Monitoring history <DemoBadge />
               </h2>
@@ -158,7 +158,7 @@ export default function ServiceDetailRoute() {
                       </thead>
                       <tbody>
                         {health.map((point) => (
-                          <tr key={point.timestamp} className="border-t border-[#2B2E36]">
+                          <tr key={point.timestamp} className="border-t border-[#232833]">
                             <td className="py-2.5 pr-3">{formatTime(point.timestamp)}</td>
                             <td className="py-2.5 pr-3">{point.errorRate.toFixed(1)}%</td>
                             <td className="py-2.5 pr-3">{point.requestCount}</td>
@@ -174,7 +174,7 @@ export default function ServiceDetailRoute() {
             </section>
 
             <section className="mt-6 grid gap-4 lg:grid-cols-2">
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">Recent deployments</h2>
                 {serviceDeployments.length === 0 ? (
                   <p className="mt-3 text-sm text-[#969CA9]">
@@ -193,7 +193,7 @@ export default function ServiceDetailRoute() {
                   </ul>
                 )}
               </div>
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">Incidents for this service</h2>
                 {serviceIncidents.length === 0 ? (
                   <p className="mt-3 text-sm text-[#969CA9]">

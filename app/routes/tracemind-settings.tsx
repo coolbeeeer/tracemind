@@ -12,7 +12,7 @@ export function meta() {
 }
 
 const inputClass =
-  "rounded-lg border border-[#2B2E36] bg-[#101114] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]";
+  "rounded-lg border border-[#232833] bg-[#14161D] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]";
 
 interface SettingsState {
   checkInterval: string;
@@ -93,7 +93,7 @@ export default function TraceMindSettingsRoute() {
   };
 
   return (
-    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
+    <main className="min-h-full bg-[#0A0B10] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -139,7 +139,7 @@ export default function TraceMindSettingsRoute() {
         ) : null}
 
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
-          <section className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+          <section className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
             <h2 className="text-sm font-semibold">Monitoring configuration</h2>
             <div className="mt-3 space-y-3 text-sm">
               <label className="block">
@@ -194,13 +194,13 @@ export default function TraceMindSettingsRoute() {
             </div>
           </section>
 
-          <section className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+          <section className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
             <h2 className="text-sm font-semibold">Notification preferences</h2>
             <p className="mt-2 text-xs text-[#969CA9]">
               No notification channel is connected in demo mode. Turning
               these on does not send any email, message, or webhook.
             </p>
-            <div className="mt-2 divide-y divide-[#2B2E36]">
+            <div className="mt-2 divide-y divide-[#232833]">
               <Toggle
                 checked={current.alertCritical}
                 onChange={(checked) => set("alertCritical", checked)}
@@ -240,14 +240,14 @@ export default function TraceMindSettingsRoute() {
             </label>
           </section>
 
-          <section className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4 lg:col-span-2">
+          <section className="rounded-xl border border-[#232833] bg-[#14161D] p-4 lg:col-span-2">
             <h2 className="text-sm font-semibold">Investigation safety controls</h2>
             <p className="mt-2 text-xs text-[#969CA9]">
               These toggles express intent only. Backend enforcement is
               required before any of them can actually constrain an agent,
               and no toggle here permits a fix to be applied on its own.
             </p>
-            <div className="mt-2 divide-y divide-[#2B2E36] text-sm">
+            <div className="mt-2 divide-y divide-[#232833] text-sm">
               <Toggle
                 checked={current.requireApproval}
                 onChange={(checked) => set("requireApproval", checked)}
@@ -267,7 +267,7 @@ export default function TraceMindSettingsRoute() {
             <button
               type="button"
               onClick={reset}
-              className="mt-4 rounded-lg border border-[#2B2E36] px-3 py-2 text-sm text-[#969CA9] hover:text-[#ECEEF2]"
+              className="mt-4 rounded-lg border border-[#232833] px-3 py-2 text-sm text-[#969CA9] hover:text-[#ECEEF2]"
             >
               Reset to session defaults
             </button>

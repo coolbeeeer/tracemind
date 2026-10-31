@@ -39,7 +39,7 @@ export default function IncidentDetailRoute() {
     incidentQuery.error ?? servicesQuery.error ?? investigationsQuery.error;
 
   return (
-    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
+    <main className="min-h-full bg-[#0A0B10] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <Link to="/incidents" className="inline-block py-1 text-sm text-[#8AACF4] hover:underline">
           ← Back to incidents
@@ -87,7 +87,7 @@ export default function IncidentDetailRoute() {
         ) : null}
 
         {!loading && !incident ? (
-          <div className="mt-5 rounded-xl border border-[#2B2E36] bg-[#181A20] px-4 py-6">
+          <div className="mt-5 rounded-xl border border-[#232833] bg-[#14161D] px-4 py-6">
             <p className="text-sm">
               No incident with id{" "}
               <span className="font-mono">{incidentId}</span> exists in the
@@ -105,28 +105,28 @@ export default function IncidentDetailRoute() {
         {incident ? (
           <>
             <section className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Severity</p>
                 <div className="mt-2">
                   <SeverityBadge severity={incident.severity} />
                 </div>
               </div>
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Status</p>
                 <p className="mt-2 text-lg font-semibold capitalize">{incident.status}</p>
               </div>
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Investigation</p>
                 <p className="mt-2 text-lg font-semibold">{incident.investigationStatus}</p>
               </div>
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Detected</p>
                 <p className="mt-2 text-lg font-semibold">{formatDateTime(incident.detectedAt)}</p>
               </div>
             </section>
 
             <section className="mt-6 grid gap-4 lg:grid-cols-2">
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">Description</h2>
                 <p className="mt-3 text-sm leading-relaxed text-[#ECEEF2]">
                   {incident.description}
@@ -146,7 +146,7 @@ export default function IncidentDetailRoute() {
                 )}
               </div>
 
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">
                   Investigation summary <DemoBadge />
                 </h2>

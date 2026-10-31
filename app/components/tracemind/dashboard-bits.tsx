@@ -23,7 +23,7 @@ export function StatCard({
   accent?: string;
 }) {
   return (
-    <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+    <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
       <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">
         {label}
       </p>
@@ -63,7 +63,7 @@ export function Sparkline({
         viewBox={`0 0 ${width} ${height}`}
         className="h-14 w-full"
       >
-        <line x1="0" y1={height / 2} x2={width} y2={height / 2} stroke="#2B2E36" strokeWidth="2" />
+        <line x1="0" y1={height / 2} x2={width} y2={height / 2} stroke="#232833" strokeWidth="2" />
       </svg>
     );
   }

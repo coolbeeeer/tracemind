@@ -178,7 +178,7 @@ export default function LogsRoute() {
               {selectedIncident ? ` for ${selectedIncident.id}` : ""}.
             </p>
 
-            <ul className="mt-3 divide-y divide-[#2B2E36]">
+            <ul className="mt-3 divide-y divide-[#232833]">
               {filteredLogs.map((log) => (
                 <li key={log.id} className="flex flex-col gap-1.5 py-3 first:pt-0 last:pb-0 sm:flex-row sm:flex-wrap sm:items-start sm:gap-3">
                   <span className="flex flex-wrap items-center gap-3">

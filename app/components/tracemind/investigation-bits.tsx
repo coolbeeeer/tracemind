@@ -47,7 +47,7 @@ export function ToolTimeline({ steps }: { steps: StepLike[] }) {
   return (
     <ol className="space-y-4">
       {steps.map((step) => (
-        <li key={step.id} className="border-l-2 border-[#2B2E36] pl-4">
+        <li key={step.id} className="border-l-2 border-[#232833] pl-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-mono text-sm font-medium">{step.tool}</span>
             <StepStatusBadge status={step.status} />
@@ -103,7 +103,7 @@ export function LogTimeline({
         <li
           key={log.id}
           id={`log-${log.id}`}
-          className="scroll-mt-24 rounded-lg border border-[#2B2E36] px-3 py-2"
+          className="scroll-mt-24 rounded-lg border border-[#232833] px-3 py-2"
         >
           <div className="flex flex-wrap items-center gap-2">
             <span
@@ -138,8 +138,8 @@ export function LogTimeline({
 export function DiffViewer({ diff }: { diff: string }) {
   const lines = diff.split("\n");
   return (
-    <div className="overflow-x-auto rounded-lg border border-[#2B2E36] bg-[#101114]">
-      <div className="flex items-center gap-2 border-b border-[#2B2E36] px-3 py-2">
+    <div className="overflow-x-auto rounded-lg border border-[#232833] bg-[#14161D]">
+      <div className="flex items-center gap-2 border-b border-[#232833] px-3 py-2">
         <DemoBadge />
         <span className="text-xs text-[#969CA9]">
           Demo diff — synthetic, not a real code inspection.

@@ -15,7 +15,7 @@ export function meta() {
 }
 
 const inputClass =
-  "rounded-lg border border-[#2B2E36] bg-[#101114] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]";
+  "rounded-lg border border-[#232833] bg-[#14161D] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]";
 
 type SeverityFilter = "all" | Severity;
 type StatusFilter = "all" | "open" | "investigating" | "resolved";
@@ -48,7 +48,7 @@ export default function IncidentsRoute() {
   };
 
   return (
-    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
+    <main className="min-h-full bg-[#0A0B10] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -92,9 +92,9 @@ export default function IncidentsRoute() {
         ) : null}
 
         {incidentsQuery.isPending ? (
-          <div className="mt-5 animate-pulse rounded-xl bg-[#181A20] h-64" aria-label="Loading" />
+          <div className="mt-5 animate-pulse rounded-xl bg-[#14161D] h-64" aria-label="Loading" />
         ) : (
-          <section className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+          <section className="mt-6 rounded-xl border border-[#232833] bg-[#14161D] p-4">
             <div className="flex flex-wrap gap-3">
               <input
                 type="search"
@@ -133,7 +133,7 @@ export default function IncidentsRoute() {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="rounded-lg border border-[#2B2E36] px-3 py-2 text-sm text-[#969CA9] hover:text-[#ECEEF2]"
+                className="rounded-lg border border-[#232833] px-3 py-2 text-sm text-[#969CA9] hover:text-[#ECEEF2]"
               >
                 Clear filters
               </button>
@@ -147,7 +147,7 @@ export default function IncidentsRoute() {
               {incidents.map((incident) => (
                 <li
                   key={incident.id}
-                  className="rounded-xl border border-[#2B2E36] bg-[#101114] p-3"
+                  className="rounded-xl border border-[#232833] bg-[#14161D] p-3"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <SeverityBadge severity={incident.severity} />
@@ -181,7 +181,7 @@ export default function IncidentsRoute() {
                 </thead>
                 <tbody>
                   {incidents.map((incident) => (
-                    <tr key={incident.id} className="border-t border-[#2B2E36]">
+                    <tr key={incident.id} className="border-t border-[#232833]">
                       <td className="py-2.5 pr-3">
                         <Link
                           to={`/incidents/${incident.id}`}
@@ -216,7 +216,7 @@ export default function IncidentsRoute() {
             </div>
 
             {incidents.length === 0 ? (
-              <div className="mt-4 rounded-xl border border-[#2B2E36] px-4 py-6 text-center">
+              <div className="mt-4 rounded-xl border border-[#232833] px-4 py-6 text-center">
                 <p className="text-sm">No incidents match these filters.</p>
                 <button
                   type="button"

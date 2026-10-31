@@ -17,7 +17,7 @@ export default function InvestigationsRoute() {
   const investigations = investigationsQuery.data?.investigations ?? [];
 
   return (
-    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
+    <main className="min-h-full bg-[#0A0B10] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -48,9 +48,9 @@ export default function InvestigationsRoute() {
         ) : null}
 
         {investigationsQuery.isPending ? (
-          <div className="mt-5 animate-pulse rounded-xl bg-[#181A20] h-64" aria-label="Loading" />
+          <div className="mt-5 animate-pulse rounded-xl bg-[#14161D] h-64" aria-label="Loading" />
         ) : (
-          <section className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+          <section className="mt-6 rounded-xl border border-[#232833] bg-[#14161D] p-4">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[640px] text-left text-sm">
                 <thead>
@@ -64,7 +64,7 @@ export default function InvestigationsRoute() {
                 </thead>
                 <tbody>
                   {investigations.map((investigation) => (
-                    <tr key={investigation.id} className="border-t border-[#2B2E36]">
+                    <tr key={investigation.id} className="border-t border-[#232833]">
                       <td className="py-2.5 pr-3">
                         <Link
                           to={`/investigations/${investigation.id}`}

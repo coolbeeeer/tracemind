@@ -39,6 +39,7 @@ import {
 import { APP_TITLE } from "@/lib/app-config";
 import { chatThreadPath, threadIdFromPath } from "@/lib/chat-paths";
 import { cn } from "@/lib/utils";
+import { chrome } from "@/components/tracemind/redesign";
 import { TraceMindWordmark } from "./TraceMindWordmark";
 
 const CHAT_STORAGE_KEY = "chat";
@@ -423,15 +424,17 @@ export function Sidebar({
     <aside
       data-collapsed={collapsed ? "true" : "false"}
       className={cn(
-        "flex h-full min-w-0 shrink-0 flex-col overflow-hidden border-e border-sidebar-border bg-sidebar text-sidebar-foreground transition-[width] duration-200 ease-out",
+        "flex h-full min-w-0 shrink-0 flex-col overflow-hidden bg-sidebar text-sidebar-foreground transition-[width] duration-200 ease-out",
         collapsed ? "w-12" : "w-full",
       )}
+      style={{ borderRight: `1px solid ${chrome.border}` }}
     >
       <div
         className={cn(
           "flex h-14 shrink-0 items-center",
           collapsed ? "justify-center px-1" : "gap-1 px-3",
         )}
+        style={{ borderBottom: `1px solid ${chrome.border}` }}
       >
         {collapsed ? (
           <Tooltip>

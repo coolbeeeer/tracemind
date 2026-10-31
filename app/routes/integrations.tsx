@@ -71,7 +71,7 @@ export default function IntegrationsRoute() {
   ).length;
 
   return (
-    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
+    <main className="min-h-full bg-[#0A0B10] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -112,14 +112,14 @@ export default function IntegrationsRoute() {
             Google Cloud connection could not be completed. Please try again.
           </div>
         ) : googleResult === "disconnected" ? (
-          <div className="mt-5 rounded-xl border border-[#2B2E36] bg-white/5 px-4 py-3 text-sm text-[#969CA9]">
+          <div className="mt-5 rounded-xl border border-[#232833] bg-white/5 px-4 py-3 text-sm text-[#969CA9]">
             Google Cloud disconnected. Its stored tokens and connection record were removed.
           </div>
         ) : null}
 
         <section
           aria-label="Connect Google Cloud"
-          className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4"
+          className="mt-6 rounded-xl border border-[#232833] bg-[#14161D] p-4"
         >
           <h2 className="text-sm font-semibold">Connect Google Cloud</h2>
           <p className="mt-2 text-sm leading-relaxed text-[#969CA9]">
@@ -160,7 +160,7 @@ export default function IntegrationsRoute() {
 
         <section
           aria-label="Set up Google Cloud"
-          className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4"
+          className="mt-6 rounded-xl border border-[#232833] bg-[#14161D] p-4"
         >
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-sm font-semibold">Set up Google Cloud</h2>
@@ -199,7 +199,7 @@ export default function IntegrationsRoute() {
               onChange={(event) => setProjectIdInput(event.target.value)}
               placeholder="e.g. elantra-gameolive"
               autoComplete="off"
-              className="rounded-lg border border-[#2B2E36] bg-[#101114] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]"
+              className="rounded-lg border border-[#232833] bg-[#14161D] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]"
             />
             <button
               type="submit"
@@ -249,7 +249,7 @@ export default function IntegrationsRoute() {
                             setCopiedCommand(null);
                           }
                         }}
-                        className="shrink-0 rounded-lg border border-[#2B2E36] px-2 py-1 text-xs text-[#ECEEF2] hover:border-[#5B8DEF]/40"
+                        className="shrink-0 rounded-lg border border-[#232833] px-2 py-1 text-xs text-[#ECEEF2] hover:border-[#5B8DEF]/40"
                       >
                         {copiedCommand === index ? "Copied" : "Copy"}
                       </button>
@@ -276,7 +276,7 @@ export default function IntegrationsRoute() {
 
         <section
           aria-label="Run as yourself, without project administration"
-          className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4"
+          className="mt-6 rounded-xl border border-[#232833] bg-[#14161D] p-4"
         >
           <h2 className="text-sm font-semibold">No project administration? Run as yourself</h2>
           <p className="mt-2 text-sm leading-relaxed text-[#969CA9]">
@@ -302,22 +302,22 @@ export default function IntegrationsRoute() {
         ) : null}
 
         {integrationsQuery.isPending ? (
-          <div className="mt-5 animate-pulse rounded-xl bg-[#181A20] h-64" aria-label="Loading" />
+          <div className="mt-5 animate-pulse rounded-xl bg-[#14161D] h-64" aria-label="Loading" />
         ) : (
           <>
             <section
               aria-label="Connection summary"
               className="mt-5 grid gap-4 sm:grid-cols-3"
             >
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Connected</p>
                 <p className="mt-2 text-3xl font-semibold">{connected}</p>
               </div>
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Disconnected</p>
                 <p className="mt-2 text-3xl font-semibold text-[#F87171]">{disconnected}</p>
               </div>
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-[#969CA9]">Unavailable</p>
                 <p className="mt-2 text-3xl font-semibold text-[#969CA9]">{unavailable}</p>
               </div>
@@ -329,7 +329,7 @@ export default function IntegrationsRoute() {
                 return (
                   <div
                     key={integration.id}
-                    className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4"
+                    className="rounded-xl border border-[#232833] bg-[#14161D] p-4"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <h2 className="text-sm font-semibold">{integration.label}</h2>
@@ -372,7 +372,7 @@ export default function IntegrationsRoute() {
                         }))
                       }
                       aria-expanded={isExpanded}
-                      className="mt-3 rounded-lg border border-[#2B2E36] px-3 py-2 text-sm text-[#ECEEF2] hover:border-[#5B8DEF]/40"
+                      className="mt-3 rounded-lg border border-[#232833] px-3 py-2 text-sm text-[#ECEEF2] hover:border-[#5B8DEF]/40"
                     >
                       {isExpanded
                         ? "Hide permission explanation"
@@ -397,7 +397,7 @@ export default function IntegrationsRoute() {
                           type="button"
                           disabled
                           title="No sign-in flow exists for this provider yet, so no connection can be started from here."
-                          className="cursor-not-allowed rounded-lg border border-[#2B2E36] px-3 py-2 text-sm text-[#969CA9] opacity-60"
+                          className="cursor-not-allowed rounded-lg border border-[#232833] px-3 py-2 text-sm text-[#969CA9] opacity-60"
                         >
                           Connect (not available)
                         </button>
@@ -413,7 +413,7 @@ export default function IntegrationsRoute() {
               })}
             </section>
 
-            <section className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+            <section className="mt-6 rounded-xl border border-[#232833] bg-[#14161D] p-4">
               <h2 className="text-sm font-semibold">How errors will be shown</h2>
               <p className="mt-2 text-sm leading-relaxed text-[#969CA9]">
                 A failed Google Cloud sign-in shows a banner at the top

@@ -37,9 +37,12 @@ const routeNames: Record<string, string> = {
 /**
  * Reference-style header: breadcrumb on the left, search pill, environment
  * pill, and an incidents bell on the right, all on the same near-black
- * chrome as the sidebar. Every control is real: search opens the command
- * menu, the environment menu's only action is the real Integrations page,
- * and the bell links to the real Incidents list. There is no unread-dot
+ * chrome as the sidebar. The divider is an inline style, not the `border-b`
+ * class: the framework shell forces `header/div.border-b` to a transparent
+ * bottom border on desktop, which is why the hairline was invisible.
+ * Every control is real: search opens the command menu, the environment
+ * menu's only action is the real Integrations page, and the bell links to
+ * the real Incidents list. There is no unread-dot
  * on the bell and no account avatar here: the app has no notifications
  * feed, and the account switcher already lives in the sidebar footer, so
  * neither is faked to match the mockup's placeholder persona.
@@ -131,8 +134,11 @@ export function Header({ onOpenMobileSidebar }: HeaderProps) {
   const route = routeNames[pathname.split("/")[1] ?? ""] ?? "TraceMind";
   return (
     <header
-      className="flex h-14 shrink-0 items-center gap-2 border-b px-3 sm:px-4 md:px-6"
-      style={{ backgroundColor: chrome.bg, borderColor: chrome.border }}
+      className="flex h-14 shrink-0 items-center gap-2 px-3 sm:px-4 md:px-6"
+      style={{
+        backgroundColor: chrome.bg,
+        borderBottom: `1px solid ${chrome.border}`,
+      }}
     >
       <Button
         type="button"

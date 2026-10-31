@@ -5,9 +5,9 @@ import type { ReactNode } from "react";
  *  visually distinct from the gray used for unknown states. */
 export const redesign = {
   pageBg: "#0A0B10",
-  panelBg: "#181A20",
-  panelBgSoft: "#1D2027",
-  border: "#2B2E36",
+  panelBg: "#14161D",
+  panelBgSoft: "#171A22",
+  border: "#232833",
   text: "#ECEEF2",
   muted: "#969CA9",
   blue: "#5B8DEF",
@@ -22,10 +22,14 @@ export const redesign = {
  * Header + sidebar chrome, matching the reference shots. The sidebar gets
  * these same values through the --sidebar-* variables in global.css; the
  * header uses this object directly so both bars render one theme.
+ * Dividers use inline styles, never the `border-b` / `border-e` classes:
+ * the framework shell forces those classes to transparent on desktop
+ * (agent-native.css: header/div.border-b and drawer .border-e rules),
+ * which is why the header hairline was invisible.
  */
 export const chrome = {
   bg: "#0D0F14",
-  border: "#1F2430",
+  border: "#232833",
   searchBg: "#14161D",
   searchBorder: "#232833",
   activeNav: "#2A2340",

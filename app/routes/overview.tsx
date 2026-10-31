@@ -399,7 +399,7 @@ export default function OverviewRoute() {
                     older incidents.
                   </p>
                 ) : null}
-                <ul className="mt-3 divide-y divide-[#2B2E36]">
+                <ul className="mt-3 divide-y divide-[#232833]">
                   {searchedIncidents.map((incident) => (
                     <li key={incident.id} className="flex flex-wrap items-start gap-3 py-3 first:pt-0 last:pb-0">
                       <SeverityBadge severity={incident.severity} />

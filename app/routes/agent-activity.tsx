@@ -16,7 +16,7 @@ export function meta() {
 }
 
 const inputClass =
-  "rounded-lg border border-[#2B2E36] bg-[#101114] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]";
+  "rounded-lg border border-[#232833] bg-[#14161D] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]";
 
 interface ActivityEvent {
   id: string;
@@ -118,7 +118,7 @@ export default function AgentActivityRoute() {
     incidents.find((i) => i.id === incidentId)?.detectedAt;
 
   return (
-    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
+    <main className="min-h-full bg-[#0A0B10] text-[#ECEEF2]">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -149,9 +149,9 @@ export default function AgentActivityRoute() {
         ) : null}
 
         {loading ? (
-          <div className="mt-5 animate-pulse rounded-xl bg-[#181A20] h-64" aria-label="Loading" />
+          <div className="mt-5 animate-pulse rounded-xl bg-[#14161D] h-64" aria-label="Loading" />
         ) : (
-          <section className="mt-6 rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+          <section className="mt-6 rounded-xl border border-[#232833] bg-[#14161D] p-4">
             <div className="flex flex-wrap gap-3">
               <input
                 type="search"
@@ -200,7 +200,7 @@ export default function AgentActivityRoute() {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="rounded-lg border border-[#2B2E36] px-3 py-2 text-sm text-[#969CA9] hover:text-[#ECEEF2]"
+                className="rounded-lg border border-[#232833] px-3 py-2 text-sm text-[#969CA9] hover:text-[#ECEEF2]"
               >
                 Clear filters
               </button>
@@ -211,7 +211,7 @@ export default function AgentActivityRoute() {
             </p>
 
             {events.length === 0 ? (
-              <div className="mt-4 rounded-xl border border-[#2B2E36] px-4 py-6 text-center">
+              <div className="mt-4 rounded-xl border border-[#232833] px-4 py-6 text-center">
                 <p className="text-sm">No investigation activity yet.</p>
                 <p className="mt-1 text-xs text-[#969CA9]">
                   Activity will appear here once a real investigation runs;
@@ -219,7 +219,7 @@ export default function AgentActivityRoute() {
                 </p>
               </div>
             ) : filtered.length === 0 ? (
-              <div className="mt-4 rounded-xl border border-[#2B2E36] px-4 py-6 text-center">
+              <div className="mt-4 rounded-xl border border-[#232833] px-4 py-6 text-center">
                 <p className="text-sm">No activity matches these filters.</p>
                 <button
                   type="button"
@@ -234,7 +234,7 @@ export default function AgentActivityRoute() {
                 {filtered.map((event) => (
                   <li
                     key={event.id}
-                    className="rounded-lg border border-[#2B2E36] px-3 py-3"
+                    className="rounded-lg border border-[#232833] px-3 py-3"
                   >
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-mono text-sm font-medium">{event.tool}</span>

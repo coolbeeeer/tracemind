@@ -31,7 +31,7 @@ interface ConversationMessage {
 }
 
 const inputClass =
-  "w-full rounded-lg border border-[#2B2E36] bg-[#101114] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]";
+  "w-full rounded-lg border border-[#232833] bg-[#14161D] px-3 py-2 text-sm text-[#ECEEF2] outline-none focus:border-[#5B8DEF]";
 
 export default function InvestigationWorkspaceRoute() {
   const { investigationId } = useParams();
@@ -112,7 +112,7 @@ export default function InvestigationWorkspaceRoute() {
   };
 
   return (
-    <main className="min-h-full bg-[#101114] text-[#ECEEF2]">
+    <main className="min-h-full bg-[#0A0B10] text-[#ECEEF2]">
       <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8">
         <Link to="/investigations" className="inline-block py-1 text-sm text-[#8AACF4] hover:underline">
           ← Back to investigations
@@ -157,7 +157,7 @@ export default function InvestigationWorkspaceRoute() {
         ) : null}
 
         {!loading && !investigation ? (
-          <div className="mt-5 rounded-xl border border-[#2B2E36] bg-[#181A20] px-4 py-6">
+          <div className="mt-5 rounded-xl border border-[#232833] bg-[#14161D] px-4 py-6">
             <p className="text-sm">
               No investigation with id{" "}
               <span className="font-mono">{investigationId}</span> exists in
@@ -176,7 +176,7 @@ export default function InvestigationWorkspaceRoute() {
           <div className="mt-6 grid gap-4 lg:grid-cols-12">
             {/* Left panel: incident, service, logs, error timeline, chart */}
             <section className="min-w-0 space-y-4 lg:col-span-3" aria-label="Incident details">
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">Incident details</h2>
                 <div className="mt-3 space-y-2 text-sm">
                   <p>
@@ -200,7 +200,7 @@ export default function InvestigationWorkspaceRoute() {
                 </p>
               </div>
 
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">Affected service</h2>
                 {service ? (
                   <div className="mt-3 text-sm">
@@ -239,7 +239,7 @@ export default function InvestigationWorkspaceRoute() {
                 ) : null}
               </div>
 
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">
                   Related errors ({errorLogs.length})
                 </h2>
@@ -263,7 +263,7 @@ export default function InvestigationWorkspaceRoute() {
                 )}
               </div>
 
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">Log timeline</h2>
                 <div className="mt-3">
                   <LogTimeline logs={logs} serviceName={serviceName} />
@@ -273,7 +273,7 @@ export default function InvestigationWorkspaceRoute() {
 
             {/* Center panel: progress, tools, hypotheses, evidence, fixes */}
             <section className="min-w-0 space-y-4 lg:col-span-6" aria-label="Investigation">
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">
                   AI investigation progress <DemoBadge />
                 </h2>
@@ -290,7 +290,7 @@ export default function InvestigationWorkspaceRoute() {
                     Started {formatDateTime(investigation.startedAt)}
                   </span>
                 </div>
-                <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#2B2E36]">
+                <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#232833]">
                   <div
                     className="h-full bg-[#5B8DEF]"
                     style={{ width: `${progress}%` }}
@@ -298,14 +298,14 @@ export default function InvestigationWorkspaceRoute() {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">Tool execution timeline</h2>
                 <div className="mt-3">
                   <ToolTimeline steps={steps} />
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">Root-cause hypotheses</h2>
                 <div className="mt-3 space-y-4">
                   {investigation.hypotheses.map((hypothesis) => {
@@ -318,7 +318,7 @@ export default function InvestigationWorkspaceRoute() {
                     return (
                       <div
                         key={hypothesis.id}
-                        className="rounded-lg border border-[#2B2E36] p-3"
+                        className="rounded-lg border border-[#232833] p-3"
                       >
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <p className="text-sm font-medium">{hypothesis.title}</p>
@@ -367,7 +367,7 @@ export default function InvestigationWorkspaceRoute() {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">Suggested fixes</h2>
                 <div className="mt-3 space-y-4">
                   {investigation.fixes.map((fix) => {
@@ -375,7 +375,7 @@ export default function InvestigationWorkspaceRoute() {
                     return (
                       <div
                         key={fix.id}
-                        className="rounded-lg border border-[#2B2E36] p-3"
+                        className="rounded-lg border border-[#232833] p-3"
                       >
                         <p className="text-sm font-medium">{fix.title}</p>
                         <p className="mt-1 text-sm leading-relaxed text-[#969CA9]">
@@ -411,7 +411,7 @@ export default function InvestigationWorkspaceRoute() {
 
             {/* Right panel: conversation, follow-ups, approvals */}
             <section className="min-w-0 space-y-4 lg:col-span-3" aria-label="Agent conversation and controls">
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">
                   Agent conversation <DemoBadge />
                 </h2>
@@ -427,7 +427,7 @@ export default function InvestigationWorkspaceRoute() {
                       className={`rounded-lg px-3 py-2 text-sm ${
                         message.from === "user"
                           ? "bg-[#5B8DEF]/10 border border-[#5B8DEF]/30"
-                          : "bg-white/5 border border-[#2B2E36]"
+                          : "bg-white/5 border border-[#232833]"
                       }`}
                     >
                       <p className="text-xs font-medium text-[#969CA9]">
@@ -463,7 +463,7 @@ export default function InvestigationWorkspaceRoute() {
                 </form>
               </div>
 
-              <div className="rounded-xl border border-[#2B2E36] bg-[#181A20] p-4">
+              <div className="rounded-xl border border-[#232833] bg-[#14161D] p-4">
                 <h2 className="text-sm font-semibold">Approval controls</h2>
                 <p className="mt-1 text-xs text-[#969CA9]">
                   Demo only. Approvals are not persisted, and no fix is
@@ -488,7 +488,7 @@ export default function InvestigationWorkspaceRoute() {
                           className={`shrink-0 rounded-lg border px-3 py-1.5 text-sm ${
                             isApproved
                               ? "border-[#5B8DEF]/40 bg-[#5B8DEF]/10 text-[#8AACF4]"
-                              : "border-[#2B2E36] text-[#969CA9]"
+                              : "border-[#232833] text-[#969CA9]"
                           }`}
                         >
                           {isApproved ? "Approved (demo)" : "Approve (demo)"}
