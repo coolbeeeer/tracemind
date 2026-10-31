@@ -282,11 +282,15 @@
   background: hsl(var(--muted-foreground) / 0.34);
 }
 
-/* TraceMind graphite theme shared by domain pages and the agent workspace. */
+/* TraceMind graphite theme shared by domain pages and the agent workspace.
+ * Chrome (header + sidebar) follows the reference header/sidebar shots:
+ * near-black chrome #0D0F14, hairline #1F2430, violet-tinted active nav.
+ * Keep these values in sync with `chrome` in
+ * app/components/tracemind/redesign.tsx. */
 :root,
 .dark {
   color-scheme: dark;
-  --background: 225 11% 7%;
+  --background: 222 20% 5%;
   --foreground: 220 19% 94%;
   --card: 225 14% 11%;
   --card-foreground: 220 19% 94%;
@@ -302,16 +306,16 @@
   --accent-foreground: 220 19% 94%;
   --destructive: 0 80% 68%;
   --destructive-foreground: 0 0% 100%;
-  --border: 224 11% 19%;
+  --border: 224 18% 15%;
   --input: 224 11% 22%;
   --ring: 220 82% 65%;
-  --sidebar-background: 225 15% 9%;
+  --sidebar-background: 223 21% 7%;
   --sidebar-foreground: 221 10% 65%;
   --sidebar-primary: 220 82% 65%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 220 38% 18%;
+  --sidebar-accent: 254 29% 19%;
   --sidebar-accent-foreground: 220 19% 94%;
-  --sidebar-border: 224 11% 19%;
+  --sidebar-border: 224 18% 15%;
   --sidebar-ring: 220 82% 65%;
   --chat-sidebar-width: 15rem;
 }

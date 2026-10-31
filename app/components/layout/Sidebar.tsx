@@ -13,7 +13,6 @@ import {
 import { OrgSwitcher } from "@agent-native/toolkit/app/org";
 import { openCommandMenu } from "@agent-native/toolkit/app/shared";
 import {
-  IconTopologyStar3,
   IconPlus,
   IconActivity,
   IconAlertTriangle,
@@ -40,6 +39,7 @@ import {
 import { APP_TITLE } from "@/lib/app-config";
 import { chatThreadPath, threadIdFromPath } from "@/lib/chat-paths";
 import { cn } from "@/lib/utils";
+import { TraceMindWordmark } from "./TraceMindWordmark";
 
 const CHAT_STORAGE_KEY = "chat";
 const CHAT_ACTIVE_THREAD_KEY = `agent-chat-active-thread:${CHAT_STORAGE_KEY}`;
@@ -192,9 +192,8 @@ function TraceMindNavLink({ collapsed }: { collapsed: boolean }) {
       aria-current={link.active ? "page" : undefined}
       aria-label={collapsed ? link.tooltip : undefined}
       className={cn(
-        "flex items-center text-sidebar-accent-foreground transition-colors hover:bg-sidebar-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-        link.active &&
-          "bg-sidebar-accent text-primary border-l-2 border-primary",
+        "flex items-center text-sidebar-foreground transition-colors hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+        link.active && "bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent",
         collapsed
           ? "size-8 justify-center rounded-md"
           : "h-10 w-full gap-3 rounded-lg px-3 text-[13px] font-medium",
@@ -218,14 +217,7 @@ function TraceMindNavLink({ collapsed }: { collapsed: boolean }) {
     );
   }
 
-  return (
-    <div className="px-2">
-      <p className="px-3 pb-3 pt-3 text-[10px] font-medium uppercase tracking-[0.15em] text-sidebar-foreground">
-        Workspace
-      </p>
-      {links.map(renderLink)}
-    </div>
-  );
+  return <div className="px-2">{links.map(renderLink)}</div>;
 }
 
 function ChatThreadsSection({ collapsed }: { collapsed: boolean }) {
@@ -449,29 +441,19 @@ export function Sidebar({
                 aria-label={APP_TITLE}
                 className="flex size-8 items-center justify-center rounded outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
               >
-                <IconTopologyStar3
-                  aria-hidden="true"
-                  className="size-6 text-primary"
-                />
+                <TraceMindWordmark compact />
               </Link>
             </TooltipTrigger>
             <TooltipContent side="right">{APP_TITLE}</TooltipContent>
           </Tooltip>
         ) : (
-          <>
-            <Link
-              to="/"
-              className="flex min-w-0 flex-1 items-center gap-3 rounded outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
-            >
-              <IconTopologyStar3
-                aria-hidden="true"
-                className="size-6 shrink-0 text-primary"
-              />
-              <span className="truncate text-sm font-semibold text-sidebar-accent-foreground">
-                TraceMind
-              </span>
-            </Link>
-          </>
+          <Link
+            to="/"
+            className="flex min-w-0 flex-1 items-center rounded outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
+            aria-label={APP_TITLE}
+          >
+            <TraceMindWordmark />
+          </Link>
         )}
       </div>
 

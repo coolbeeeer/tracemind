@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
  *  green keeps its semantic meaning (healthy / success) and must stay
  *  visually distinct from the gray used for unknown states. */
 export const redesign = {
-  pageBg: "#101114",
+  pageBg: "#0A0B10",
   panelBg: "#181A20",
   panelBgSoft: "#1D2027",
   border: "#2B2E36",
@@ -16,6 +16,21 @@ export const redesign = {
   red: "#EF4444",
   amber: "#F59E0B",
   green: "#10B981",
+};
+
+/**
+ * Header + sidebar chrome, matching the reference shots. The sidebar gets
+ * these same values through the --sidebar-* variables in global.css; the
+ * header uses this object directly so both bars render one theme.
+ */
+export const chrome = {
+  bg: "#0D0F14",
+  border: "#1F2430",
+  searchBg: "#14161D",
+  searchBorder: "#232833",
+  activeNav: "#2A2340",
+  brandViolet: "#A78BFA",
+  brandPink: "#F472B6",
 };
 
 export function Panel({
